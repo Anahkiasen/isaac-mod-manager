@@ -31,7 +31,7 @@ class Application extends Console implements ContainerAwareInterface
     /**
      * @var string
      */
-    const VERSION = '0.1.0';
+    const VERSION = '@commit@';
 
     /**
      * @var array
@@ -76,5 +76,15 @@ class Application extends Console implements ContainerAwareInterface
 
             $this->add($command);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVersion()
+    {
+        $version = parent::getVersion();
+
+        return $version === '@commit@' ? '(dev version)' : $version;
     }
 }
