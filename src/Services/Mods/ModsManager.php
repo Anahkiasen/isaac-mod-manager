@@ -149,6 +149,11 @@ class ModsManager
             );
         }
 
+        // Delete resources backup folder
+        if ($this->filesystem->has($this->paths->getResourcesBackupPath())) {
+            $this->filesystem->deleteDir($this->paths->getResourcesBackupPath());
+        }
+
         // Delete contents of resource folder
         foreach ($this->filesystem->listContents($this->paths->getResourcesPath()) as $file) {
             if ($file['basename'] !== 'packed') {
