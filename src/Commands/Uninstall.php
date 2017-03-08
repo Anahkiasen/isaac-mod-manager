@@ -32,6 +32,6 @@ class Uninstall extends AbstractCommand
         $modsQueue = $mod ? [$this->mods->findModById($mod)] : $this->mods->getGraphicalMods();
 
         $this->mods->removeMods($modsQueue);
-        $this->output->success('Game successfully repacked');
+        $this->output->success(count($modsQueue).' mod(s) uninstalled successfully!');
     }
 }

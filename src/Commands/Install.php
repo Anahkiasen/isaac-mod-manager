@@ -29,7 +29,7 @@ class Install extends AbstractCommand
     {
         // Get all mods that are only graphical
         $mod = $this->input->getArgument('mod');
-        $modsQueue = $mod ? collect($this->mods->findModById($mod)) : $this->mods->getGraphicalMods();
+        $modsQueue = $mod ? collect([$this->mods->findModById($mod)]) : $this->mods->getGraphicalMods();
 
         // Rename packed folder if necessary
         if (!$this->mods->areResourcesBackup()) {
@@ -38,9 +38,10 @@ class Install extends AbstractCommand
         }
 
         // Install mods
-        $this->output->title('Installing '.count($modsQueue).' mods');
+        $this->output->title('Installing '.count($modsQueue).' mod(s):');
+        $this->output->listing($modsQueue->pluck('getName')->all());
         $progress = new ProgressBar($this->output);
-        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.'%message%');
+        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.'<info>%message%</info>');
         $progress->setMessage('');
         $progress->start(count($modsQueue));
         foreach ($modsQueue as $mod) {
@@ -50,6 +51,6 @@ class Install extends AbstractCommand
         }
 
         $progress->finish();
-        $this->output->success(count($modsQueue).' mods installed successfully!');
+        $this->output->success(count($modsQueue).' mod(s) installed successfully!');
     }
 }
