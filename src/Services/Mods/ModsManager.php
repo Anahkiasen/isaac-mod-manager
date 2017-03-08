@@ -84,7 +84,7 @@ class ModsManager
      */
     public function findModsById(array $mods): Collection
     {
-        return collect($mods)->map(function ($modId) {
+        return collect($mods)->unique()->map(function ($modId) {
             return $this->findModById($modId);
         });
     }
