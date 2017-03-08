@@ -24,6 +24,6 @@ class AbsoluteLocal extends Local
      */
     public function applyPathPrefix($path)
     {
-        return $path;
+        return PHP_OS === 'Linux' ? '/'.$path : $path;
     }
 }
