@@ -3,7 +3,19 @@
 use Isaac\Application;
 use League\Container\Container;
 
-require __DIR__.'/../vendor/autoload.php';
+$vendors = [
+    __DIR__.'/../vendor',
+    __DIR__.'/../../..',
+];
+
+// Loop through the possible vendor folders and require the first one available
+foreach ($vendors as $vendor) {
+    $vendor .= '/autoload.php';
+    if (file_exists($vendor)) {
+        require_once $vendor;
+        break;
+    }
+}
 
 $app = new Application(new Container());
 $app->run();
