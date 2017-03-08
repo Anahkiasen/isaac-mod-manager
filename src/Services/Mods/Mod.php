@@ -45,13 +45,13 @@ class Mod
     }
 
     /**
-     * @param int $modeId
+     * @param int $modId
      *
      * @return bool
      */
-    public function isMod(int $modeId): bool
+    public function isMod(int $modId): bool
     {
-        return $this->getId() === $modeId;
+        return $this->getId() === $modId;
     }
 
     /**
