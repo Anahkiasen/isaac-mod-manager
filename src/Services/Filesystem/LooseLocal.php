@@ -13,6 +13,4 @@ class LooseLocal extends Local
     {
         // Ignore security checks and stuff like that
     }
-
-
 }

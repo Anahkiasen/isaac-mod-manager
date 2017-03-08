@@ -46,7 +46,7 @@ class Install extends AbstractCommand
     public function fire()
     {
         // Get all mods that are only graphical
-        $workshopMods = $this->mods->getGraphicalMods();
+        $graphicalMods = $this->mods->getGraphicalMods();
 
         // Rename packed folder if necessary
         if (!$this->mods->areResourcesBackup()) {
@@ -55,18 +55,18 @@ class Install extends AbstractCommand
         }
 
         // Install mods
-        $this->output->title('Installing '.count($workshopMods).' mods');
+        $this->output->title('Installing '.count($graphicalMods).' mods');
         $progress = new ProgressBar($this->output);
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.'%message%');
         $progress->setMessage('');
-        $progress->start(count($workshopMods));
-        foreach ($workshopMods as $mod) {
+        $progress->start(count($graphicalMods));
+        foreach ($graphicalMods as $mod) {
             $progress->setMessage($mod->getName());
             $this->mods->installMod($mod);
             $progress->advance();
         }
 
         $progress->finish();
-        $this->output->success('Mods installed successfully!');
+        $this->output->success(count($graphicalMods).' mods installed successfully!');
     }
 }

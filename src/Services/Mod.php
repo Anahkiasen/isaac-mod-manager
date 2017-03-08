@@ -1,6 +1,7 @@
 <?php
 
 namespace Isaac\Services;
+
 use Exception;
 
 /**
