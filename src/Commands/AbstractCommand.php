@@ -88,7 +88,7 @@ abstract class AbstractCommand extends Command
         $this->cache->set('source', $source);
         $this->cache->set('destination', $destination);
 
-        if (!$this->mods->areResourcesBackup()) {
+        if (!$this->mods->areResourcesBackup() && $this->getName() !== 'restore') {
             return $this->output->error('You must first run the ResourceExtractor in /tools/ResourceExtractor/ResourceExtractor.exe');
         }
 

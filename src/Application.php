@@ -2,6 +2,7 @@
 
 namespace Isaac;
 
+use Isaac\Commands\ClearCache;
 use Isaac\Commands\Install;
 use Isaac\Commands\Restore;
 use Isaac\Commands\Uninstall;
@@ -47,6 +48,7 @@ class Application extends Console implements ContainerAwareInterface
         Install::class,
         Uninstall::class,
         Restore::class,
+        ClearCache::class,
     ];
 
     /**
