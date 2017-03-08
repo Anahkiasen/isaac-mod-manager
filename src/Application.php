@@ -52,7 +52,7 @@ class Application extends Console implements ContainerAwareInterface
      */
     public function __construct(Container $container = null)
     {
-        parent::__construct('Isaac Mods Manager', static::VERSION);
+        parent::__construct('Isaac Mod Manager', static::VERSION);
 
         // Setup container
         $container = $container ?: new Container();
