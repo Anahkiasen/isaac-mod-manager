@@ -107,7 +107,7 @@ abstract class AbstractCommand extends Command
         }
 
         // Ensure resources are extracted
-        if (!$this->mods->areResourcesBackup() && $this->getName() !== 'restore') {
+        if (!$this->mods->areResourcesExtracted() && $this->getName() !== 'restore') {
             throw new RuntimeException('You must first run the ResourceExtractor in /tools/ResourceExtractor/ResourceExtractor.exe');
         }
 
