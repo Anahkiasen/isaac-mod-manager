@@ -72,7 +72,7 @@ class Pathfinder
      */
     public function getPackedBackupPath(): string
     {
-        return $this->getResourcesPath().DS.'packed'.static::BACKUP_PREFIX;
+        return $this->getPackedPath().static::BACKUP_PREFIX;
     }
 
     /**

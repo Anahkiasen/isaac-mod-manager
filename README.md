@@ -34,6 +34,7 @@ $ composer build
 - Find a way to make the app extract the resources itself instead of asking the user to do it.
 - Ability to install/uninstall a mod in particular
 - Add some tests
+- Ensure it works when run in Ubuntu for Windows
 
 ## Contributing
 
