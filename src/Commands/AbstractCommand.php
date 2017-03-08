@@ -2,7 +2,7 @@
 
 namespace Isaac\Commands;
 
-use Isaac\Services\ModsManager;
+use Isaac\Services\Mods\ModsManager;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,8 +35,8 @@ abstract class AbstractCommand extends Command
     protected $mods;
 
     /**
-     * @param CacheInterface $cache
-     * @param ModsManager    $mods
+     * @param CacheInterface                   $cache
+     * @param \Isaac\Services\Mods\ModsManager $mods
      */
     public function __construct(CacheInterface $cache, ModsManager $mods)
     {

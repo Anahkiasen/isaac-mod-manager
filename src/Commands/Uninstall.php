@@ -2,6 +2,8 @@
 
 namespace Isaac\Commands;
 
+use Symfony\Component\Console\Input\InputArgument;
+
 /**
  * Removes all installed mods.
  */
@@ -14,7 +16,8 @@ class Uninstall extends AbstractCommand
     {
         return $this
             ->setName('uninstall')
-            ->setDescription('Removes all installed mods.');
+            ->setDescription('Removes all installed mods.')
+            ->addArgument('mod', InputArgument::OPTIONAL, 'The Steam ID of a mod to uninstall');
     }
 
     /**
@@ -24,7 +27,10 @@ class Uninstall extends AbstractCommand
      */
     protected function fire()
     {
-        $this->mods->removeMods();
+        $mod = $this->input->getArgument('mod');
+        $modsQueue = $mod ? [$this->mods->findModById($mod)] : $this->mods->getGraphicalMods();
+
+        $this->mods->removeMods($modsQueue);
         $this->output->success('Game successfully repacked');
     }
 }

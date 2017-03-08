@@ -1,7 +1,9 @@
 <?php
 
-namespace Isaac\Services;
+namespace Isaac\Services\Mods;
 
+use Illuminate\Support\Collection;
+use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 
 /**
@@ -68,10 +70,73 @@ class ModsManager
         );
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////// MODS /////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
     /**
-     * Restores Isaac to a pristine modded version.
+     * Get a mod instance by its ID.
+     *
+     * @param int $modId
+     *
+     * @return Mod
      */
-    public function removeMods()
+    public function findModById(int $modId): Mod
+    {
+        foreach ($this->getGraphicalMods() as $mod) {
+            if ($mod->isMod($modId)) {
+                return $mod;
+            }
+        }
+    }
+
+    /**
+     * Install a given mod.
+     *
+     * @param Mod $mod
+     */
+    public function installMod(Mod $mod)
+    {
+        $resourcesPath = $mod->getPath('resources');
+        foreach ($this->filesystem->listFiles($resourcesPath, true) as $file) {
+            $filepath = $file['path'];
+
+            $this->filesystem->forceCopy($filepath, $this->paths->getModeFileInResources($mod, $filepath));
+        }
+    }
+
+    /**
+     * Remove a particular mod.
+     *
+     * @param int|Mod $mod
+     */
+    public function removeMod($mod)
+    {
+        $mod = $mod instanceof Mod ? $mod : $this->findModById($mod);
+        foreach ($this->filesystem->listContents($mod->getPath(), true) as $file) {
+            $this->filesystem->copy(
+                $this->paths->getModeFileInResourcesBackup($mod, $file['path']),
+                $this->paths->getModeFileInResources($mod, $file['path'])
+            );
+        }
+    }
+
+    /**
+     * Remove one or more mods.
+     *
+     * @param Collection $mods
+     */
+    public function removeMods(Collection $mods)
+    {
+        foreach ($mods as $mod) {
+            $this->removeMod($mod);
+        }
+    }
+
+    /**
+     * Restores Isaac to a pristine non-modded version.
+     */
+    public function restore()
     {
         // Rename back the "packed" folder
         if ($this->filesystem->has($this->paths->getPackedBackupPath())) {
@@ -91,14 +156,10 @@ class ModsManager
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////// MODS /////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-
     /**
      * Get all workshop mods currently downloaded.
      *
-     * @return Mod[]
+     * @return Mod[]|Collection
      */
     public function getMods(): array
     {
@@ -107,33 +168,18 @@ class ModsManager
             $mod = new Mod($mod);
         }
 
-        return $mods;
+        return new Collection($mods);
     }
 
     /**
      * Get all mods that are graphical only.
      *
-     * @return Mod[]
+     * @return Mod[]|Collection
      */
     public function getGraphicalMods(): array
     {
-        return array_filter($this->getMods(), function (Mod $mod) {
+        return $this->getMods()->filter(function (Mod $mod) {
             return !$this->filesystem->has($mod->getPath('main.lua')) && $this->filesystem->has($mod->getPath('resources'));
         });
-    }
-
-    /**
-     * Install a given mod.
-     *
-     * @param Mod $mod
-     */
-    public function installMod(Mod $mod)
-    {
-        $resourcesPath = $mod->getPath('resources');
-        foreach ($this->filesystem->listFiles($resourcesPath, true) as $file) {
-            $relativePath = str_replace($mod->getPath(), null, $file['path']);
-            $destination = $this->paths->getGamePath().$relativePath;
-            $this->filesystem->forceCopy($file['path'], $destination);
-        }
     }
 }

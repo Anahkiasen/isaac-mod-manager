@@ -3,6 +3,7 @@
 namespace Isaac\Commands;
 
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Copies non-LUA mods into your resource folder.
@@ -16,7 +17,8 @@ class Install extends AbstractCommand
     {
         return $this
             ->setName('install')
-            ->setDescription('Copies non-LUA mods into your resource folder');
+            ->setDescription('Copies non-LUA mods into your resource folder')
+            ->addArgument('mod', InputArgument::OPTIONAL, 'The Steam ID of a mod to install');
     }
 
     /**
@@ -25,7 +27,8 @@ class Install extends AbstractCommand
     protected function fire()
     {
         // Get all mods that are only graphical
-        $graphicalMods = $this->mods->getGraphicalMods();
+        $mod = $this->input->getArgument('mod');
+        $modsQueue = $mod ? [$this->mods->findModById($mod)] : $this->mods->getGraphicalMods();
 
         // Rename packed folder if necessary
         if (!$this->mods->areResourcesBackup()) {
@@ -34,18 +37,18 @@ class Install extends AbstractCommand
         }
 
         // Install mods
-        $this->output->title('Installing '.count($graphicalMods).' mods');
+        $this->output->title('Installing '.count($modsQueue).' mods');
         $progress = new ProgressBar($this->output);
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.'%message%');
         $progress->setMessage('');
-        $progress->start(count($graphicalMods));
-        foreach ($graphicalMods as $mod) {
+        $progress->start(count($modsQueue));
+        foreach ($modsQueue as $mod) {
             $progress->setMessage($mod->getName());
             $this->mods->installMod($mod);
             $progress->advance();
         }
 
         $progress->finish();
-        $this->output->success(count($graphicalMods).' mods installed successfully!');
+        $this->output->success(count($modsQueue).' mods installed successfully!');
     }
 }

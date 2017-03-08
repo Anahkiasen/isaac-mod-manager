@@ -1,6 +1,6 @@
 <?php
 
-namespace Isaac\Services;
+namespace Isaac\Services\Mods;
 
 use Exception;
 
@@ -22,6 +22,10 @@ class Mod
         $this->path = $attributes['path'];
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////// METADATA ////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Get the human-readable name of the mod.
      *
@@ -30,6 +34,24 @@ class Mod
     public function getName(): string
     {
         return $this->getMetadata('name') ?: basename($this->getPath());
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return (int) $this->getMetadata('id');
+    }
+
+    /**
+     * @param int $modeId
+     *
+     * @return bool
+     */
+    public function isMod(int $modeId): bool
+    {
+        return $this->getId() === $modeId;
     }
 
     /**

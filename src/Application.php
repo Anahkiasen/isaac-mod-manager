@@ -3,6 +3,7 @@
 namespace Isaac;
 
 use Isaac\Commands\Install;
+use Isaac\Commands\Restore;
 use Isaac\Commands\Uninstall;
 use Isaac\Providers\CacheServiceProvider;
 use Isaac\Providers\FilesystemServiceProvider;
@@ -45,6 +46,7 @@ class Application extends Console implements ContainerAwareInterface
     protected $commands = [
         Install::class,
         Uninstall::class,
+        Restore::class,
     ];
 
     /**

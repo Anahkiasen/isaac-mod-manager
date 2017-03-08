@@ -2,6 +2,7 @@
 
 namespace Isaac\Services;
 
+use Isaac\Services\Mods\Mod;
 use Psr\SimpleCache\CacheInterface;
 
 /**
@@ -81,5 +82,33 @@ class Pathfinder
     public function getResourceExtractorPath(): string
     {
         return $this->getGamePath().DS.'tools'.DS.'ResourceExtractor'.DS.'ResourceExtractor.exe';
+    }
+
+    /**
+     * @param Mod    $mod
+     * @param string $filepath
+     *
+     * @return string
+     */
+    public function getModeFileInResources(Mod $mod, string $filepath): string
+    {
+        $modResources = $mod->getPath('resources');
+        $relativePath = str_replace($modResources, null, $filepath);
+
+        return $this->getResourcesPath().$relativePath;
+    }
+
+    /**
+     * @param Mod    $mod
+     * @param string $filepath
+     *
+     * @return string
+     */
+    public function getModeFileInResourcesBackup(Mod $mod, string $filepath): string
+    {
+        $modResources = $mod->getPath('resources');
+        $relativePath = str_replace($modResources, null, $filepath);
+
+        return $this->getResourcesBackupPath().$relativePath;
     }
 }
