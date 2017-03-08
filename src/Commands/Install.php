@@ -37,12 +37,17 @@ class Install extends AbstractCommand
             $this->mods->backup();
         }
 
-        // Install mods
+        // Present mods to install
         $this->output->title('Installing '.count($modsQueue).' mod(s):');
         $this->output->listing($modsQueue->pluck('getName')->all());
         $progress = new ProgressBar($this->output);
-        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.'<info>%message%</info>');
         $progress->setMessage('');
+        $progress->setFormat(
+            '%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.PHP_EOL.
+            'Installing <comment>%message%</comment>'
+        );
+
+        // Install mods
         $progress->start(count($modsQueue));
         foreach ($modsQueue as $mod) {
             $progress->setMessage($mod->getName());
