@@ -42,12 +42,12 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security
 
-If you discover any security related issues, please email :author_email instead of using the issue tracker.
+If you discover any security related issues, please email ehtnam6@gmail.com instead of using the issue tracker.
 
 ## Credits
 
 - [Anahkiasen](https://github.com/Anahkiasen)
-- [All Contributors](https://github.com/rocketeers/rocketeer/contributors)
+- [All Contributors](https://github.com/anahkiasen/isaac-mod-manager/contributors)
 
 ## License
 
