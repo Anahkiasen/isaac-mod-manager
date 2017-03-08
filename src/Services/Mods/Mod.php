@@ -3,6 +3,8 @@
 namespace Isaac\Services\Mods;
 
 use Exception;
+use Isaac\Services\Filesystem\AbsoluteLocal;
+use League\Flysystem\FileNotFoundException;
 
 /**
  * @property string path
@@ -78,9 +80,14 @@ class Mod
         // Get metadata contents
         try {
             $metadata = $this->getPath('metadata.xml');
-            $metadata = file_get_contents($metadata);
+            $metadata = (new AbsoluteLocal())->applyPathPrefix($metadata);
+
+            if (file_exists($metadata)) {
+                throw new FileNotFoundException($metadata);
+            }
 
             // Parse to array
+            $metadata = file_get_contents($metadata);
             $metadata = @simplexml_load_string($metadata, 'SimpleXMLElement', LIBXML_NOCDATA);
             $metadata = json_decode(json_encode($metadata), true);
         } catch (Exception $exception) {
