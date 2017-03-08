@@ -11,7 +11,8 @@ class Restore extends AbstractCommand
     {
         return $this
             ->setName('restore')
-            ->setDescription('Restores Isaac to its original state');
+            ->setDescription('Restores Isaac to its original state')
+            ->setNeedsSetup(true);
     }
 
     /**

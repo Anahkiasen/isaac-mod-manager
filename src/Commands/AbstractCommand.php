@@ -35,6 +35,11 @@ abstract class AbstractCommand extends Command
     protected $mods;
 
     /**
+     * @var bool
+     */
+    protected $needsSetup = false;
+
+    /**
      * @param CacheInterface                   $cache
      * @param \Isaac\Services\Mods\ModsManager $mods
      */
@@ -44,6 +49,18 @@ abstract class AbstractCommand extends Command
         $this->mods = $mods;
 
         parent::__construct();
+    }
+
+    /**
+     * @param bool $needsSetup
+     *
+     * @return self
+     */
+    public function setNeedsSetup(bool $needsSetup): self
+    {
+        $this->needsSetup = $needsSetup;
+
+        return $this;
     }
 
     /**
@@ -58,7 +75,9 @@ abstract class AbstractCommand extends Command
         $this->output = new SymfonyStyle($input, $output);
 
         // Preliminary setup
-        $this->setup();
+        if ($this->needsSetup) {
+            $this->setup();
+        }
 
         return $this->fire();
     }

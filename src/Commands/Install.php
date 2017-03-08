@@ -11,13 +11,14 @@ use Symfony\Component\Console\Input\InputArgument;
 class Install extends AbstractCommand
 {
     /**
-     * @return $this
+     * {@inheritdoc}
      */
     protected function configure()
     {
         return $this
             ->setName('mods:install')
             ->setDescription('Copies non-LUA mods into your resource folder')
+            ->setNeedsSetup(true)
             ->addArgument('mod', InputArgument::OPTIONAL, 'The Steam ID of a mod to install');
     }
 

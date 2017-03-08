@@ -17,6 +17,7 @@ class Uninstall extends AbstractCommand
         return $this
             ->setName('mods:uninstall')
             ->setDescription('Removes all installed mods.')
+            ->setNeedsSetup(true)
             ->addArgument('mod', InputArgument::OPTIONAL, 'The Steam ID of a mod to uninstall');
     }
 
