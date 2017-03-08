@@ -92,6 +92,10 @@ abstract class AbstractCommand extends Command
      */
     abstract protected function fire();
 
+    ////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// MODS //////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Setup the CLI application with the necessary informations.
      */
@@ -125,5 +129,17 @@ abstract class AbstractCommand extends Command
         $modsQueue = $mods ? $this->mods->findModsById($mods) : $this->mods->getGraphicalMods();
 
         return $modsQueue;
+    }
+
+    /**
+     * Presents a collection of mods as a listing.
+     *
+     * @param Collection $modsQueue
+     */
+    protected function presentMods(Collection $modsQueue): void
+    {
+        $this->output->listing(
+            $modsQueue->map->getName()->all()
+        );
     }
 }

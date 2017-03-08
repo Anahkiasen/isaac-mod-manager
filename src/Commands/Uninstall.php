@@ -30,6 +30,9 @@ class Uninstall extends AbstractCommand
     {
         $modsQueue = $this->getModsQueue();
 
+        $this->output->title('Uninstalling '.count($modsQueue).' mod(s)');
+        $this->presentMods($modsQueue);
+
         $this->mods->removeMods($modsQueue);
         $this->output->success(count($modsQueue).' mod(s) uninstalled successfully!');
     }
