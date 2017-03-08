@@ -2,7 +2,7 @@
 
 namespace Isaac\Commands;
 
-use League\Flysystem\Filesystem;
+use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 
 class Install extends AbstractCommand
@@ -13,11 +13,18 @@ class Install extends AbstractCommand
     protected $filesystem;
 
     /**
-     * @param FilesystemInterface $filesystem
+     * @var Pathfinder
      */
-    public function __construct(FilesystemInterface $filesystem)
+    protected $paths;
+
+    /**
+     * @param FilesystemInterface $filesystem
+     * @param Pathfinder          $paths
+     */
+    public function __construct(FilesystemInterface $filesystem, Pathfinder $paths)
     {
         $this->filesystem = $filesystem;
+        $this->paths = $paths;
 
         parent::__construct();
     }
@@ -37,19 +44,16 @@ class Install extends AbstractCommand
      */
     public function fire()
     {
-        $source = $this->getCache()->get('source');
-        $destination = $this->getCache()->get('destination');
-
         // Get all mods that are only graphical
-        $workshopMods = $this->filesystem->listContents($source);
+        $workshopMods = $this->filesystem->listContents($this->paths->getModsFolder());
         $workshopMods = array_filter($workshopMods, function ($mod) {
             return !$this->filesystem->has($mod['path'].'/main.lua') && $this->filesystem->has($mod['path'].'/resources');
         });
 
         // Rename packed folder if necessary
-        if ($this->filesystem->has($destination.'/packed')) {
+        if ($this->filesystem->has($this->paths->getPackedFolder())) {
             $this->output->writeln('<comment>A "packed" folde found, renaming</comment>');
-            $this->filesystem->rename($destination.'/packed', $destination.'/packed-backup');
+            $this->filesystem->rename($this->paths->getPackedFolder(), $this->paths->getPackedFolderBackup());
         }
 
         // Install mods
@@ -59,7 +63,7 @@ class Install extends AbstractCommand
             $resourcesPath = $mod['path'].'/resources';
             foreach ($this->filesystem->listFiles($resourcesPath, true) as $file) {
                 $relativePath = str_replace($resourcesPath, null, $file['path']);
-                $this->filesystem->forceCopy($file['path'], $destination.$relativePath);
+                $this->filesystem->forceCopy($file['path'], $this->paths->getGameFolder().$relativePath);
             }
 
             $this->output->progressAdvance();

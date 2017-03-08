@@ -58,6 +58,7 @@ abstract class AbstractCommand extends Command implements ContainerAwareInterfac
             return;
         }
 
+        // Gather paths to folders
         $this->output->title('Before we begin I need some informations from you!');
         $source = $this->output->ask('Where are your Afterbirth+ Workshop mods located?', 'C:/Users/Maxime Fabre/Documents/My Games/Binding of Isaac Afterbirth+ Mods');
         $destination = $this->output->ask('Where is Afterbirth+ installed?', 'C:/Program Files (x86)/Steam/steamapps/common/The Binding of Isaac Rebirth');
