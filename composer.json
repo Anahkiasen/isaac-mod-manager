@@ -27,6 +27,7 @@
     "herrera-io/box": "^1.6",
     "kherge/box": "^2.7",
     "madewithlove/php-cs-fixer-config": "^1.2",
+    "phpunit/phpunit": "^6.0",
     "symfony/var-dumper": "^3.2"
   },
   "autoload": {
@@ -45,7 +46,8 @@
   "scripts": {
     "build": "box build -vvv",
     "check-style": "phpcs",
-    "fix-style": ["php-cs-fixer fix", "phpcbf"]
+    "fix-style": ["php-cs-fixer fix", "phpcbf"],
+    "test": "phpunit"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
