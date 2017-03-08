@@ -116,7 +116,7 @@ class ModsManager
     public function removeMod($mod)
     {
         $mod = $mod instanceof Mod ? $mod : $this->findModById($mod);
-        foreach ($this->filesystem->listContents($mod->getPath(), true) as $file) {
+        foreach ($this->filesystem->listContents($mod->getPath('resources'), true) as $file) {
             $this->filesystem->copy(
                 $this->paths->getModeFileInResourcesBackup($mod, $file['path']),
                 $this->paths->getModeFileInResources($mod, $file['path'])

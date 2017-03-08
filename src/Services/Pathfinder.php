@@ -3,6 +3,7 @@
 namespace Isaac\Services;
 
 use Isaac\Services\Mods\Mod;
+use League\Flysystem\Util;
 use Psr\SimpleCache\CacheInterface;
 
 /**
@@ -92,10 +93,7 @@ class Pathfinder
      */
     public function getModeFileInResources(Mod $mod, string $filepath): string
     {
-        $modResources = $mod->getPath('resources');
-        $relativePath = str_replace($modResources, null, $filepath);
-
-        return $this->getResourcesPath().$relativePath;
+        return $this->getModFileIn($mod, $filepath, $this->getResourcesPath());
     }
 
     /**
@@ -106,9 +104,21 @@ class Pathfinder
      */
     public function getModeFileInResourcesBackup(Mod $mod, string $filepath): string
     {
+        return $this->getModFileIn($mod, $filepath, $this->getResourcesBackupPath());
+    }
+
+    /**
+     * @param Mod    $mod
+     * @param string $filepath
+     * @param        $in
+     *
+     * @return string
+     */
+    protected function getModFileIn(Mod $mod, string $filepath, $in): string
+    {
         $modResources = $mod->getPath('resources');
         $relativePath = str_replace($modResources, null, $filepath);
 
-        return $this->getResourcesBackupPath().$relativePath;
+        return Util::normalizePath($in.$relativePath);
     }
 }
