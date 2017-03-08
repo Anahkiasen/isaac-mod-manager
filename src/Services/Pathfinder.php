@@ -27,7 +27,7 @@ class Pathfinder
     /**
      * @return string
      */
-    public function getModsFolder(): string
+    public function getModsPath(): string
     {
         return $this->cache->get('source');
     }
@@ -35,7 +35,7 @@ class Pathfinder
     /**
      * @return string
      */
-    public function getGameFolder(): string
+    public function getGamePath(): string
     {
         return $this->cache->get('destination');
     }
@@ -43,16 +43,16 @@ class Pathfinder
     /**
      * @return string
      */
-    public function getPackedFolder(): string
+    public function getPackedPath(): string
     {
-        return $this->getGameFolder().DIRECTORY_SEPARATOR.'packed';
+        return $this->getGamePath().DIRECTORY_SEPARATOR.'packed';
     }
 
     /**
      * @return string
      */
-    public function getPackedFolderBackup(): string
+    public function getPackedBackupPath(): string
     {
-        return $this->getPackedFolder().self::PACKED_PREFIX;
+        return $this->getPackedPath().self::PACKED_PREFIX;
     }
 }

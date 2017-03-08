@@ -12,6 +12,10 @@ use League\Container\ReflectionContainer;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Command\Command;
 
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
+
 /**
  * This is the main class of the CLI application,
  * it registers the commands and dependencies, as well

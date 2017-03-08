@@ -2,7 +2,7 @@
 
 namespace Isaac\Commands;
 
-use Isaac\Services\Pathfinder;
+use Isaac\Services\ModsManager;
 use League\Flysystem\FilesystemInterface;
 
 class Install extends AbstractCommand
@@ -13,18 +13,18 @@ class Install extends AbstractCommand
     protected $filesystem;
 
     /**
-     * @var Pathfinder
+     * @var ModsManager
      */
-    protected $paths;
+    protected $mods;
 
     /**
      * @param FilesystemInterface $filesystem
-     * @param Pathfinder          $paths
+     * @param ModsManager         $mods
      */
-    public function __construct(FilesystemInterface $filesystem, Pathfinder $paths)
+    public function __construct(FilesystemInterface $filesystem, ModsManager $mods)
     {
         $this->filesystem = $filesystem;
-        $this->paths = $paths;
+        $this->mods = $mods;
 
         parent::__construct();
     }
@@ -45,25 +45,23 @@ class Install extends AbstractCommand
     public function fire()
     {
         // Get all mods that are only graphical
-        $workshopMods = $this->filesystem->listContents($this->paths->getModsFolder());
-        $workshopMods = array_filter($workshopMods, function ($mod) {
-            return !$this->filesystem->has($mod['path'].'/main.lua') && $this->filesystem->has($mod['path'].'/resources');
-        });
+        $workshopMods = $this->mods->getGraphicalMods();
 
         // Rename packed folder if necessary
-        if ($this->filesystem->has($this->paths->getPackedFolder())) {
-            $this->output->writeln('<comment>A "packed" folde found, renaming</comment>');
-            $this->filesystem->rename($this->paths->getPackedFolder(), $this->paths->getPackedFolderBackup());
+        if (!$this->mods->isGameUnpacked()) {
+            $this->output->writeln('<comment>Game is not unpacked, unpacking</comment>');
+            $this->mods->unpackGame();
+            $this->filesystem->rename($this->mods->getPackedPath(), $this->mods->getPackedBackupPath());
         }
 
         // Install mods
         $this->output->title('Installing '.count($workshopMods).' mods');
         $this->output->progressStart(count($workshopMods));
         foreach ($workshopMods as $mod) {
-            $resourcesPath = $mod['path'].'/resources';
+            $resourcesPath = $mod->path.'/resources';
             foreach ($this->filesystem->listFiles($resourcesPath, true) as $file) {
                 $relativePath = str_replace($resourcesPath, null, $file['path']);
-                $this->filesystem->forceCopy($file['path'], $this->paths->getGameFolder().$relativePath);
+                $this->filesystem->forceCopy($file['path'], $this->mods->getGamePath().$relativePath);
             }
 
             $this->output->progressAdvance();
