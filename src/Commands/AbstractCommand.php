@@ -4,6 +4,7 @@ namespace Isaac\Commands;
 
 use Isaac\Services\Mods\ModsManager;
 use Psr\SimpleCache\CacheInterface;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -107,7 +108,7 @@ abstract class AbstractCommand extends Command
 
         // Ensure resources are extracted
         if (!$this->mods->areResourcesBackup() && $this->getName() !== 'restore') {
-            return $this->output->error('You must first run the ResourceExtractor in /tools/ResourceExtractor/ResourceExtractor.exe');
+            throw new RuntimeException('You must first run the ResourceExtractor in /tools/ResourceExtractor/ResourceExtractor.exe');
         }
 
         $this->output->success('Setup completed, all good!');
