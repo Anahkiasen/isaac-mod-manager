@@ -169,7 +169,7 @@ class ModsManager
      *
      * @return Mod[]|Collection
      */
-    public function getMods(): array
+    public function getMods(): Collection
     {
         $mods = $this->filesystem->listContents($this->paths->getModsPath());
         foreach ($mods as &$mod) {
@@ -184,7 +184,7 @@ class ModsManager
      *
      * @return Mod[]|Collection
      */
-    public function getGraphicalMods(): array
+    public function getGraphicalMods(): Collection
     {
         return $this->getMods()->filter(function (Mod $mod) {
             return !$this->filesystem->has($mod->getPath('main.lua')) && $this->filesystem->has($mod->getPath('resources'));
