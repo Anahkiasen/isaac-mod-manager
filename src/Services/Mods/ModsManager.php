@@ -76,6 +76,20 @@ class ModsManager
     ////////////////////////////////////////////////////////////////////////////////
 
     /**
+     * Get a collection of Mod instances by ID.
+     *
+     * @param int[] $mods
+     *
+     * @return Collection|Mod[]
+     */
+    public function findModsById(array $mods): Collection
+    {
+        return collect($mods)->map(function ($modId) {
+            return $this->findModById($modId);
+        });
+    }
+
+    /**
      * Get a mod instance by its ID.
      *
      * @param int $modId

@@ -121,8 +121,8 @@ abstract class AbstractCommand extends Command
      */
     protected function getModsQueue(): Collection
     {
-        $mod = $this->input->getArgument('mod');
-        $modsQueue = $mod ? collect([$this->mods->findModById($mod)]) : $this->mods->getGraphicalMods();
+        $mods = $this->input->getArgument('mods');
+        $modsQueue = $mods ? $this->mods->findModsById($mods) : $this->mods->getGraphicalMods();
 
         return $modsQueue;
     }

@@ -19,7 +19,7 @@ class Install extends AbstractCommand
             ->setName('mods:install')
             ->setDescription('Copies non-LUA mods into your resource folder')
             ->setNeedsSetup(true)
-            ->addArgument('mod', InputArgument::OPTIONAL, 'The Steam ID of a mod to install');
+            ->addArgument('mods', InputArgument::IS_ARRAY, 'The Steam ID of one or more mod(s) to install');
     }
 
     /**
