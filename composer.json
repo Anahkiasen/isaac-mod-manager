@@ -17,6 +17,7 @@
     "cache/filesystem-adapter": "^0.3.3",
     "cache/simple-cache-bridge": "^0.1.0",
     "illuminate/support": "^5.4",
+    "kherge/box": "^2.7",
     "league/container": "^2.4",
     "league/flysystem": "^1.0",
     "symfony/console": "^3.2",
@@ -24,8 +25,6 @@
   },
   "require-dev": {
     "escapestudios/symfony2-coding-standard": "^2.10",
-    "herrera-io/box": "^1.6",
-    "kherge/box": "^2.7",
     "madewithlove/php-cs-fixer-config": "^1.2",
     "phpunit/phpunit": "^6.0",
     "symfony/var-dumper": "^3.2"
@@ -44,7 +43,7 @@
     }
   },
   "scripts": {
-    "build": "box build -vvv",
+    "build": ["composer update --no-dev", "box build -vvv"],
     "check-style": "phpcs",
     "fix-style": ["php-cs-fixer fix", "phpcbf"],
     "test": "phpunit"
