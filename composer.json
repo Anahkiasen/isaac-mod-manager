@@ -1,0 +1,11 @@
+{
+    "require": {
+        "mnapoli/silly": "^1.5",
+        "illuminate/support": "^5.4",
+        "league/flysystem": "^1.0",
+        "league/container": "^2.4"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^3.2"
+    }
+}
