@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+use Isaac\Application;
+use League\Container\Container;
+
+require __DIR__.'/../vendor/autoload.php';
+
+$app = new Application(new Container());
+$app->run();

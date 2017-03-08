@@ -1,11 +1,22 @@
 {
     "require": {
-        "mnapoli/silly": "^1.5",
         "illuminate/support": "^5.4",
         "league/flysystem": "^1.0",
-        "league/container": "^2.4"
+        "league/container": "^2.4",
+        "symfony/console": "^3.2",
+        "cache/filesystem-adapter": "^0.3.3",
+        "cache/simple-cache-bridge": "^0.1.0"
     },
     "require-dev": {
-        "symfony/var-dumper": "^3.2"
-    }
+        "symfony/var-dumper": "^3.2",
+        "madewithlove/php-cs-fixer-config": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Isaac\\": "src"
+        }
+    },
+    "bin": [
+        "bin/isaac"
+    ]
 }
