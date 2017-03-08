@@ -3,6 +3,7 @@
 namespace Isaac\Services\Filesystem;
 
 use League\Flysystem\Plugin\AbstractPlugin;
+use League\Flysystem\Util;
 
 /**
  * Grants the ability to copy a directory in its entirety.
@@ -28,15 +29,15 @@ class CopyDirectory extends AbstractPlugin
     public function handle(string $from, string $to)
     {
         // Unify slashes
-        $from = str_replace('\\', '/', $from);
-        $to = str_replace('\\', '/', $to);
+        $from = Util::normalizePath($from);
+        $to = Util::normalizePath($to);
 
         $contents = $this->filesystem->listContents($from, true);
         foreach ($contents as $file) {
             $destination = str_replace($from, $to, $file['path']);
 
             if ($file['type'] === 'file') {
-                $this->filesystem->forceCopy($file['path'], $destination);
+                $this->filesystem->copy($file['path'], $destination);
             } else {
                 $this->filesystem->createDir($destination);
             }
