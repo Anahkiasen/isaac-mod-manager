@@ -27,6 +27,10 @@ class ModsManager
         $this->paths = $paths;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////// PACKING ////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Check whether the game is already unpacked or not.
      *
@@ -51,6 +55,18 @@ class ModsManager
             $this->paths->getPackedPath(),
             $this->paths->getPackedBackupPath()
         );
+    }
+
+    public function repack()
+    {
+        $this->filesystem->rename(
+            $this->paths->getPackedBackupPath(),
+            $this->paths->getPackedPath()
+        );
+
+        foreach ($this->filesystem->listContents($this->paths->getGamePath()) as $file) {
+            dd($file);
+        }
     }
 
     /**

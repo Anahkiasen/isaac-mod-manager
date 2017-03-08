@@ -3,6 +3,7 @@
 namespace Isaac;
 
 use Isaac\Commands\Install;
+use Isaac\Commands\Uninstall;
 use Isaac\Providers\CacheServiceProvider;
 use Isaac\Providers\FilesystemServiceProvider;
 use League\Container\Container;
@@ -43,6 +44,7 @@ class Application extends Console implements ContainerAwareInterface
      */
     protected $commands = [
         Install::class,
+        Uninstall::class,
     ];
 
     /**

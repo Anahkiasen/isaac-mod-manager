@@ -43,9 +43,17 @@ class Pathfinder
     /**
      * @return string
      */
+    public function getResourcesPath(): string
+    {
+        return $this->getGamePath().DS.'resources';
+    }
+
+    /**
+     * @return string
+     */
     public function getPackedPath(): string
     {
-        return $this->getGamePath().DIRECTORY_SEPARATOR.'packed';
+        return $this->getResourcesPath().DS.'packed';
     }
 
     /**
