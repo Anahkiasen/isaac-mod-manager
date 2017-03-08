@@ -25,10 +25,10 @@ To install your mods simply run `imm install`, and to uninstall them but keep Is
 
 Finally to make your Isaac folder pristine run `imm restore` and IMM will efface all traces of itself.
 
-## Testing
+## Building
 
 ``` bash
-$ composer test
+$ composer build
 ```
 
 ## Contributing

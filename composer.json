@@ -24,6 +24,8 @@
   },
   "require-dev": {
     "escapestudios/symfony2-coding-standard": "^2.10",
+    "herrera-io/box": "^1.6",
+    "kherge/box": "^2.7",
     "madewithlove/php-cs-fixer-config": "^1.2",
     "symfony/var-dumper": "^3.2"
   },
@@ -41,6 +43,7 @@
     }
   },
   "scripts": {
+    "build": "box build -vvv",
     "check-style": "phpcs",
     "fix-style": ["php-cs-fixer fix", "phpcbf"]
   },

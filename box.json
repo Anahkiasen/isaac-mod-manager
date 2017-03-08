@@ -1,0 +1,33 @@
+{
+  "chmod": "0755",
+  "banner-file": "bin/banner.txt",
+  "extract": true,
+  "compactors": [
+    "Herrera\\Box\\Compactor\\Json",
+    "\\Herrera\\Box\\Compactor\\Php"
+  ],
+  "directories": [
+    "src"
+  ],
+  "files": [
+    "LICENSE"
+  ],
+  "finder": [
+    {
+      "name": "/\\.(php|json|exe)/",
+      "exclude": [
+        "escapestudios",
+        "php-cs-fixer",
+        "madewithlove",
+        "herrera-io",
+        "kherge",
+        "squizlabs"
+      ],
+      "in": "vendor"
+    }
+  ],
+  "git-version": "commit",
+  "main": "bin/imm",
+  "output": "bin/imm.phar",
+  "stub": true
+}
