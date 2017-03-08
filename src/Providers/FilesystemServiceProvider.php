@@ -2,8 +2,9 @@
 
 namespace Isaac\Providers;
 
+use Isaac\Services\Filesystem\CopyDirectory;
+use Isaac\Services\Filesystem\LooseLocal;
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\Plugin\ForcedCopy;
@@ -22,11 +23,10 @@ class FilesystemServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->container->share(FilesystemInterface::class, function () {
-            $home = $_SERVER['HOME'];
-
-            $filesystem = new Filesystem(new Local($home));
+            $filesystem = new Filesystem(new LooseLocal());
             $filesystem->addPlugin(new ListFiles());
             $filesystem->addPlugin(new ForcedCopy());
+            $filesystem->addPlugin(new CopyDirectory());
 
             return $filesystem;
         });

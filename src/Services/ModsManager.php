@@ -3,7 +3,6 @@
 namespace Isaac\Services;
 
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\Process\Process;
 
 class ModsManager
 {
@@ -36,19 +35,20 @@ class ModsManager
      *
      * @return bool
      */
-    public function isGameUnpacked(): bool
+    public function areResourcesBackup(): bool
     {
-        return !$this->filesystem->has($this->paths->getPackedPath()) && $this->filesystem->has($this->paths->getPackedBackupPath());
+        return $this->filesystem->has($this->paths->getResourcesBackupPath());
     }
 
     /**
      * Unpack the game's resources.
      */
-    public function unpack()
+    public function backup()
     {
-        // Unpack resources
-        $process = new Process($this->paths->getGamePath().DS.'tools'.DS.'ResourceExtractor'.DS.'ResourceExtractor.exe');
-        $process->run();
+        $this->filesystem->copyDirectory(
+            $this->paths->getResourcesPath(),
+            $this->paths->getResourcesBackupPath()
+        );
 
         // Rename "packed" folder
         $this->filesystem->rename(
@@ -59,15 +59,27 @@ class ModsManager
 
     public function repack()
     {
-        $this->filesystem->rename(
-            $this->paths->getPackedBackupPath(),
-            $this->paths->getPackedPath()
-        );
+        // Rename back the "packed" folder
+        if ($this->filesystem->has($this->paths->getPackedBackupPath())) {
+            $this->filesystem->rename(
+                $this->paths->getPackedBackupPath(),
+                $this->paths->getPackedPath()
+            );
+        }
 
-        foreach ($this->filesystem->listContents($this->paths->getGamePath()) as $file) {
-            dd($file);
+        // Delete contents of resource folder
+        foreach ($this->filesystem->listContents($this->paths->getResourcesPath()) as $file) {
+            if ($file['basename'] !== 'packed') {
+                $file['type'] === 'dir'
+                    ? $this->filesystem->deleteDir($file['path'])
+                    : $this->filesystem->delete($file['path']);
+            }
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////// MODS /////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Get all workshop mods currently downloaded.
@@ -87,12 +99,27 @@ class ModsManager
     /**
      * Get all mods that are graphical only.
      *
-     * @return array
+     * @return Mod[]
      */
     public function getGraphicalMods(): array
     {
         return array_filter($this->getMods(), function (Mod $mod) {
             return !$this->filesystem->has($mod->getPath('main.lua')) && $this->filesystem->has($mod->getPath('resources'));
         });
+    }
+
+    /**
+     * Install a given mod.
+     *
+     * @param Mod $mod
+     */
+    public function installMod(Mod $mod)
+    {
+        $resourcesPath = $mod->getPath('resources');
+        foreach ($this->filesystem->listFiles($resourcesPath, true) as $file) {
+            $relativePath = str_replace($mod->getPath(), null, $file['path']);
+            $destination = $this->paths->getGamePath().$relativePath;
+            $this->filesystem->forceCopy($file['path'], $destination);
+        }
     }
 }

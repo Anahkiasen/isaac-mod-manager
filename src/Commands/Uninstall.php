@@ -31,7 +31,6 @@ class Uninstall extends AbstractCommand
             ->setDescription('Uninstall all mods and restore the game to its original state');
     }
 
-
     /**
      * Fire the command.
      *

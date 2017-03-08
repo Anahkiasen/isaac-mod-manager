@@ -51,6 +51,14 @@ class Pathfinder
     /**
      * @return string
      */
+    public function getResourcesBackupPath(): string
+    {
+        return $this->getResourcesPath().'.pristine';
+    }
+
+    /**
+     * @return string
+     */
     public function getPackedPath(): string
     {
         return $this->getResourcesPath().DS.'packed';
@@ -61,6 +69,14 @@ class Pathfinder
      */
     public function getPackedBackupPath(): string
     {
-        return $this->getPackedPath().self::PACKED_PREFIX;
+        return $this->getResourcesPath().DS.'packed.pristine';
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceExtractorPath(): string
+    {
+        return $this->getGamePath().DS.'tools'.DS.'ResourceExtractor'.DS.'ResourceExtractor.exe';
     }
 }
