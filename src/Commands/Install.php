@@ -2,8 +2,6 @@
 
 namespace Isaac\Commands;
 
-use Isaac\Services\ModsManager;
-use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 /**
@@ -11,28 +9,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
  */
 class Install extends AbstractCommand
 {
-    /**
-     * @var FilesystemInterface
-     */
-    protected $filesystem;
-
-    /**
-     * @var ModsManager
-     */
-    protected $mods;
-
-    /**
-     * @param FilesystemInterface $filesystem
-     * @param ModsManager         $mods
-     */
-    public function __construct(FilesystemInterface $filesystem, ModsManager $mods)
-    {
-        $this->filesystem = $filesystem;
-        $this->mods = $mods;
-
-        parent::__construct();
-    }
-
     /**
      * @return $this
      */

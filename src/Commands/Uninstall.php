@@ -2,28 +2,11 @@
 
 namespace Isaac\Commands;
 
-use Isaac\Services\ModsManager;
-
 /**
  * Removes all installed mods.
  */
 class Uninstall extends AbstractCommand
 {
-    /**
-     * @var ModsManager
-     */
-    protected $manager;
-
-    /**
-     * @param ModsManager $manager
-     */
-    public function __construct(ModsManager $manager)
-    {
-        $this->manager = $manager;
-
-        parent::__construct();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -41,7 +24,7 @@ class Uninstall extends AbstractCommand
      */
     protected function fire()
     {
-        $this->manager->repack();
+        $this->mods->removeMods();
         $this->output->success('Game successfully repacked');
     }
 }

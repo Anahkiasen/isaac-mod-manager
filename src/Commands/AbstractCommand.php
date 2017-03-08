@@ -2,8 +2,7 @@
 
 namespace Isaac\Commands;
 
-use League\Container\ContainerAwareInterface;
-use League\Container\ContainerAwareTrait;
+use Isaac\Services\ModsManager;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,10 +12,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * A container-aware command that wraps output in Symfony style.
  */
-abstract class AbstractCommand extends Command implements ContainerAwareInterface
+abstract class AbstractCommand extends Command
 {
-    use ContainerAwareTrait;
-
     /**
      * @var InputInterface
      */
@@ -26,6 +23,28 @@ abstract class AbstractCommand extends Command implements ContainerAwareInterfac
      * @var SymfonyStyle
      */
     protected $output;
+
+    /**
+     * @var CacheInterface
+     */
+    protected $cache;
+
+    /**
+     * @var ModsManager
+     */
+    protected $mods;
+
+    /**
+     * @param CacheInterface $cache
+     * @param ModsManager    $mods
+     */
+    public function __construct(CacheInterface $cache, ModsManager $mods)
+    {
+        $this->cache = $cache;
+        $this->mods = $mods;
+
+        parent::__construct();
+    }
 
     /**
      * @param InputInterface  $input
@@ -56,8 +75,7 @@ abstract class AbstractCommand extends Command implements ContainerAwareInterfac
      */
     protected function setup()
     {
-        $cache = $this->getCache();
-        if ($cache->has('source') && $cache->has('destination')) {
+        if ($this->cache->has('source') && $this->cache->has('destination') && $this->mods->areResourcesBackup()) {
             return;
         }
 
@@ -66,16 +84,14 @@ abstract class AbstractCommand extends Command implements ContainerAwareInterfac
         $source = $this->output->ask('Where are your Afterbirth+ Workshop mods located?', 'C:/Users/YourName/Documents/My Games/Binding of Isaac Afterbirth+ Mods');
         $destination = $this->output->ask('Where is Afterbirth+ installed?', 'C:/Program Files (x86)/Steam/steamapps/common/The Binding of Isaac Rebirth');
 
-        $cache->set('source', $source);
-        $cache->set('destination', $destination);
-        $this->output->success('Setup completed, all good!');
-    }
+        // Cache for later use
+        $this->cache->set('source', $source);
+        $this->cache->set('destination', $destination);
 
-    /**
-     * @return CacheInterface
-     */
-    protected function getCache(): CacheInterface
-    {
-        return $this->container->get(CacheInterface::class);
+        if (!$this->mods->areResourcesBackup()) {
+            return $this->output->error('You must first run the ResourceExtractor in /tools/ResourceExtractor/ResourceExtractor.exe');
+        }
+
+        $this->output->success('Setup completed, all good!');
     }
 }

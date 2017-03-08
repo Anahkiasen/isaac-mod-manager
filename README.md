@@ -23,8 +23,6 @@ You can run `imm` to see a list of possible commands and their description.
 
 To install your mods simply run `imm install`, and to uninstall them but keep Isaac modded run `imm uninstall`.
 
-Finally to make your Isaac folder pristine run `imm restore` and IMM will efface all traces of itself.
-
 ## Building
 
 ``` bash

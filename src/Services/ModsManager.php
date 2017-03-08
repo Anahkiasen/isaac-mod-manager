@@ -44,6 +44,14 @@ class ModsManager
     }
 
     /**
+     * @return bool
+     */
+    public function areResourcesExtracted(): bool
+    {
+        return $this->filesystem->has($this->paths->getResourcesPath().DS.'achievements.xml');
+    }
+
+    /**
      * Unpack the game's resources.
      */
     public function backup()
@@ -63,7 +71,7 @@ class ModsManager
     /**
      * Restores Isaac to a pristine modded version.
      */
-    public function repack()
+    public function removeMods()
     {
         // Rename back the "packed" folder
         if ($this->filesystem->has($this->paths->getPackedBackupPath())) {
