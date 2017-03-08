@@ -18,4 +18,12 @@ class AbsoluteLocal extends Local
         $this->permissionMap = static::$permissions;
         $this->writeFlags = LOCK_EX;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyPathPrefix($path)
+    {
+        return $path;
+    }
 }
