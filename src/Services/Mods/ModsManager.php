@@ -3,7 +3,6 @@
 namespace Isaac\Services\Mods;
 
 use Illuminate\Support\Collection;
-use InvalidArgumentException;
 use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 
@@ -84,9 +83,16 @@ class ModsManager
      */
     public function findModsById(array $mods): Collection
     {
-        return collect($mods)->unique()->map(function ($modId) {
-            return $this->findModById($modId);
-        });
+        return collect($mods)
+            ->unique()
+            ->map(function ($modId) {
+                try {
+                    return $this->findModById($modId);
+                } catch (ModNotFoundException $exception) {
+                    return;
+                }
+            })
+            ->filter();
     }
 
     /**
@@ -104,7 +110,7 @@ class ModsManager
             }
         }
 
-        throw new InvalidArgumentException('Cannot find a mod with ID: '.$modId);
+        throw new ModNotFoundException($modId);
     }
 
     /**
