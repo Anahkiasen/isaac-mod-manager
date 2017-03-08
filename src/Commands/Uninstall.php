@@ -28,8 +28,7 @@ class Uninstall extends AbstractCommand
      */
     protected function fire()
     {
-        $mod = $this->input->getArgument('mod');
-        $modsQueue = $mod ? [$this->mods->findModById($mod)] : $this->mods->getGraphicalMods();
+        $modsQueue = $this->getModsQueue();
 
         $this->mods->removeMods($modsQueue);
         $this->output->success(count($modsQueue).' mod(s) uninstalled successfully!');

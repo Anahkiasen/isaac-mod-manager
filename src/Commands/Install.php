@@ -27,9 +27,7 @@ class Install extends AbstractCommand
      */
     protected function fire()
     {
-        // Get all mods that are only graphical
-        $mod = $this->input->getArgument('mod');
-        $modsQueue = $mod ? collect([$this->mods->findModById($mod)]) : $this->mods->getGraphicalMods();
+        $modsQueue = $this->getModsQueue();
 
         // Rename packed folder if necessary
         if (!$this->mods->areResourcesBackup()) {

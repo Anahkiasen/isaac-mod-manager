@@ -2,6 +2,8 @@
 
 namespace Isaac\Commands;
 
+use Illuminate\Support\Collection;
+use Isaac\Services\Mods\Mod;
 use Isaac\Services\Mods\ModsManager;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
@@ -112,5 +114,16 @@ abstract class AbstractCommand extends Command
         }
 
         $this->output->success('Setup completed, all good!');
+    }
+
+    /**
+     * @return Collection|Mod[]
+     */
+    protected function getModsQueue(): Collection
+    {
+        $mod = $this->input->getArgument('mod');
+        $modsQueue = $mod ? collect([$this->mods->findModById($mod)]) : $this->mods->getGraphicalMods();
+
+        return $modsQueue;
     }
 }
