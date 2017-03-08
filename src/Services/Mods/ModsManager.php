@@ -3,6 +3,7 @@
 namespace Isaac\Services\Mods;
 
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 
@@ -88,6 +89,8 @@ class ModsManager
                 return $mod;
             }
         }
+
+        throw new InvalidArgumentException('Cannot find a mod with ID: '.$modId);
     }
 
     /**
