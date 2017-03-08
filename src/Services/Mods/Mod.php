@@ -82,7 +82,7 @@ class Mod
             $metadata = $this->getPath('metadata.xml');
             $metadata = (new AbsoluteLocal())->applyPathPrefix($metadata);
 
-            if (file_exists($metadata)) {
+            if (!file_exists($metadata)) {
                 throw new FileNotFoundException($metadata);
             }
 

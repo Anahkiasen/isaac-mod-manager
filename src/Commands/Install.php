@@ -37,7 +37,7 @@ class Install extends AbstractCommand
 
         // Present mods to install
         $this->output->title('Installing '.count($modsQueue).' mod(s):');
-        $this->output->listing($modsQueue->pluck('getName')->all());
+        $this->output->listing($modsQueue->map->getName()->all());
         $progress = new ProgressBar($this->output);
         $progress->setMessage('');
         $progress->setFormat(
