@@ -5,6 +5,8 @@ namespace Isaac\Providers;
 use Cache\Adapter\Filesystem\FilesystemCachePool;
 use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use Psr\SimpleCache\CacheInterface;
 
@@ -22,7 +24,7 @@ class CacheServiceProvider extends AbstractServiceProvider
     {
         $this->container->share(CacheInterface::class, function () {
             return new SimpleCacheBridge(new FilesystemCachePool(
-                $this->container->get(FilesystemInterface::class)
+                new Filesystem(new Local(__DIR__.'/../..'))
             ));
         });
     }

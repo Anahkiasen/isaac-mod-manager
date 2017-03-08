@@ -94,19 +94,18 @@ abstract class AbstractCommand extends Command
      */
     protected function setup()
     {
-        if ($this->cache->has('source') && $this->cache->has('destination') && $this->mods->areResourcesBackup()) {
-            return;
+        if (!$this->cache->has('source') || !$this->cache->has('destination')) {
+            // Gather paths to folders
+            $this->output->title('Before we begin I need some informations from you!');
+            $source = $this->output->ask('Where are your Afterbirth+ Workshop mods located?', 'C:/Users/YourName/Documents/My Games/Binding of Isaac Afterbirth+ Mods');
+            $destination = $this->output->ask('Where is Afterbirth+ installed?', 'C:/Program Files (x86)/Steam/steamapps/common/The Binding of Isaac Rebirth');
+
+            // Cache for later use
+            $this->cache->set('source', $source);
+            $this->cache->set('destination', $destination);
         }
 
-        // Gather paths to folders
-        $this->output->title('Before we begin I need some informations from you!');
-        $source = $this->output->ask('Where are your Afterbirth+ Workshop mods located?', 'C:/Users/YourName/Documents/My Games/Binding of Isaac Afterbirth+ Mods');
-        $destination = $this->output->ask('Where is Afterbirth+ installed?', 'C:/Program Files (x86)/Steam/steamapps/common/The Binding of Isaac Rebirth');
-
-        // Cache for later use
-        $this->cache->set('source', $source);
-        $this->cache->set('destination', $destination);
-
+        // Ensure resources are extracted
         if (!$this->mods->areResourcesBackup() && $this->getName() !== 'restore') {
             return $this->output->error('You must first run the ResourceExtractor in /tools/ResourceExtractor/ResourceExtractor.exe');
         }
