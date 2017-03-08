@@ -38,7 +38,7 @@ class CopyDirectory extends AbstractPlugin
 
             if ($file['type'] === 'file') {
                 $this->filesystem->copy($file['path'], $destination);
-            } else {
+            } elseif (!$this->filesystem->has($destination)) {
                 $this->filesystem->createDir($destination);
             }
         }
