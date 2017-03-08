@@ -10,6 +10,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * A container-aware command that wraps output in Symfony style.
+ */
 abstract class AbstractCommand extends Command implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
@@ -46,7 +49,7 @@ abstract class AbstractCommand extends Command implements ContainerAwareInterfac
      *
      * @return int|null|void
      */
-    abstract public function fire();
+    abstract protected function fire();
 
     /**
      * Setup the CLI application with the necessary informations.

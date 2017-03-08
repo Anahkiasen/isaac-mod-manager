@@ -6,6 +6,9 @@ use Isaac\Services\ModsManager;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 
+/**
+ * Copies non-LUA mods into your resource folder.
+ */
 class Install extends AbstractCommand
 {
     /**
@@ -43,7 +46,7 @@ class Install extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    public function fire()
+    protected function fire()
     {
         // Get all mods that are only graphical
         $graphicalMods = $this->mods->getGraphicalMods();

@@ -4,6 +4,9 @@ namespace Isaac\Services\Filesystem;
 
 use League\Flysystem\Plugin\AbstractPlugin;
 
+/**
+ * Grants the ability to copy a directory in its entirety.
+ */
 class CopyDirectory extends AbstractPlugin
 {
     /**

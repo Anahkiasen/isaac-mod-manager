@@ -4,6 +4,9 @@ namespace Isaac\Services;
 
 use League\Flysystem\FilesystemInterface;
 
+/**
+ * Manages the installation/uninstallation of mods and of IMM.
+ */
 class ModsManager
 {
     /**
@@ -57,6 +60,9 @@ class ModsManager
         );
     }
 
+    /**
+     * Restores Isaac to a pristine modded version.
+     */
     public function repack()
     {
         // Rename back the "packed" folder

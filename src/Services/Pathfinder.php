@@ -4,12 +4,15 @@ namespace Isaac\Services;
 
 use Psr\SimpleCache\CacheInterface;
 
+/**
+ * Returns various available paths.
+ */
 class Pathfinder
 {
     /**
      * @var string
      */
-    const PACKED_PREFIX = '-backup';
+    const BACKUP_PREFIX = '.pristine';
 
     /**
      * @var CacheInterface
@@ -53,7 +56,7 @@ class Pathfinder
      */
     public function getResourcesBackupPath(): string
     {
-        return $this->getResourcesPath().'.pristine';
+        return $this->getResourcesPath().static::BACKUP_PREFIX;
     }
 
     /**
@@ -69,7 +72,7 @@ class Pathfinder
      */
     public function getPackedBackupPath(): string
     {
-        return $this->getResourcesPath().DS.'packed.pristine';
+        return $this->getResourcesPath().DS.'packed'.static::BACKUP_PREFIX;
     }
 
     /**
