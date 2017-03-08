@@ -16,7 +16,7 @@ class Install extends AbstractCommand
     protected function configure()
     {
         return $this
-            ->setName('install')
+            ->setName('mods:install')
             ->setDescription('Copies non-LUA mods into your resource folder')
             ->addArgument('mod', InputArgument::OPTIONAL, 'The Steam ID of a mod to install');
     }

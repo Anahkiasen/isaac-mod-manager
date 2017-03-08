@@ -9,6 +9,8 @@ This allows you to always have your mods up to date and with your latest subscri
 
 ## Installation
 
+### Stable version
+
 IMM can be installed through [Composer](https://getcomposer.org/):
 
 ```bash
@@ -17,11 +19,22 @@ $ composer global require anahkiasen/isaac-mod-manager
 
 Or by downloading one of the [prepackaged archives](https://github.com/Anahkiasen/isaac-mod-manager/releases).
 
+### Development version
+
+You can also install the beta version like this:
+
+```bash
+$ composer global require "anahkiasen/isaac-mod-manager:1.0.x@dev"
+```
+
 ## Usage
 
 You can run `imm` to see a list of possible commands and their description. 
 
-To install your mods simply run `imm install`, and to uninstall them but keep Isaac modded run `imm uninstall`.
+To install your mods simply run `imm mods:install`, and to uninstall them but keep Isaac modded run `imm mods:uninstall`.
+You can install or uninstall a specific mod by specifiying its Steam ID: `imm mods:install 123456789`.
+
+Finally you can restore your copy of Isaac to its non-modded state by running `imm restore`.
 
 ## Building
 
@@ -32,7 +45,6 @@ $ composer build
 ## Roadmap
 
 - Find a way to make the app extract the resources itself instead of asking the user to do it.
-- Ability to install/uninstall a mod in particular
 - Add some tests
 - Ensure it works when run in Ubuntu for Windows
 
