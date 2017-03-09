@@ -35,6 +35,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $this->mockMod(1, 'foobar');
         $this->mockMod(2, 'barbaz');
         $this->mockMod(3, 'lua', 'lua');
+        $this->mockMod(4, 'lua2', 'lua2');
     }
 
     ////////////////////////////////////////////////////////////////////////////////

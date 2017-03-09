@@ -34,6 +34,15 @@ class Install extends AbstractCommand
             $this->mods->backup();
         }
 
+        // Resolve eventual conflicts in the mods
+        if ($conflicts = $this->mods->hasConflicts($modsQueue)) {
+            foreach ($conflicts as $file => $conflicting) {
+                $this->output->writeln('<error>Found conflicts for '.$file.' in the following mods:</error>');
+                $resolved = $this->output->choice('Which mods would you like to have precedence here?', $conflicting->map->getName(), $conflicting->first()->getName());
+                $this->cache->set('conflicts.'.md5($file), $resolved);
+            }
+        }
+
         // Present mods to install
         $this->presentMods('Installing', $modsQueue);
         $progress = $this->output->createProgressBar($modsQueue->count());
@@ -51,6 +60,6 @@ class Install extends AbstractCommand
         }
 
         $progress->finish();
-        $this->output->success(count($modsQueue).' mod(s) installed successfully!');
+        $this->output->success($modsQueue->count().' mod(s) installed successfully!');
     }
 }

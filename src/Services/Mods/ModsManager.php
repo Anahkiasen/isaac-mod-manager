@@ -237,4 +237,36 @@ class ModsManager
     {
         return $this->getMods()->reject->isGraphical();
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////// CONFLICTS ///////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @param Collection $mods
+     *
+     * @return Collection[]
+     */
+    public function findConflicts(Collection $mods): Collection
+    {
+        $paths = [];
+        foreach ($mods as $mod) {
+            foreach ($this->filesystem->listFiles($mod->getPath()) as $file) {
+                $filepath = str_replace($mod->getPath(), null, $file['path']);
+                if ($filepath === '/metadata.xml') {
+                    continue;
+                }
+
+                if (!isset($paths[$filepath])) {
+                    $paths[$filepath] = new Collection();
+                }
+
+                $paths[$filepath][] = $mod;
+            }
+        }
+
+        return collect($paths)->filter(function (Collection $conflicting) {
+            return $conflicting->count() > 1;
+        });
+    }
 }
