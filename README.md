@@ -1,5 +1,7 @@
 # Isaac Mod Manager (IMM)
 
+![](http://i.imgur.com/994Z9a1.png)
+
 IMM is a cross-plateform CLI-tool to manage your graphical Workshop mods for Binding of Isaac.
 
 What it does is check which mods of yours are graphical only (non-LUA) and installs them in `resources/`, allowing you to play without achievements being disabled.
