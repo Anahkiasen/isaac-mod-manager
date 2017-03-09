@@ -4,6 +4,7 @@ namespace Isaac\Commands;
 
 use Isaac\Services\Conflicts\Conflict;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
 /**
  * Copies non-LUA mods into your resource folder.
@@ -38,9 +39,10 @@ class Install extends AbstractCommand
         // Resolve eventual conflicts in the mods
         $modsQueue = $this->conflicts->findAndResolve($modsQueue, function (Conflict $conflict) {
             $this->output->writeln('<error>Found conflicts for '.$conflict->getPath().' in the following mods:</error>');
-            $resolution = $this->output->choice('Which mod would you like to have precedence here?', $conflict->map->getName(), $conflict->getResolution()->getName());
+            $question = new ChoiceQuestion('Which mod would you like to have precedence here?', $conflict->map->getName(), 0);
+            $question->setMultiselect(true);
 
-            return $resolution;
+            return $this->output->askQuestion($question);
         });
 
         // Present mods to install

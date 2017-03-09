@@ -44,13 +44,14 @@ class ConflictsHandler
      */
     public function findAndResolve(Collection $mods, $resolver): Collection
     {
-        if (!$conflicts = $this->findConflicts($mods)) {
+        $conflicts = $this->findConflicts($mods);
+        if ($conflicts->isEmpty()) {
             return $mods;
         }
 
         // Gather resolution for each conflict
-        foreach ($conflicts as &$conflict) {
-            $this->resolve($conflict, $resolver);
+        foreach ($conflicts as $key => $conflict) {
+            $conflicts[$key] = $this->resolve($conflict, $resolver);
         }
 
         // Get all mods excluded by the conflicts
@@ -100,18 +101,18 @@ class ConflictsHandler
     /**
      * Resolve a given conflict.
      *
-     * @param Conflict     $conflict
-     * @param int|callable $resolver
+     * @param Conflict           $conflict
+     * @param int|int[]|callable $resolver
      *
      * @return Conflict
      */
     public function resolve(Conflict $conflict, $resolver): Conflict
     {
-        $conflict->resolve(is_callable($resolver) ? $resolver($conflict) : $resolver);
-        if ($conflict->getResolution()) {
+        $conflict = $conflict->resolve(is_callable($resolver) ? $resolver($conflict) : $resolver);
+        if ($resolution = $conflict->getResolution()) {
             $this->cache->set(
                 $conflict->getHash(),
-                $conflict->getResolution()
+                $resolution
             );
         }
 

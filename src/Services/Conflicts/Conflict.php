@@ -15,9 +15,9 @@ class Conflict extends Collection
     protected $path;
 
     /**
-     * @var int
+     * @var int[]
      */
-    protected $resolution;
+    protected $resolution = [];
 
     /**
      * @param string $path
@@ -64,13 +64,13 @@ class Conflict extends Collection
     ////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @param int|null $resolution
+     * @param int|int[]|null $resolution
      *
      * @return self
      */
     public function resolve($resolution): self
     {
-        $this->resolution = $resolution;
+        $this->resolution = $resolution === null ? [] : (array) $resolution;
 
         return $this;
     }
@@ -78,11 +78,11 @@ class Conflict extends Collection
     /**
      * Get the set resolution to the conflict.
      *
-     * @return Mod|null
+     * @return int[]
      */
-    public function getResolution()
+    public function getResolution(): array
     {
-        return $this->get($this->resolution ?: $this->first()->getId());
+        return $this->resolution;
     }
 
     /**
@@ -93,7 +93,7 @@ class Conflict extends Collection
     public function getExcluded(): self
     {
         return $this->filter(function (Mod $mod) {
-            return $mod->getId() !== $this->resolution;
+            return !in_array($mod->getId(), $this->resolution, true);
         });
     }
 
@@ -102,7 +102,7 @@ class Conflict extends Collection
      */
     public function isResolved(): bool
     {
-        return $this->resolution !== null;
+        return $this->resolution !== [];
     }
 
     /**
