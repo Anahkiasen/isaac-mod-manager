@@ -24,7 +24,9 @@
     "tightenco/collect": "^5.4"
   },
   "require-dev": {
+    "cache/array-adapter": "^0.4.2",
     "escapestudios/symfony2-coding-standard": "^2.10",
+    "league/flysystem-vfs": "^1.0",
     "madewithlove/php-cs-fixer-config": "^1.2",
     "phpunit/phpunit": "^6.0",
     "symfony/var-dumper": "^3.2"
@@ -32,6 +34,11 @@
   "autoload": {
     "psr-4": {
       "Isaac\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Isaac\\": "tests"
     }
   },
   "bin": [

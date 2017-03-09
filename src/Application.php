@@ -8,12 +8,14 @@ use Isaac\Commands\Restore;
 use Isaac\Commands\Uninstall;
 use Isaac\Providers\CacheServiceProvider;
 use Isaac\Providers\FilesystemServiceProvider;
+use Isaac\Services\ContainerAwareTrait;
 use League\Container\Container;
 use League\Container\ContainerAwareInterface;
-use League\Container\ContainerAwareTrait;
 use League\Container\ReflectionContainer;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -67,6 +69,14 @@ class Application extends Console implements ContainerAwareInterface
 
         // Register CLI commands
         $this->setContainer($container);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+        // Register commands with the CLI application
         foreach ($this->commands as $command) {
             /** @var Command $command */
             $command = $this->container->get($command);
@@ -76,6 +86,8 @@ class Application extends Console implements ContainerAwareInterface
 
             $this->add($command);
         }
+
+        return parent::run($input, $output);
     }
 
     /**
