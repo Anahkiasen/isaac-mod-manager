@@ -5,12 +5,15 @@ namespace Isaac\Services\Mods;
 class ModNotFoundException extends \InvalidArgumentException
 {
     /**
-     * {@inheritdoc}
+     * @param int|int[] $mods
      */
-    public function __construct($modId)
+    public function __construct($mods)
     {
-        $modId = (array) $modId;
-
-        parent::__construct('Cannot find mod(s) with ID: '.implode(', ', $modId));
+        $mods = (array) $mods;
+        if (!$mods) {
+            parent::__construct('No mods found');
+        } else {
+            parent::__construct('Cannot find mod(s) with ID: '.implode(', ', $mods));
+        }
     }
 }
