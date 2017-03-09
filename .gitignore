@@ -1,3 +1,4 @@
 /bin/imm.phar
+/composer.lock
 /cache/*
 /vendor
