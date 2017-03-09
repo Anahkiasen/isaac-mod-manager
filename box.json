@@ -15,14 +15,7 @@
   "finder": [
     {
       "name": "/\\.(php|json|exe)/",
-      "exclude": [
-        "escapestudios",
-        "php-cs-fixer",
-        "madewithlove",
-        "herrera-io",
-        "kherge",
-        "squizlabs"
-      ],
+      "exclude": ["tests", "Tests"],
       "in": "vendor"
     }
   ],
