@@ -128,7 +128,7 @@ abstract class AbstractCommand extends Command
     {
         $mods = $this->input->getArgument('mods');
         $modsQueue = $mods ? $this->mods->findModsById($mods) : $this->mods->getGraphicalMods();
-        if (!$modsQueue) {
+        if ($modsQueue->isEmpty()) {
             throw new ModNotFoundException($mods);
         }
 
