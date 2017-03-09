@@ -137,10 +137,12 @@ class ModsManager
     {
         $mod = $mod instanceof Mod ? $mod : $this->findModById($mod);
         foreach ($this->filesystem->listFiles($mod->getPath('resources'), true) as $file) {
-            $this->filesystem->forceCopy(
-                $this->paths->getModeFileInResourcesBackup($mod, $file['path']),
-                $this->paths->getModeFileInResources($mod, $file['path'])
-            );
+            $original = $this->paths->getModeFileInResourcesBackup($mod, $file['path']);
+            $destination = $this->paths->getModeFileInResources($mod, $file['path']);
+
+            if ($this->filesystem->has($destination)) {
+                $this->filesystem->forceCopy($original, $destination);
+            }
         }
     }
 
