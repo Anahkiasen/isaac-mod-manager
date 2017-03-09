@@ -51,6 +51,7 @@ $ composer build
 - Allow you to pick one LUA mod you want to be installed
 - Smarter install/uninstall (ie don't say we uninstalled something if it was already uninstalled and vice versa)
 - Small cross-platform GUI in Electron or something that would call the CLI underneath
+- Show progress bar during resource backup and other long tasks
 - Add some tests
 
 ## Contributing
