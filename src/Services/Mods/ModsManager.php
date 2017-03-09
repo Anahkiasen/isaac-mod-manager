@@ -140,7 +140,7 @@ class ModsManager
             $original = $this->paths->getModeFileInResourcesBackup($mod, $file['path']);
             $destination = $this->paths->getModeFileInResources($mod, $file['path']);
 
-            if ($this->filesystem->has($destination)) {
+            if ($this->filesystem->has($original)) {
                 $this->filesystem->forceCopy($original, $destination);
             }
         }
