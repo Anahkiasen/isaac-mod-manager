@@ -138,10 +138,12 @@ abstract class AbstractCommand extends Command
     /**
      * Presents a collection of mods as a listing.
      *
+     * @param string     $action
      * @param Collection $modsQueue
      */
-    protected function presentMods(Collection $modsQueue): void
+    protected function presentMods(string $action, Collection $modsQueue): void
     {
+        $this->output->title(sprintf('%s %d mod(s)', $action, $modsQueue->count()));
         $this->output->listing(
             $modsQueue->map->getName()->all()
         );

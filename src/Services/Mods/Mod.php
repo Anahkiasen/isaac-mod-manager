@@ -84,6 +84,16 @@ class Mod
     }
 
     /**
+     * Whether the mod is purely graphical or not.
+     *
+     * @return bool
+     */
+    public function isGraphical(): bool
+    {
+        return !$this->filesystem->has($this->getPath('main.lua')) && $this->filesystem->has($this->getPath('resources'));
+    }
+
+    /**
      * Get the path to something within the mod.
      *
      * @param string|null $path

@@ -62,4 +62,22 @@ class ModsManagerTest extends TestCase
         $this->assertEquals('foobar', $mods[0]->getName());
         $this->assertEquals('barbaz', $mods[1]->getName());
     }
+
+    public function testCanGetGraphicalModsOnly()
+    {
+        $graphical = $this->mods->getGraphicalMods();
+        $modNames = $graphical->map->getName();
+
+        $this->assertContains('foobar', $modNames);
+        $this->assertNotContains('lua', $modNames);
+    }
+
+    public function testCanGetLuaModsOnly()
+    {
+        $graphical = $this->mods->getLuaMods();
+        $modNames = $graphical->map->getName();
+
+        $this->assertNotContains('foobar', $modNames);
+        $this->assertContains('lua', $modNames);
+    }
 }

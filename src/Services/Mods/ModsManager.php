@@ -225,8 +225,16 @@ class ModsManager
      */
     public function getGraphicalMods(): Collection
     {
-        return $this->getMods()->filter(function (Mod $mod) {
-            return !$this->filesystem->has($mod->getPath('main.lua')) && $this->filesystem->has($mod->getPath('resources'));
-        });
+        return $this->getMods()->filter->isGraphical();
+    }
+
+    /**
+     * Get all mods that have LUA coding.
+     *
+     * @return Mod[]|Collection
+     */
+    public function getLuaMods(): Collection
+    {
+        return $this->getMods()->reject->isGraphical();
     }
 }

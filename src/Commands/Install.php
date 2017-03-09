@@ -2,7 +2,6 @@
 
 namespace Isaac\Commands;
 
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -36,16 +35,15 @@ class Install extends AbstractCommand
         }
 
         // Present mods to install
-        $this->output->title('Installing '.count($modsQueue).' mod(s):');
-        $this->presentMods($modsQueue);
-        $progress = new ProgressBar($this->output);
+        $this->presentMods('Installing', $modsQueue);
+        $progress = $this->output->createProgressBar($modsQueue->count());
         $progress->setMessage('');
         $progress->setFormat(
             '%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.PHP_EOL.'Installing <comment>%message%</comment>'
         );
 
         // Install mods
-        $progress->start(count($modsQueue));
+        $progress->start();
         foreach ($modsQueue as $mod) {
             $progress->setMessage($mod->getName());
             $this->mods->installMod($mod);
