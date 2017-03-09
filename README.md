@@ -1,8 +1,6 @@
 # Isaac Mod Manager (IMM)
 
-[![Build Status](http://img.shields.io/travis/Anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://travis-ci.org/Anahkiasen/isaac-mod-manager)
-[![Latest Stable Version](http://img.shields.io/packagist/v/anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://packagist.org/packages/anahkiasen/isaac-mod-manager)
-[![Total Downloads](http://img.shields.io/packagist/dt/anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://packagist.org/packages/anahkiasen/isaac-mod-manager)
+[![Build Status](http://img.shields.io/travis/Anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://travis-ci.org/Anahkiasen/isaac-mod-manager) [![Latest Stable Version](http://img.shields.io/packagist/v/anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://packagist.org/packages/anahkiasen/isaac-mod-manager) [![Total Downloads](http://img.shields.io/packagist/dt/anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://packagist.org/packages/anahkiasen/isaac-mod-manager)
 
 ![](http://i.imgur.com/994Z9a1.png)
 
@@ -16,17 +14,25 @@ This allows you to always have your mods up to date and with your latest subscri
 
 ## Installation
 
-### Stable version
+### Prerequisites
 
-IMM can be installed through [Composer](https://getcomposer.org/):
+IMM requires PHP 7+ in order to work.
+
+- If you're on Mac you're good
+- On Linux use your package manager of choice (aptitude, yum, etc.).
+- On Windows you can install it through [Chocolatey](https://chocolatey.org/install) via `choco install php`.
+
+### Through Composer
+
+#### Stable version
+
+IMM can be installed through [Composer](https://getcomposer.org/) (this requires the OpenSSL extension[1]):
 
 ```bash
 $ composer global require anahkiasen/isaac-mod-manager
 ```
 
-Or by downloading one of the [prepackaged archives](https://github.com/Anahkiasen/isaac-mod-manager/releases).
-
-### Development version
+#### Development version
 
 You can also install the beta version like this:
 
@@ -34,9 +40,19 @@ You can also install the beta version like this:
 $ composer global require "anahkiasen/isaac-mod-manager:1.0.x@dev"
 ```
 
+### Via the PHAR archive
+
+Alternatively you can use the PHAR archive, which you can download in the [Releases](https://github.com/Anahkiasen/isaac-mod-manager/releases) page.
+
+Once downloaded you use it as such (per example):
+
+```bash
+$ php imm.phar mods:install
+```
+
 ## Usage
 
-You can run `imm` to see a list of possible commands and their description. 
+You can run `imm` to see a list of possible commands and their description.
 
 - To install your mods simply run `imm mods:install`, and to uninstall them but keep Isaac modded run `imm mods:uninstall`.
 - You can install or uninstall one or more specific mods by specifiying their Steam ID: `imm mods:install 123456789 123456789`.
@@ -45,18 +61,23 @@ You can run `imm` to see a list of possible commands and their description.
 
 ## Building
 
-``` bash
+To compress the app into a `imm.phar` archive run:
+
+```bash
 $ composer build
+```
+
+## Testing
+
+To run the test suite, run the following:
+
+```bash
+$ composer test
 ```
 
 ## Roadmap
 
-- Find a way to make the app extract the resources itself instead of asking the user to do it.
-- Allow you to pick one LUA mod you want to be installed
-- Smarter install/uninstall (ie don't say we uninstalled something if it was already uninstalled and vice versa)
-- Small cross-platform GUI in Electron or something that would call the CLI underneath
-- Show progress bar during resource backup and other long tasks
-- Add some tests
+You can find the currently planned features in the [Milestones](https://github.com/Anahkiasen/isaac-mod-manager/milestones) page.
 
 ## Contributing
 
@@ -74,3 +95,5 @@ If you discover any security related issues, please email ehtnam6@gmail.com inst
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
+
+[1]: You can install it by uncommenting the first line containing `openssl` in `C:/tools/php71/php.init`
