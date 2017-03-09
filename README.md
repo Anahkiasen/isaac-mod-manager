@@ -31,10 +31,9 @@ $ composer global require "anahkiasen/isaac-mod-manager:1.0.x@dev"
 
 You can run `imm` to see a list of possible commands and their description. 
 
-To install your mods simply run `imm mods:install`, and to uninstall them but keep Isaac modded run `imm mods:uninstall`.
-You can install or uninstall a specific mod by specifiying its Steam ID: `imm mods:install 123456789`.
-
-Finally you can restore your copy of Isaac to its non-modded state by running `imm restore`.
+- To install your mods simply run `imm mods:install`, and to uninstall them but keep Isaac modded run `imm mods:uninstall`.
+- You can install or uninstall one or more specific mods by specifiying their Steam ID: `imm mods:install 123456789 123456789`.
+- Finally you can restore your copy of Isaac to its non-modded state by running `imm restore`.
 
 ## Building
 
