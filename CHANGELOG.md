@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.3 - 2017-03-09
+### Fixed
+- Fixed crash during mod uninstallation
+
 ## 0.2.2 - 2017-03-09
 ### Changed
 - Removed dependency on `mbstring` extension
