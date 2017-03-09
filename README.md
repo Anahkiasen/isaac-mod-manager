@@ -2,9 +2,10 @@
 
 ![](http://i.imgur.com/994Z9a1.png)
 
-IMM is a cross-plateform CLI-tool to manage your graphical Workshop mods for Binding of Isaac.
+IMM is a cross-plateform CLI-tool to manage your Workshop mods for Binding of Isaac.
 
-What it does is check which mods of yours are graphical only (non-LUA) and installs them in `resources/`, allowing you to play without achievements being disabled.
+What it does is check which mods of yours are graphical only (non-LUA) and installs them in `resources/`, allowing you to play without achievements being disabled. While it can install LUA mods they would all overwrite each other since their entry point `main.lua` is always the same, hence why it does the distinction.
+
 This allows you to always have your mods up to date and with your latest subscriptions without having to copy and overwrite files by hand every time.
 
 **This does not affect your Workshop mods in any way**
