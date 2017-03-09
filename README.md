@@ -46,7 +46,6 @@ $ composer build
 
 - Find a way to make the app extract the resources itself instead of asking the user to do it.
 - Add some tests
-- Ensure it works when run in Ubuntu for Windows
 
 ## Contributing
 

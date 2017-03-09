@@ -111,14 +111,14 @@ abstract class AbstractCommand extends Command
             // Cache for later use
             $this->cache->set('source', $source);
             $this->cache->set('destination', $destination);
+
+            $this->output->success('Setup completed, all good!');
         }
 
         // Ensure resources are extracted
         if (!$this->mods->areResourcesExtracted() && $this->getName() !== 'restore') {
             throw new RuntimeException('You must first run the ResourceExtractor in /tools/ResourceExtractor/ResourceExtractor.exe');
         }
-
-        $this->output->success('Setup completed, all good!');
     }
 
     /**
