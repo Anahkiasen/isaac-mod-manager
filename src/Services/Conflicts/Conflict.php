@@ -82,7 +82,10 @@ class Conflict extends Collection
      */
     public function getResolution(): array
     {
-        return $this->resolution;
+        $isResolutionValid = $this->map->getId()->contains($this->resolution);
+        $isResolutionProvided = $this->resolution !== [];
+
+        return $isResolutionProvided && $isResolutionValid ? $this->resolution : [];
     }
 
     /**
@@ -93,7 +96,7 @@ class Conflict extends Collection
     public function getExcluded(): self
     {
         return $this->filter(function (Mod $mod) {
-            return !in_array($mod->getId(), $this->resolution, true);
+            return !in_array($mod->getId(), $this->getResolution(), true);
         });
     }
 
@@ -102,7 +105,7 @@ class Conflict extends Collection
      */
     public function isResolved(): bool
     {
-        return $this->resolution !== [];
+        return $this->getResolution() !== [];
     }
 
     /**

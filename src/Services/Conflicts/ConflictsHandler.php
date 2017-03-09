@@ -51,12 +51,12 @@ class ConflictsHandler
         }
 
         // Gather resolution for each conflict
-        foreach ($conflicts as $key => $conflict) {
-            $conflicts[$key] = $this->resolve($conflict, $resolver);
-        }
+        $conflicts = $conflicts->map(function (Conflict $conflict) use ($resolver) {
+            return $this->resolve($conflict, $resolver);
+        });
 
         // Get all mods excluded by the conflicts
-        $excluded = $conflicts->reduce(function (Collection $reduction, Conflict $conflict) {
+        $excluded = $conflicts->filter->isResolved()->reduce(function (Collection $reduction, Conflict $conflict) {
             return $reduction->merge($conflict->getExcluded());
         }, new Collection());
 

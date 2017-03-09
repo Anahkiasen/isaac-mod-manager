@@ -50,6 +50,13 @@ class ConflictsHandlerTest extends TestCase
 
         $this->assertCount(3, $mods);
         $this->assertEquals([1, 2, 4], $mods->map->getId()->values()->all());
+    }
 
+    public function testCanIgnoreInvalidResolution()
+    {
+        $mods = $this->mods->getMods();
+        $mods = $this->conflicts->findAndResolve($mods, 'sdfsdfds');
+
+        $this->assertCount(4, $mods);
     }
 }
