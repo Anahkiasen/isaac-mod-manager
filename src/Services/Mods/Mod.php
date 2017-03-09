@@ -4,8 +4,8 @@ namespace Isaac\Services\Mods;
 
 use Exception;
 use Illuminate\Support\Arr;
-use Isaac\Services\Filesystem\AbsoluteLocal;
 use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemInterface;
 
 /**
  * A class representing a single mod.
@@ -18,11 +18,24 @@ class Mod
     protected $path;
 
     /**
+     * @var FilesystemInterface
+     */
+    protected $filesystem;
+
+    /**
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
         $this->path = $attributes['path'];
+    }
+
+    /**
+     * @param FilesystemInterface $filesystem
+     */
+    public function setFilesystem(FilesystemInterface $filesystem)
+    {
+        $this->filesystem = $filesystem;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -58,6 +71,19 @@ class Mod
     }
 
     /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function isNamed(string $name)
+    {
+        $modName = mb_strtolower($this->getName());
+        $matcher = mb_strtolower($name);
+
+        return mb_strpos($modName, $matcher) !== false;
+    }
+
+    /**
      * Get the path to something within the mod.
      *
      * @param string|null $path
@@ -81,14 +107,12 @@ class Mod
         // Get metadata contents
         try {
             $metadata = $this->getPath('metadata.xml');
-            $metadata = (new AbsoluteLocal())->applyPathPrefix($metadata);
-
-            if (!file_exists($metadata)) {
+            if (!$this->filesystem->has($metadata)) {
                 throw new FileNotFoundException($metadata);
             }
 
             // Parse to array
-            $metadata = file_get_contents($metadata);
+            $metadata = $this->filesystem->read($metadata);
             $metadata = @simplexml_load_string($metadata, 'SimpleXMLElement', LIBXML_NOCDATA);
             $metadata = json_decode(json_encode($metadata), true);
         } catch (Exception $exception) {

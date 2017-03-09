@@ -30,4 +30,36 @@ class ModsManagerTest extends TestCase
         $this->assertVirtualFileNotExists($this->paths->getPackedPath());
         $this->assertVirtualFileExists($this->paths->getPackedBackupPath());
     }
+
+    public function testCanFindModById()
+    {
+        $mod = $this->mods->findModById(1);
+
+        $this->assertInstanceOf(Mod::class, $mod);
+        $this->assertEquals(1, $mod->getId());
+    }
+
+    public function testCanWarnAboutNotFoundMod()
+    {
+        $this->expectException(ModNotFoundException::class);
+
+        $this->mods->findModById(987654321);
+    }
+
+    public function testCanFindModByName()
+    {
+        $mod = $this->mods->findModByName('FOO');
+
+        $this->assertInstanceOf(Mod::class, $mod);
+        $this->assertEquals(1, $mod->getId());
+    }
+
+    public function testCanFindModsByNameOrId()
+    {
+        $mods = $this->mods->findMods(['foo', '2', 2, 3]);
+
+        $this->assertCount(2, $mods);
+        $this->assertEquals('foobar', $mods[0]->getName());
+        $this->assertEquals('barbaz', $mods[1]->getName());
+    }
 }

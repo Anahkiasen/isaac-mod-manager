@@ -36,6 +36,7 @@ You can run `imm` to see a list of possible commands and their description.
 
 - To install your mods simply run `imm mods:install`, and to uninstall them but keep Isaac modded run `imm mods:uninstall`.
 - You can install or uninstall one or more specific mods by specifiying their Steam ID: `imm mods:install 123456789 123456789`.
+- You can also find mods by using a part of their name (case insensitive) `imm mods:install chud mei 123456789`
 - Finally you can restore your copy of Isaac to its non-modded state by running `imm restore`.
 
 ## Building
@@ -47,7 +48,6 @@ $ composer build
 ## Roadmap
 
 - Find a way to make the app extract the resources itself instead of asking the user to do it.
-- Allow installing/uninstalling mods by matching the name in addition to by SteamID (ie `mods:install chud` would find the first mod with chud in its name)
 - Allow you to pick one LUA mod you want to be installed
 - Smarter install/uninstall (ie don't say we uninstalled something if it was already uninstalled and vice versa)
 - Small cross-platform GUI in Electron or something that would call the CLI underneath

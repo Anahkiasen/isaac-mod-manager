@@ -18,7 +18,7 @@ class ModNotFoundException extends InvalidArgumentException
         if (!$mods) {
             parent::__construct('No mods found');
         } else {
-            parent::__construct('Cannot find mod(s) with ID: '.implode(', ', $mods));
+            parent::__construct('Cannot find mod(s) with ID/name: '.implode(', ', $mods));
         }
     }
 }

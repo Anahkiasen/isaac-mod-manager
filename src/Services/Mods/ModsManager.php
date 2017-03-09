@@ -77,17 +77,19 @@ class ModsManager
     /**
      * Get a collection of Mod instances by ID.
      *
-     * @param int[] $mods
+     * @param int[]|string[] $mods
      *
      * @return Collection|Mod[]
      */
-    public function findModsById(array $mods): Collection
+    public function findMods(array $mods): Collection
     {
         return collect($mods)
             ->unique()
             ->map(function ($modId) {
+                $isName = (int) $modId === 0;
+
                 try {
-                    return $this->findModById($modId);
+                    return $isName ? $this->findModByName($modId) : $this->findModById($modId);
                 } catch (ModNotFoundException $exception) {
                     return;
                 }
@@ -96,7 +98,7 @@ class ModsManager
     }
 
     /**
-     * Get a mod instance by its ID.
+     * Find a mod with a given ID.
      *
      * @param int $modId
      *
@@ -104,13 +106,27 @@ class ModsManager
      */
     public function findModById(int $modId): Mod
     {
-        foreach ($this->getGraphicalMods() as $mod) {
-            if ($mod->isMod($modId)) {
-                return $mod;
-            }
+        if ($first = $this->getGraphicalMods()->first->isMod($modId)) {
+            return $first;
         }
 
         throw new ModNotFoundException($modId);
+    }
+
+    /**
+     * Find a mod that matches a given name.
+     *
+     * @param string $name
+     *
+     * @return Mod
+     */
+    public function findModByName(string $name): Mod
+    {
+        if ($first = $this->getGraphicalMods()->first->isNamed($name)) {
+            return $first;
+        }
+
+        throw new ModNotFoundException($name);
     }
 
     /**
@@ -196,6 +212,7 @@ class ModsManager
         $mods = $this->filesystem->listContents($this->paths->getModsPath());
         foreach ($mods as &$mod) {
             $mod = new Mod($mod);
+            $mod->setFilesystem($this->filesystem);
         }
 
         return new Collection($mods);
