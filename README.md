@@ -47,7 +47,7 @@ $ composer build
 ## Roadmap
 
 - Find a way to make the app extract the resources itself instead of asking the user to do it.
-- Allow installing/uninstalling mods by matching the name in addition to by SteamID (ie `mods:install chud` would find the first mod with purple in its name)
+- Allow installing/uninstalling mods by matching the name in addition to by SteamID (ie `mods:install chud` would find the first mod with chud in its name)
 - Allow you to pick one LUA mod you want to be installed
 - Smarter install/uninstall (ie don't say we uninstalled something if it was already uninstalled and vice versa)
 - Small cross-platform GUI in Electron or something that would call the CLI underneath
