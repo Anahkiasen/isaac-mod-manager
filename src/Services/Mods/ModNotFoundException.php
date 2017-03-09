@@ -7,8 +7,10 @@ class ModNotFoundException extends \InvalidArgumentException
     /**
      * {@inheritdoc}
      */
-    public function __construct(int $modId)
+    public function __construct($modId)
     {
-        parent::__construct('Cannot find mod with ID: '.$modId);
+        $modId = (array) $modId;
+
+        parent::__construct('Cannot find mod(s) with ID: '.implode(', ', $modId));
     }
 }

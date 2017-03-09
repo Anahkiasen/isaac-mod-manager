@@ -4,6 +4,7 @@ namespace Isaac\Commands;
 
 use Illuminate\Support\Collection;
 use Isaac\Services\Mods\Mod;
+use Isaac\Services\Mods\ModNotFoundException;
 use Isaac\Services\Mods\ModsManager;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
@@ -127,6 +128,9 @@ abstract class AbstractCommand extends Command
     {
         $mods = $this->input->getArgument('mods');
         $modsQueue = $mods ? $this->mods->findModsById($mods) : $this->mods->getGraphicalMods();
+        if (!$modsQueue) {
+            throw new ModNotFoundException($mods);
+        }
 
         return $modsQueue;
     }

@@ -41,8 +41,7 @@ class Install extends AbstractCommand
         $progress = new ProgressBar($this->output);
         $progress->setMessage('');
         $progress->setFormat(
-            '%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.PHP_EOL.
-            'Installing <comment>%message%</comment>'
+            '%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.PHP_EOL.'Installing <comment>%message%</comment>'
         );
 
         // Install mods
