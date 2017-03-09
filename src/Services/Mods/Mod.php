@@ -8,7 +8,7 @@ use Isaac\Services\Filesystem\AbsoluteLocal;
 use League\Flysystem\FileNotFoundException;
 
 /**
- * @property string path
+ * A class representing a single mod.
  */
 class Mod
 {
