@@ -39,8 +39,9 @@ class Install extends AbstractCommand
         // Resolve eventual conflicts in the mods
         $modsQueue = $this->conflicts->findAndResolve($modsQueue, function (Conflict $conflict) {
             $this->output->writeln('<fg=red>Found conflicts for:</fg=red> '.$conflict->getPath());
-            $question = 'Which mod(s) would you like to use here?'.PHP_EOL.'<comment>Checking multiple can have unforeseen consequences</comment>';
-            $question = new ChoiceQuestion($question, $conflict->map->getName()->all(), 0);
+            $this->output->caution('Note: Checking multiple can have unforeseen consequences');
+
+            $question = new ChoiceQuestion('Which mod(s) would you like to use here?', $conflict->map->getName()->all(), 0);
             $question->setMultiselect(true);
 
             return $this->output->askQuestion($question);
