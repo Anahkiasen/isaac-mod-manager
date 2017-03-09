@@ -3,6 +3,7 @@
 namespace Isaac\Services\Mods;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Isaac\Services\Filesystem\AbsoluteLocal;
 use League\Flysystem\FileNotFoundException;
 
@@ -94,6 +95,6 @@ class Mod
             $metadata = [];
         }
 
-        return $key ? array_get($metadata, $key) : $metadata;
+        return $key ? Arr::get($metadata, $key) : $metadata;
     }
 }
