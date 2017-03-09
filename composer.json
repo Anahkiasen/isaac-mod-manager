@@ -1,6 +1,6 @@
 {
   "name": "anahkiasen/isaac-mod-manager",
-  "description": "A mod manager for Binding of Isaac: Afterbirth+",
+  "description": "IMM is a cross-plateform CLI-tool to manage your Workshop mods for Binding of Isaac",
   "license": "MIT",
   "keywords": [
     "isaac",
