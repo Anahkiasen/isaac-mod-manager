@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.2.1 - 2017-03-09
+
+### Fixed
+- Fixed some PHAR compatibility issues
+
 ## 0.2.0 - 2017-03-09
 
 ### Added
