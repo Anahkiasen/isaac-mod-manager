@@ -96,4 +96,4 @@ If you discover any security related issues, please email ehtnam6@gmail.com inst
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
-[1]: You can install it by uncommenting the first line containing `openssl` in `C:/tools/php71/php.init`
+[1]: You can install it by uncommenting the first line containing `openssl` in `C:/tools/php71/php.ini`
