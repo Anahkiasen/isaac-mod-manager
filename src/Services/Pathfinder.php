@@ -116,7 +116,8 @@ class Pathfinder
      */
     protected function getModFileIn(Mod $mod, string $filepath, $in): string
     {
-        $modResources = $mod->getPath('resources');
+        $filepath = Util::normalizePath($filepath);
+        $modResources = Util::normalizePath($mod->getPath('resources'));
         $relativePath = str_replace($modResources, null, $filepath);
 
         return Util::normalizePath($in.$relativePath);
