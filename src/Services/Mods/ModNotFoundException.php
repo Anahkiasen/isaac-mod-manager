@@ -2,7 +2,12 @@
 
 namespace Isaac\Services\Mods;
 
-class ModNotFoundException extends \InvalidArgumentException
+use InvalidArgumentException;
+
+/**
+ * Exception thrown when one or more mods cannot be found.
+ */
+class ModNotFoundException extends InvalidArgumentException
 {
     /**
      * @param int|int[] $mods

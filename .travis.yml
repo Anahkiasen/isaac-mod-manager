@@ -1,0 +1,28 @@
+# Use Docker environment
+sudo: false
+
+# Setup build matrix
+language: php
+php:
+  - 7.0
+  - 7.1
+
+# Cache dependencies
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+# Dependencies
+before_install:
+  - phpenv config-rm xdebug.ini || return 0
+  - travis_retry composer self-update
+  - travis_retry composer global require hirak/prestissimo
+
+install:
+  - travis_retry composer update --no-interaction --prefer-dist
+
+script:
+  - composer check-style
+  - composer test
+  - composer build
+  - php bin/imm.phar --version
