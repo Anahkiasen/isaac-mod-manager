@@ -10,12 +10,46 @@ class ConflictsHandlerTest extends TestCase
     public function testCanFindConflicts()
     {
         $mods = $this->mods->getMods();
-        $mapping = $this->conflicts->findConflicts($mods);
+        $conflicts = $this->conflicts->findConflicts($mods);
 
-        $this->assertInstanceOf(Collection::class, $mapping);
-        $this->assertInstanceOf(Conflict::class, $mapping->first());
+        $this->assertInstanceOf(Collection::class, $conflicts);
+        $this->assertInstanceOf(Conflict::class, $conflicts->first());
         $this->assertEquals([
-            '/main.lua' => new Conflict([$mods[2], $mods[3]]),
-        ], $mapping->all());
+            Conflict::forPath('/main.lua', [$mods[2], $mods[3]]),
+        ], $conflicts->all());
+    }
+
+    public function testCanIgnoredAlreadySolvedConflicts()
+    {
+        $mods = $this->mods->getMods();
+
+        $conflicts = $this->conflicts->findConflicts($mods);
+        $this->cache->set($conflicts->first()->getHash(), 1);
+
+        $conflicts = $this->conflicts->findConflicts($mods);
+        $this->assertInstanceOf(Collection::class, $conflicts);
+        $this->assertEmpty($conflicts);
+    }
+
+    public function testCanResolveConflict()
+    {
+        $mods = $this->mods->getMods();
+
+        $conflicts = $this->conflicts->findConflicts($mods);
+        $conflicts[0] = $this->conflicts->resolve($conflicts[0], 1);
+
+        $conflicts = $this->conflicts->findConflicts($mods);
+        $this->assertInstanceOf(Collection::class, $conflicts);
+        $this->assertEmpty($conflicts);
+    }
+
+    public function testCanComputeModsQueue()
+    {
+        $mods = $this->mods->getMods();
+        $mods = $this->conflicts->findAndResolve($mods, 4);
+
+        $this->assertCount(3, $mods);
+        $this->assertEquals([1, 2, 4], $mods->map->getId()->values()->all());
+
     }
 }

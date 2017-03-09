@@ -36,10 +36,11 @@ class Install extends AbstractCommand
         }
 
         // Resolve eventual conflicts in the mods
-        $this->mods->resolveConflicts($modsQueue, function (string $file, Conflict $conflict) {
-            $this->output->writeln('<error>Found conflicts for '.$file.' in the following mods:</error>');
+        $modsQueue = $this->conflicts->findAndResolve($modsQueue, function (Conflict $conflict) {
+            $this->output->writeln('<error>Found conflicts for '.$conflict->getPath().' in the following mods:</error>');
+            $resolution = $this->output->choice('Which mod would you like to have precedence here?', $conflict->map->getName(), $conflict->getResolution()->getName());
 
-            return $this->output->choice('Which mods would you like to have precedence here?', $conflicting->map->getName(), $conflicting->first()->getName());
+            return $resolution;
         });
 
         // Present mods to install

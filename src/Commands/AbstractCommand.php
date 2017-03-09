@@ -3,6 +3,7 @@
 namespace Isaac\Commands;
 
 use Illuminate\Support\Collection;
+use Isaac\Services\Conflicts\ConflictsHandler;
 use Isaac\Services\Mods\Mod;
 use Isaac\Services\Mods\ModCollection;
 use Isaac\Services\Mods\ModNotFoundException;
@@ -40,6 +41,11 @@ abstract class AbstractCommand extends Command
     protected $mods;
 
     /**
+     * @var ConflictsHandler
+     */
+    protected $conflicts;
+
+    /**
      * @var bool
      */
     protected $needsSetup = false;
@@ -47,11 +53,13 @@ abstract class AbstractCommand extends Command
     /**
      * @param CacheInterface                   $cache
      * @param \Isaac\Services\Mods\ModsManager $mods
+     * @param ConflictsHandler                 $conflicts
      */
-    public function __construct(CacheInterface $cache, ModsManager $mods)
+    public function __construct(CacheInterface $cache, ModsManager $mods, ConflictsHandler $conflicts)
     {
         $this->cache = $cache;
         $this->mods = $mods;
+        $this->conflicts = $conflicts;
 
         parent::__construct();
     }

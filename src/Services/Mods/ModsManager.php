@@ -3,7 +3,6 @@
 namespace Isaac\Services\Mods;
 
 use Illuminate\Support\Collection;
-use Isaac\Services\Conflicts\ConflictsHandler;
 use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 
@@ -23,20 +22,13 @@ class ModsManager
     protected $paths;
 
     /**
-     * @var ConflictsHandler
-     */
-    protected $conflicts;
-
-    /**
      * @param FilesystemInterface $filesystem
      * @param Pathfinder          $paths
-     * @param ConflictsHandler    $conflicts
      */
-    public function __construct(FilesystemInterface $filesystem, Pathfinder $paths, ConflictsHandler $conflicts)
+    public function __construct(FilesystemInterface $filesystem, Pathfinder $paths)
     {
         $this->filesystem = $filesystem;
         $this->paths = $paths;
-        $this->conflicts = $conflicts;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -244,25 +236,5 @@ class ModsManager
     public function getLuaMods(): ModCollection
     {
         return $this->getMods()->reject->isGraphical();
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////// CONFLICTS ///////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * @param Collection $mods
-     * @param callable   $resolver
-     *
-     * @return ModCollection
-     */
-    public function resolveConflicts(Collection $mods, callable $resolver)
-    {
-        if ($conflicts = $this->conflicts->findConflicts($mods)) {
-            foreach ($conflicts as $file => $conflicting) {
-                $resolved = $resolver($file, $conflicting);
-                $this->cache->set('conflicts.'.md5($file), $resolved);
-            }
-        }
     }
 }
