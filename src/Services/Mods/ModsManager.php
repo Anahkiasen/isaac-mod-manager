@@ -3,6 +3,7 @@
 namespace Isaac\Services\Mods;
 
 use Illuminate\Support\Collection;
+use Isaac\Services\Conflicts\ConflictsHandler;
 use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 
@@ -22,13 +23,20 @@ class ModsManager
     protected $paths;
 
     /**
+     * @var ConflictsHandler
+     */
+    protected $conflicts;
+
+    /**
      * @param FilesystemInterface $filesystem
      * @param Pathfinder          $paths
+     * @param ConflictsHandler    $conflicts
      */
-    public function __construct(FilesystemInterface $filesystem, Pathfinder $paths)
+    public function __construct(FilesystemInterface $filesystem, Pathfinder $paths, ConflictsHandler $conflicts)
     {
         $this->filesystem = $filesystem;
         $this->paths = $paths;
+        $this->conflicts = $conflicts;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -79,11 +87,11 @@ class ModsManager
      *
      * @param int[]|string[] $mods
      *
-     * @return Collection|Mod[]
+     * @return Mod[]|ModCollection
      */
-    public function findMods(array $mods): Collection
+    public function findMods(array $mods): ModCollection
     {
-        return collect($mods)
+        return ModCollection::make($mods)
             ->unique()
             ->map(function ($modId) {
                 $isName = (int) $modId === 0;
@@ -205,9 +213,9 @@ class ModsManager
     /**
      * Get all workshop mods currently downloaded.
      *
-     * @return Mod[]|Collection
+     * @return Mod[]|ModCollection
      */
-    public function getMods(): Collection
+    public function getMods(): ModCollection
     {
         $mods = $this->filesystem->listContents($this->paths->getModsPath());
         foreach ($mods as &$mod) {
@@ -215,15 +223,15 @@ class ModsManager
             $mod->setFilesystem($this->filesystem);
         }
 
-        return new Collection($mods);
+        return new ModCollection($mods);
     }
 
     /**
      * Get all mods that are graphical only.
      *
-     * @return Mod[]|Collection
+     * @return Mod[]|ModCollection
      */
-    public function getGraphicalMods(): Collection
+    public function getGraphicalMods(): ModCollection
     {
         return $this->getMods()->filter->isGraphical();
     }
@@ -231,9 +239,9 @@ class ModsManager
     /**
      * Get all mods that have LUA coding.
      *
-     * @return Mod[]|Collection
+     * @return Mod[]|ModCollection
      */
-    public function getLuaMods(): Collection
+    public function getLuaMods(): ModCollection
     {
         return $this->getMods()->reject->isGraphical();
     }
@@ -244,29 +252,17 @@ class ModsManager
 
     /**
      * @param Collection $mods
+     * @param callable   $resolver
      *
-     * @return Collection[]
+     * @return ModCollection
      */
-    public function findConflicts(Collection $mods): Collection
+    public function resolveConflicts(Collection $mods, callable $resolver)
     {
-        $paths = [];
-        foreach ($mods as $mod) {
-            foreach ($this->filesystem->listFiles($mod->getPath()) as $file) {
-                $filepath = str_replace($mod->getPath(), null, $file['path']);
-                if ($filepath === '/metadata.xml') {
-                    continue;
-                }
-
-                if (!isset($paths[$filepath])) {
-                    $paths[$filepath] = new Collection();
-                }
-
-                $paths[$filepath][] = $mod;
+        if ($conflicts = $this->conflicts->findConflicts($mods)) {
+            foreach ($conflicts as $file => $conflicting) {
+                $resolved = $resolver($file, $conflicting);
+                $this->cache->set('conflicts.'.md5($file), $resolved);
             }
         }
-
-        return collect($paths)->filter(function (Collection $conflicting) {
-            return $conflicting->count() > 1;
-        });
     }
 }

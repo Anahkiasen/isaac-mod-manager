@@ -4,6 +4,7 @@ namespace Isaac\Commands;
 
 use Illuminate\Support\Collection;
 use Isaac\Services\Mods\Mod;
+use Isaac\Services\Mods\ModCollection;
 use Isaac\Services\Mods\ModNotFoundException;
 use Isaac\Services\Mods\ModsManager;
 use Psr\SimpleCache\CacheInterface;
@@ -122,9 +123,9 @@ abstract class AbstractCommand extends Command
     }
 
     /**
-     * @return Collection|Mod[]
+     * @return Mod[]|ModCollection
      */
-    protected function getModsQueue(): Collection
+    protected function getModsQueue(): ModCollection
     {
         $mods = $this->input->getArgument('mods');
         $modsQueue = $mods ? $this->mods->findMods($mods) : $this->mods->getGraphicalMods();

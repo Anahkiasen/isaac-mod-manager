@@ -2,6 +2,7 @@
 
 namespace Isaac\Commands;
 
+use Isaac\Services\Conflicts\Conflict;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -35,13 +36,11 @@ class Install extends AbstractCommand
         }
 
         // Resolve eventual conflicts in the mods
-        if ($conflicts = $this->mods->hasConflicts($modsQueue)) {
-            foreach ($conflicts as $file => $conflicting) {
-                $this->output->writeln('<error>Found conflicts for '.$file.' in the following mods:</error>');
-                $resolved = $this->output->choice('Which mods would you like to have precedence here?', $conflicting->map->getName(), $conflicting->first()->getName());
-                $this->cache->set('conflicts.'.md5($file), $resolved);
-            }
-        }
+        $this->mods->resolveConflicts($modsQueue, function (string $file, Conflict $conflict) {
+            $this->output->writeln('<error>Found conflicts for '.$file.' in the following mods:</error>');
+
+            return $this->output->choice('Which mods would you like to have precedence here?', $conflicting->map->getName(), $conflicting->first()->getName());
+        });
 
         // Present mods to install
         $this->presentMods('Installing', $modsQueue);

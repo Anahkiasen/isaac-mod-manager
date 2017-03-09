@@ -80,14 +80,4 @@ class ModsManagerTest extends TestCase
         $this->assertNotContains('foobar', $modNames);
         $this->assertContains('lua', $modNames);
     }
-
-    public function testCanFindConflicts()
-    {
-        $mods = $this->mods->getMods();
-        $mapping = $this->mods->findConflicts($mods);
-
-        $this->assertEquals([
-            '/main.lua' => collect([$mods[2], $mods[3]]),
-        ], $mapping->all());
-    }
 }
