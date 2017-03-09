@@ -16,7 +16,7 @@ class AbsoluteLocal extends Local
     public function __construct()
     {
         $this->permissionMap = static::$permissions;
-        $this->writeFlags = LOCK_EX;
+        $this->writeFlags = LOCK_SH;
     }
 
     /**
