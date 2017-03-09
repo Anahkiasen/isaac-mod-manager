@@ -23,6 +23,7 @@ class ConflictsHandler
      * @var array
      */
     protected $ignored = [
+        '/LICENSE.txt',
         '/metadata.xml',
     ];
 
