@@ -3,6 +3,7 @@
 namespace Isaac\Commands;
 
 use Isaac\Services\Conflicts\Conflict;
+use Isaac\Services\Mods\Mod;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
@@ -41,10 +42,24 @@ class Install extends AbstractCommand
             $this->output->writeln('<fg=red>Found conflicts for:</fg=red> '.$conflict->getPath());
             $this->output->caution('Note: Checking multiple can have unforeseen consequences');
 
-            $question = new ChoiceQuestion('Which mod(s) would you like to use here?', $conflict->map->getName()->all(), 0);
-            $question->setMultiselect(true);
+            // Compute choices
+            $choices = $conflict->map->getName()->all();
+            $resolutions = $conflict->mapWithKeys(function (Mod $mod) {
+                return [$mod->getName() => $mod->getId()];
+            });
 
-            return $this->output->askQuestion($question);
+            // Ask user to select which mods to use
+            $question = new ChoiceQuestion('Which mod(s) would you like to use here?', $choices);
+            $question->setMultiselect(true);
+            $question->setAutocompleterValues(array_keys($choices));
+
+            // Retrieve mod IDs from selection
+            $resolution = (array) $this->output->askQuestion($question);
+            foreach ($resolution as &$choice) {
+                $choice = $resolutions->get($choice);
+            }
+
+            return $resolution;
         });
 
         // Present mods to install
