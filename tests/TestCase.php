@@ -80,6 +80,7 @@ XML;
 
         $this->files->put('/mods/'.$id.'/metadata.xml', $metadata);
         $this->files->createDir('/mods/'.$id.'/resources');
+        $this->files->put('/mods/'.$id.'/resources/gfx/foo.png', '');
 
         if ($lua) {
             $this->files->put('/mods/'.$id.'/main.lua', $lua);

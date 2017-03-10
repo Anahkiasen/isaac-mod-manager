@@ -149,7 +149,7 @@ class Mod
      */
     public function listFiles(): array
     {
-        return array_filter($this->filesystem->listFiles($this->getPath()), function ($file) {
+        return array_filter($this->filesystem->listFiles($this->getPath(), true), function ($file) {
             return !in_array($file['basename'], $this->ignored, true);
         });
     }

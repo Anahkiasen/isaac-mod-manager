@@ -86,6 +86,7 @@ class ModsManagerTest extends TestCase
         $this->mods->installMod($this->mods->findModById(3));
 
         $this->assertVirtualFileExists($this->paths->getResourcesPath().'/scripts/main.lua');
+        $this->assertVirtualFileExists($this->paths->getResourcesPath().'/resources/gfx/foo.png');
         $this->assertEquals('main'.PHP_EOL.'lua', $this->files->read($this->paths->getResourcesPath().'/scripts/main.lua'));
         $this->assertVirtualFileNotExists($this->paths->getResourcesPath().'/metadata.xml');
     }
