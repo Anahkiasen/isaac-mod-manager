@@ -45,16 +45,19 @@ class Install extends AbstractCommand
             $this->output->caution('Note: Checking multiple can have unforeseen consequences');
 
             // Compute choices
-            $choices = $conflict->map->getName()->all();
+            $choices = $conflict->map(function (Mod $mod) {
+                return sprintf('%s (%s)', $mod->getName(), $mod->getId());
+            });
+
             $resolutions = $conflict->mapWithKeys(function (Mod $mod) {
                 return [$mod->getName() => $mod->getId()];
             });
 
             // Ask user to select which mods to use
-            $question = new ChoiceQuestion('Which mod(s) would you like to use here?', $choices);
+            $question = new ChoiceQuestion('Which mod(s) would you like to use here?', $choices->all());
             $question->setMultiselect(true);
             $question->setValidator();
-            $question->setAutocompleterValues(array_keys($choices));
+            $question->setAutocompleterValues($choices->keys());
 
             // Retrieve mod IDs from selection
             $resolution = (array) $this->output->askQuestion($question);

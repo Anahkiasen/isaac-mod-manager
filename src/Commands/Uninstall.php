@@ -20,7 +20,7 @@ class Uninstall extends AbstractCommand
             ->setDescription('Removes all installed mods.')
             ->setNeedsSetup(true)
             ->addArgument('mods', InputArgument::IS_ARRAY, 'The Steam ID of one or more mod(s) to uninstall')
-            ->addOption('graphical', 'G', InputOption::VALUE_NONE, 'Only graphical mods');;
+            ->addOption('graphical', 'G', InputOption::VALUE_NONE, 'Only graphical mods');
     }
 
     /**
