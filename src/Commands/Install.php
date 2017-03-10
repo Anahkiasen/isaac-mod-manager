@@ -5,6 +5,7 @@ namespace Isaac\Commands;
 use Isaac\Services\Conflicts\Conflict;
 use Isaac\Services\Mods\Mod;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 /**
@@ -21,7 +22,8 @@ class Install extends AbstractCommand
             ->setName('mods:install')
             ->setDescription('Copies non-LUA mods into your resource folder')
             ->setNeedsSetup(true)
-            ->addArgument('mods', InputArgument::IS_ARRAY, 'The Steam ID of one or more mod(s) to install');
+            ->addArgument('mods', InputArgument::IS_ARRAY, 'The Steam ID of one or more mod(s) to install')
+            ->addOption('graphical', 'G', InputOption::VALUE_NONE, 'Only graphical mods');
     }
 
     /**
@@ -51,6 +53,7 @@ class Install extends AbstractCommand
             // Ask user to select which mods to use
             $question = new ChoiceQuestion('Which mod(s) would you like to use here?', $choices);
             $question->setMultiselect(true);
+            $question->setValidator();
             $question->setAutocompleterValues(array_keys($choices));
 
             // Retrieve mod IDs from selection

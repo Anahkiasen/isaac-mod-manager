@@ -3,6 +3,7 @@
 namespace Isaac\Commands;
 
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Removes all installed mods.
@@ -18,7 +19,8 @@ class Uninstall extends AbstractCommand
             ->setName('mods:uninstall')
             ->setDescription('Removes all installed mods.')
             ->setNeedsSetup(true)
-            ->addArgument('mods', InputArgument::IS_ARRAY, 'The Steam ID of one or more mod(s) to uninstall');
+            ->addArgument('mods', InputArgument::IS_ARRAY, 'The Steam ID of one or more mod(s) to uninstall')
+            ->addOption('graphical', 'G', InputOption::VALUE_NONE, 'Only graphical mods');;
     }
 
     /**
