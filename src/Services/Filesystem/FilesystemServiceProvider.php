@@ -1,9 +1,7 @@
 <?php
 
-namespace Isaac\Providers;
+namespace Isaac\Services\Filesystem;
 
-use Isaac\Services\Filesystem\AbsoluteLocal;
-use Isaac\Services\Filesystem\CopyDirectory;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Isaac\Providers;
+namespace Isaac\Services\Cache;
 
 use Cache\Adapter\Filesystem\FilesystemCachePool;
 use Cache\Bridge\SimpleCache\SimpleCacheBridge;
