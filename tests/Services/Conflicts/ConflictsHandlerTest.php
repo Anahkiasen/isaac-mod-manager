@@ -10,7 +10,7 @@ class ConflictsHandlerTest extends TestCase
     public function testCanFindConflicts()
     {
         $mods = $this->mods->getMods();
-        $conflicts = $this->conflicts->findConflicts($mods);
+        $conflicts = $this->conflicts->findUnresolvedConflicts($mods);
 
         $this->assertInstanceOf(Collection::class, $conflicts);
         $this->assertInstanceOf(Conflict::class, $conflicts->first());
@@ -23,10 +23,10 @@ class ConflictsHandlerTest extends TestCase
     {
         $mods = $this->mods->getMods();
 
-        $conflicts = $this->conflicts->findConflicts($mods);
+        $conflicts = $this->conflicts->findUnresolvedConflicts($mods);
         $this->cache->set($conflicts->first()->getHash(), $conflicts->first()->first()->getId());
 
-        $conflicts = $this->conflicts->findConflicts($mods);
+        $conflicts = $this->conflicts->findUnresolvedConflicts($mods);
         $this->assertInstanceOf(Collection::class, $conflicts);
         $this->assertEmpty($conflicts);
     }
@@ -35,10 +35,10 @@ class ConflictsHandlerTest extends TestCase
     {
         $mods = $this->mods->getMods();
 
-        $conflicts = $this->conflicts->findConflicts($mods);
+        $conflicts = $this->conflicts->findUnresolvedConflicts($mods);
         $conflicts[0] = $this->conflicts->resolve($conflicts[0], $conflicts[0]->first()->getId());
 
-        $conflicts = $this->conflicts->findConflicts($mods);
+        $conflicts = $this->conflicts->findUnresolvedConflicts($mods);
         $this->assertInstanceOf(Collection::class, $conflicts);
         $this->assertEmpty($conflicts);
     }

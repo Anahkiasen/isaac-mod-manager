@@ -65,6 +65,16 @@ class ConflictsHandler
     }
 
     /**
+     * @param Collection $mods
+     *
+     * @return Collection
+     */
+    public function findUnresolvedConflicts(Collection $mods): Collection
+    {
+        return $this->findConflicts($mods)->filter->isConflict();
+    }
+
+    /**
      * Find all conflicts in a given list of mods.
      *
      * @param Mod[]|Collection $mods
@@ -95,7 +105,7 @@ class ConflictsHandler
             );
         });
 
-        return $conflicts->filter->isConflict();
+        return $conflicts;
     }
 
     /**
