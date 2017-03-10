@@ -72,6 +72,14 @@ class Pathfinder
     /**
      * @return string
      */
+    public function getMainLuaPath(): string
+    {
+        return $this->getResourcesPath().DS.'scripts'.DS.'main.lua';
+    }
+
+    /**
+     * @return string
+     */
     public function getPackedBackupPath(): string
     {
         return $this->getPackedPath().static::BACKUP_PREFIX;

@@ -31,6 +31,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
         $this->files->createDir('/game/resources/packed');
         $this->files->put('/game/resources/achievements.xml', 'foobar');
+        $this->files->put('/game/resources/scripts/main.lua', 'main');
 
         $this->mockMod(1, 'foobar');
         $this->mockMod(2, 'barbaz');

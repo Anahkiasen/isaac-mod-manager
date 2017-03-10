@@ -56,7 +56,7 @@ class ModsManagerTest extends TestCase
 
     public function testCanFindModsByNameOrId()
     {
-        $mods = $this->mods->findMods(['foo', '2', 2, 3]);
+        $mods = $this->mods->findMods(['foo', '2', 2, 99]);
 
         $this->assertCount(2, $mods);
         $this->assertEquals('foobar', $mods[0]->getName());
@@ -85,7 +85,8 @@ class ModsManagerTest extends TestCase
     {
         $this->mods->installMod($this->mods->findModById(3));
 
-        $this->assertVirtualFileExists($this->paths->getResourcesPath().'/main.lua');
+        $this->assertVirtualFileExists($this->paths->getResourcesPath().'/scripts/main.lua');
+        $this->assertEquals('main'.PHP_EOL.'lua', $this->files->read($this->paths->getResourcesPath().'/scripts/main.lua'));
         $this->assertVirtualFileNotExists($this->paths->getResourcesPath().'/metadata.xml');
     }
 }

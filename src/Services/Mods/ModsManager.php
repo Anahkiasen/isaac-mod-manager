@@ -138,8 +138,18 @@ class ModsManager
     {
         foreach ($mod->listFiles() as $file) {
             $filepath = $file['path'];
+            switch ($file['basename']) {
+                case 'main.lua':
+                    $contents = $this->filesystem->read($this->paths->getMainLuaPath());
+                    $contents .= PHP_EOL.$this->filesystem->read($filepath);
 
-            $this->filesystem->forceCopy($filepath, $this->paths->getModeFileInResources($mod, $filepath));
+                    $this->filesystem->put($this->paths->getMainLuaPath(), $contents);
+                    break;
+
+                default:
+                    $this->filesystem->forceCopy($filepath, $this->paths->getModeFileInResources($mod, $filepath));
+                    break;
+            }
         }
     }
 
@@ -171,6 +181,17 @@ class ModsManager
         foreach ($mods as $mod) {
             $this->removeMod($mod);
         }
+    }
+
+    /**
+     * Restores the main.lua file for further modification.
+     */
+    public function restoreMainLua()
+    {
+        $this->filesystem->copy(
+            str_replace($this->paths->getResourcesPath(), $this->paths->getResourcesBackupPath(), $this->paths->getMainLuaPath()),
+            $this->paths->getMainLuaPath()
+        );
     }
 
     /**

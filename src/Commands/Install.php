@@ -70,6 +70,9 @@ class Install extends AbstractCommand
             '%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.PHP_EOL.'Installing <comment>%message%</comment>'
         );
 
+        // Restore main.lua file
+        $this->mods->restoreMainLua();
+
         // Install mods
         $progress->start();
         foreach ($modsQueue as $mod) {
