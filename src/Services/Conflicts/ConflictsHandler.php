@@ -7,6 +7,10 @@ use Isaac\Services\Mods\Mod;
 use League\Flysystem\FilesystemInterface;
 use Psr\SimpleCache\CacheInterface;
 
+/**
+ * Finds conflicts, solves them, remembers the solution
+ * for next time, and filters mods based on conflicts.
+ */
 class ConflictsHandler
 {
     /**

@@ -5,6 +5,9 @@ namespace Isaac\Services\Conflicts;
 use Illuminate\Support\Collection;
 use Isaac\Services\Mods\Mod;
 
+/**
+ * A conflict for a given path between multiple mods.
+ */
 class Conflict extends Collection
 {
     /**
