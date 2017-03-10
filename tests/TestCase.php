@@ -37,6 +37,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $this->mockMod(2, 'barbaz');
         $this->mockMod(3, 'lua', 'lua');
         $this->mockMod(4, 'lua2', 'lua2');
+        $this->files->put('/mods/3/resources/gfx/foo.png', '');
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +81,6 @@ XML;
 
         $this->files->put('/mods/'.$id.'/metadata.xml', $metadata);
         $this->files->createDir('/mods/'.$id.'/resources');
-        $this->files->put('/mods/'.$id.'/resources/gfx/foo.png', '');
 
         if ($lua) {
             $this->files->put('/mods/'.$id.'/main.lua', $lua);
