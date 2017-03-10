@@ -31,9 +31,12 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
         $this->files->createDir('/game/resources/packed');
         $this->files->put('/game/resources/achievements.xml', 'foobar');
+        $this->files->put('/game/resources/scripts/main.lua', 'main');
 
         $this->mockMod(1, 'foobar');
         $this->mockMod(2, 'barbaz');
+        $this->mockMod(3, 'lua', 'lua');
+        $this->mockMod(4, 'lua2', 'lua2');
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -61,10 +64,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @param int    $id
      * @param string $name
+     * @param string $lua
      *
      * @return string
      */
-    protected function mockMod(int $id, string $name)
+    protected function mockMod(int $id, string $name, string $lua = '')
     {
         $metadata = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -76,5 +80,9 @@ XML;
 
         $this->files->put('/mods/'.$id.'/metadata.xml', $metadata);
         $this->files->createDir('/mods/'.$id.'/resources');
+
+        if ($lua) {
+            $this->files->put('/mods/'.$id.'/main.lua', $lua);
+        }
     }
 }

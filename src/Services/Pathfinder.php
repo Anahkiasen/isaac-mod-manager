@@ -72,6 +72,14 @@ class Pathfinder
     /**
      * @return string
      */
+    public function getMainLuaPath(): string
+    {
+        return $this->getResourcesPath().DS.'scripts'.DS.'main.lua';
+    }
+
+    /**
+     * @return string
+     */
     public function getPackedBackupPath(): string
     {
         return $this->getPackedPath().static::BACKUP_PREFIX;
@@ -117,7 +125,7 @@ class Pathfinder
     protected function getModFileIn(Mod $mod, string $filepath, $in): string
     {
         $filepath = Util::normalizePath($filepath);
-        $modResources = Util::normalizePath($mod->getPath('resources'));
+        $modResources = Util::normalizePath($mod->getPath());
         $relativePath = str_replace($modResources, null, $filepath);
 
         return Util::normalizePath($in.$relativePath);

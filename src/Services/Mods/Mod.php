@@ -23,6 +23,14 @@ class Mod
     protected $filesystem;
 
     /**
+     * @var array
+     */
+    protected $ignored = [
+        'LICENSE.txt',
+        'metadata.xml',
+    ];
+
+    /**
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
@@ -84,6 +92,16 @@ class Mod
     }
 
     /**
+     * Whether the mod is purely graphical or not.
+     *
+     * @return bool
+     */
+    public function isGraphical(): bool
+    {
+        return !$this->filesystem->has($this->getPath('main.lua')) && $this->filesystem->has($this->getPath('resources'));
+    }
+
+    /**
      * Get the path to something within the mod.
      *
      * @param string|null $path
@@ -120,5 +138,19 @@ class Mod
         }
 
         return $key ? Arr::get($metadata, $key) : $metadata;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// FILES /////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return array
+     */
+    public function listFiles(): array
+    {
+        return array_filter($this->filesystem->listFiles($this->getPath()), function ($file) {
+            return !in_array($file['basename'], $this->ignored, true);
+        });
     }
 }

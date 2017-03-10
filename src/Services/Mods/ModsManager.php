@@ -79,11 +79,11 @@ class ModsManager
      *
      * @param int[]|string[] $mods
      *
-     * @return Collection|Mod[]
+     * @return Mod[]|ModCollection
      */
-    public function findMods(array $mods): Collection
+    public function findMods(array $mods): ModCollection
     {
-        return collect($mods)
+        return ModCollection::make($mods)
             ->unique()
             ->map(function ($modId) {
                 $isName = (int) $modId === 0;
@@ -106,7 +106,7 @@ class ModsManager
      */
     public function findModById(int $modId): Mod
     {
-        if ($first = $this->getGraphicalMods()->first->isMod($modId)) {
+        if ($first = $this->getMods()->first->isMod($modId)) {
             return $first;
         }
 
@@ -122,7 +122,7 @@ class ModsManager
      */
     public function findModByName(string $name): Mod
     {
-        if ($first = $this->getGraphicalMods()->first->isNamed($name)) {
+        if ($first = $this->getMods()->first->isNamed($name)) {
             return $first;
         }
 
@@ -136,11 +136,20 @@ class ModsManager
      */
     public function installMod(Mod $mod)
     {
-        $resourcesPath = $mod->getPath('resources');
-        foreach ($this->filesystem->listFiles($resourcesPath, true) as $file) {
+        foreach ($mod->listFiles() as $file) {
             $filepath = $file['path'];
+            switch ($file['basename']) {
+                case 'main.lua':
+                    $contents = $this->filesystem->read($this->paths->getMainLuaPath());
+                    $contents .= PHP_EOL.$this->filesystem->read($filepath);
 
-            $this->filesystem->forceCopy($filepath, $this->paths->getModeFileInResources($mod, $filepath));
+                    $this->filesystem->put($this->paths->getMainLuaPath(), $contents);
+                    break;
+
+                default:
+                    $this->filesystem->forceCopy($filepath, $this->paths->getModeFileInResources($mod, $filepath));
+                    break;
+            }
         }
     }
 
@@ -175,6 +184,17 @@ class ModsManager
     }
 
     /**
+     * Restores the main.lua file for further modification.
+     */
+    public function restoreMainLua()
+    {
+        $this->filesystem->forceCopy(
+            str_replace($this->paths->getResourcesPath(), $this->paths->getResourcesBackupPath(), $this->paths->getMainLuaPath()),
+            $this->paths->getMainLuaPath()
+        );
+    }
+
+    /**
      * Restores Isaac to a pristine non-modded version.
      */
     public function restore()
@@ -205,9 +225,9 @@ class ModsManager
     /**
      * Get all workshop mods currently downloaded.
      *
-     * @return Mod[]|Collection
+     * @return Mod[]|ModCollection
      */
-    public function getMods(): Collection
+    public function getMods(): ModCollection
     {
         $mods = $this->filesystem->listContents($this->paths->getModsPath());
         foreach ($mods as &$mod) {
@@ -215,18 +235,26 @@ class ModsManager
             $mod->setFilesystem($this->filesystem);
         }
 
-        return new Collection($mods);
+        return new ModCollection($mods);
     }
 
     /**
      * Get all mods that are graphical only.
      *
-     * @return Mod[]|Collection
+     * @return Mod[]|ModCollection
      */
-    public function getGraphicalMods(): Collection
+    public function getGraphicalMods(): ModCollection
     {
-        return $this->getMods()->filter(function (Mod $mod) {
-            return !$this->filesystem->has($mod->getPath('main.lua')) && $this->filesystem->has($mod->getPath('resources'));
-        });
+        return $this->getMods()->filter->isGraphical();
+    }
+
+    /**
+     * Get all mods that have LUA coding.
+     *
+     * @return Mod[]|ModCollection
+     */
+    public function getLuaMods(): ModCollection
+    {
+        return $this->getMods()->reject->isGraphical();
     }
 }

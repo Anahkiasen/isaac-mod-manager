@@ -2,8 +2,10 @@
 
 namespace Isaac\Commands;
 
-use Symfony\Component\Console\Helper\ProgressBar;
+use Isaac\Services\Conflicts\Conflict;
+use Isaac\Services\Mods\Mod;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
 /**
  * Copies non-LUA mods into your resource folder.
@@ -35,17 +37,44 @@ class Install extends AbstractCommand
             $this->mods->backup();
         }
 
+        // Resolve eventual conflicts in the mods
+        $modsQueue = $this->conflicts->findAndResolve($modsQueue, function (Conflict $conflict) {
+            $this->output->writeln('<fg=red>Found conflicts for:</fg=red> '.$conflict->getPath());
+            $this->output->caution('Note: Checking multiple can have unforeseen consequences');
+
+            // Compute choices
+            $choices = $conflict->map->getName()->all();
+            $resolutions = $conflict->mapWithKeys(function (Mod $mod) {
+                return [$mod->getName() => $mod->getId()];
+            });
+
+            // Ask user to select which mods to use
+            $question = new ChoiceQuestion('Which mod(s) would you like to use here?', $choices);
+            $question->setMultiselect(true);
+            $question->setAutocompleterValues(array_keys($choices));
+
+            // Retrieve mod IDs from selection
+            $resolution = (array) $this->output->askQuestion($question);
+            foreach ($resolution as &$choice) {
+                $choice = $resolutions->get($choice);
+            }
+
+            return $resolution;
+        });
+
         // Present mods to install
-        $this->output->title('Installing '.count($modsQueue).' mod(s):');
-        $this->presentMods($modsQueue);
-        $progress = new ProgressBar($this->output);
+        $this->presentMods('Installing', $modsQueue);
+        $progress = $this->output->createProgressBar($modsQueue->count());
         $progress->setMessage('');
         $progress->setFormat(
             '%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%'.PHP_EOL.PHP_EOL.'Installing <comment>%message%</comment>'
         );
 
+        // Restore main.lua file
+        $this->mods->restoreMainLua();
+
         // Install mods
-        $progress->start(count($modsQueue));
+        $progress->start();
         foreach ($modsQueue as $mod) {
             $progress->setMessage($mod->getName());
             $this->mods->installMod($mod);
@@ -53,6 +82,6 @@ class Install extends AbstractCommand
         }
 
         $progress->finish();
-        $this->output->success(count($modsQueue).' mod(s) installed successfully!');
+        $this->output->success($modsQueue->count().' mod(s) installed successfully!');
     }
 }
