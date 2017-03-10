@@ -16,11 +16,11 @@ This allows you to always have your mods up to date and with your latest subscri
 
 ### Prerequisites
 
-IMM requires PHP 7+ in order to work.
+IMM requires a terminal and PHP 7+ in order to work.
 
 - If you're on Mac you're good
 - On Linux use your package manager of choice (aptitude, yum, etc.).
-- On Windows you can install it through [Chocolatey](https://chocolatey.org/install) via `choco install php`.
+- On Windows you can use Powershell (should already be installed) as terminal and install PHP through [Chocolatey](https://chocolatey.org/install) via `choco install php`.
 
 ### Through Composer
 
