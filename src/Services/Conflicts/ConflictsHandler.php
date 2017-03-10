@@ -46,14 +46,13 @@ class ConflictsHandler
     public function findAndResolve(Collection $mods, $resolver): Collection
     {
         $conflicts = $this->findConflicts($mods);
-        if ($conflicts->isEmpty()) {
-            return $mods;
-        }
 
-        // Gather resolution for each conflict
-        $conflicts = $conflicts->map(function (Conflict $conflict) use ($resolver) {
-            return $this->resolve($conflict, $resolver);
-        });
+        // Gather resolution for conflicts that require it
+        if ($conflicts->isNotEmpty()) {
+            $conflicts = $conflicts->map(function (Conflict $conflict) use ($resolver) {
+                return $conflict->isConflict() ? $this->resolve($conflict, $resolver) : $conflict;
+            });
+        }
 
         // Get all mods excluded by the conflicts
         $excluded = $conflicts->filter->isResolved()->reduce(function (Collection $reduction, Conflict $conflict) {

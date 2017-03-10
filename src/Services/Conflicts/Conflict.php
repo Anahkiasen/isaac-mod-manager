@@ -82,7 +82,7 @@ class Conflict extends Collection
      */
     public function getResolution(): array
     {
-        $isResolutionValid = $this->map->getId()->contains($this->resolution);
+        $isResolutionValid = $this->map->getId()->intersect($this->resolution)->isNotEmpty();
         $isResolutionProvided = $this->resolution !== [];
 
         return $isResolutionProvided && $isResolutionValid ? $this->resolution : [];

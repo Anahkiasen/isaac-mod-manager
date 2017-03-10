@@ -24,7 +24,7 @@ class ConflictsHandlerTest extends TestCase
         $mods = $this->mods->getMods();
 
         $conflicts = $this->conflicts->findConflicts($mods);
-        $this->cache->set($conflicts->first()->getHash(), 1);
+        $this->cache->set($conflicts->first()->getHash(), $conflicts->first()->first()->getId());
 
         $conflicts = $this->conflicts->findConflicts($mods);
         $this->assertInstanceOf(Collection::class, $conflicts);
@@ -36,7 +36,7 @@ class ConflictsHandlerTest extends TestCase
         $mods = $this->mods->getMods();
 
         $conflicts = $this->conflicts->findConflicts($mods);
-        $conflicts[0] = $this->conflicts->resolve($conflicts[0], 1);
+        $conflicts[0] = $this->conflicts->resolve($conflicts[0], $conflicts[0]->first()->getId());
 
         $conflicts = $this->conflicts->findConflicts($mods);
         $this->assertInstanceOf(Collection::class, $conflicts);
