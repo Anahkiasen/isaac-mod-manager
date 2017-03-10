@@ -106,7 +106,7 @@ class ModsManager
      */
     public function findModById(int $modId): Mod
     {
-        if ($first = $this->getGraphicalMods()->first->isMod($modId)) {
+        if ($first = $this->getMods()->first->isMod($modId)) {
             return $first;
         }
 
@@ -122,7 +122,7 @@ class ModsManager
      */
     public function findModByName(string $name): Mod
     {
-        if ($first = $this->getGraphicalMods()->first->isNamed($name)) {
+        if ($first = $this->getMods()->first->isNamed($name)) {
             return $first;
         }
 
@@ -136,8 +136,7 @@ class ModsManager
      */
     public function installMod(Mod $mod)
     {
-        $resourcesPath = $mod->getPath('resources');
-        foreach ($this->filesystem->listFiles($resourcesPath, true) as $file) {
+        foreach ($mod->listFiles() as $file) {
             $filepath = $file['path'];
 
             $this->filesystem->forceCopy($filepath, $this->paths->getModeFileInResources($mod, $filepath));

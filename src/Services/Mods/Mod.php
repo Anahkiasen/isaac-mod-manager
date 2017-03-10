@@ -23,6 +23,14 @@ class Mod
     protected $filesystem;
 
     /**
+     * @var array
+     */
+    protected $ignored = [
+        'LICENSE.txt',
+        'metadata.xml',
+    ];
+
+    /**
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
@@ -141,6 +149,8 @@ class Mod
      */
     public function listFiles(): array
     {
-        return $this->filesystem->listFiles($this->getPath());
+        return array_filter($this->filesystem->listFiles($this->getPath()), function ($file) {
+            return !in_array($file['basename'], $this->ignored, true);
+        });
     }
 }

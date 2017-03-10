@@ -80,4 +80,12 @@ class ModsManagerTest extends TestCase
         $this->assertNotContains('foobar', $modNames);
         $this->assertContains('lua', $modNames);
     }
+
+    public function testCanInstallMod()
+    {
+        $this->mods->installMod($this->mods->findModById(3));
+
+        $this->assertVirtualFileExists($this->paths->getResourcesPath().'/main.lua');
+        $this->assertVirtualFileNotExists($this->paths->getResourcesPath().'/metadata.xml');
+    }
 }

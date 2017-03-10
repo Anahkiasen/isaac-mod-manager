@@ -20,14 +20,6 @@ class ConflictsHandler
     protected $filesystem;
 
     /**
-     * @var array
-     */
-    protected $ignored = [
-        '/LICENSE.txt',
-        '/metadata.xml',
-    ];
-
-    /**
      * @param CacheInterface      $cache
      * @param FilesystemInterface $filesystem
      */
@@ -88,9 +80,6 @@ class ConflictsHandler
         foreach ($mods as $mod) {
             foreach ($mod->listFiles() as $file) {
                 $filepath = str_replace($mod->getPath(), null, $file['path']);
-                if (in_array($filepath, $this->ignored, true)) {
-                    continue;
-                }
 
                 // Append Mod to list of conflicts for this path
                 $paths[$filepath] = $paths[$filepath] ?? Conflict::forPath($filepath);
