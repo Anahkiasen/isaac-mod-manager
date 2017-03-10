@@ -188,7 +188,7 @@ class ModsManager
      */
     public function restoreMainLua()
     {
-        $this->filesystem->copy(
+        $this->filesystem->forceCopy(
             str_replace($this->paths->getResourcesPath(), $this->paths->getResourcesBackupPath(), $this->paths->getMainLuaPath()),
             $this->paths->getMainLuaPath()
         );
