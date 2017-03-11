@@ -20,7 +20,7 @@ class Restore extends AbstractCommand
      */
     protected function fire()
     {
-        $this->mods->restore();
+        $this->bus->handle(new \Isaac\Bus\Commands\Restore());
         $this->output->success('Isaac restored to its original state');
     }
 }

@@ -178,34 +178,6 @@ class ModsManager
     }
 
     /**
-     * Restores Isaac to a pristine non-modded version.
-     */
-    public function restore()
-    {
-        // Rename back the "packed" folder
-        if ($this->filesystem->has($this->paths->getPackedBackupPath())) {
-            $this->filesystem->rename(
-                $this->paths->getPackedBackupPath(),
-                $this->paths->getPackedPath()
-            );
-        }
-
-        // Delete resources backup folder
-        if ($this->filesystem->has($this->paths->getResourcesBackupPath())) {
-            $this->filesystem->deleteDir($this->paths->getResourcesBackupPath());
-        }
-
-        // Delete contents of resource folder
-        foreach ($this->filesystem->listContents($this->paths->getResourcesPath()) as $file) {
-            if ($file['basename'] !== 'packed') {
-                $file['type'] === 'dir'
-                    ? $this->filesystem->deleteDir($file['path'])
-                    : $this->filesystem->delete($file['path']);
-            }
-        }
-    }
-
-    /**
      * Get all workshop mods currently downloaded.
      *
      * @return Mod[]|Collection
