@@ -8,7 +8,7 @@
     </rule>
 
     <rule ref="Symfony2.Commenting.ClassComment.Missing">
-        <exclude-pattern>Commands/*</exclude-pattern>
+        <exclude-pattern>Console/*</exclude-pattern>
         <exclude-pattern>*ServiceProvider</exclude-pattern>
     </rule>
 </ruleset>

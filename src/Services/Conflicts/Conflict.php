@@ -89,15 +89,12 @@ class Conflict extends Collection
 
     /**
      * Get a mapping of choices to mods.
-     * eg. [0 => 12345, 1 => 12346].
      *
      * @return static
      */
     public function getPossibleResolutions()
     {
-        return $this->mapWithKeys(function (Mod $mod) {
-            return [$mod->getName() => $mod->getId()];
-        });
+        return $this->map->getId();
     }
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -8,6 +8,9 @@ use RuntimeException;
 use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Extracts the packed resources into workable files.
+ */
 class ExtractResources
 {
     /**

@@ -3,6 +3,7 @@
 namespace Isaac\Console\Mods;
 
 use Isaac\Bus\Commands\Backup;
+use Isaac\Console\ChoiceValidator;
 use Isaac\Services\Conflicts\Conflict;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
@@ -35,7 +36,8 @@ class Install extends AbstractModsCommand
         $modsQueue = $this->conflicts->findAndResolve($modsQueue, function (Conflict $conflict) {
             $isMultiple = $conflict->canHaveMultipleResolutions();
 
-            $this->output->writeln('<fg=red>Found conflicts for:</fg=red> '.$conflict->getPath());
+            $this->output->section('<fg=red>Found conflicts for:</fg=red> '.$conflict->getPath());
+            $this->output->note('Press ENTER to skip and let the mods overwrite each other.');
             if ($isMultiple) {
                 $this->output->caution('Note: Checking multiple can have unforeseen consequences');
             }
@@ -50,6 +52,7 @@ class Install extends AbstractModsCommand
             $question = new ChoiceQuestion($question, $choices->all());
             $question->setMultiselect($isMultiple);
             $question->setAutocompleterValues($choices->keys());
+            $question->setValidator(new ChoiceValidator($question));
 
             // Retrieve mod IDs from selection
             $resolution = (array) $this->output->askQuestion($question);

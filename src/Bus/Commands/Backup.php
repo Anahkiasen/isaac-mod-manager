@@ -7,6 +7,9 @@ use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Backs up the resources/ and packed/ folders for later retrieval.
+ */
 class Backup
 {
     /**
