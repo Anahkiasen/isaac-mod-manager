@@ -38,7 +38,7 @@ class Pathfinder
      */
     public function getUsername(): string
     {
-        return $_SERVER['USER'] ?? dirname(getenv('HOMEPATH'));
+        return $_SERVER['USER'] ?? basename(getenv('HOMEPATH'));
     }
 
     /**
@@ -98,7 +98,7 @@ class Pathfinder
      */
     public function getSavedataPath(): string
     {
-        return $this->getGamePath().DS.'savedata.txt';
+        return $this->getGamePath().DS.'savedatapath.txt';
     }
 
     ////////////////////////////////////////////////////////////////////////////////
