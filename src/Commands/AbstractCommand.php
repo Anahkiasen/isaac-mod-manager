@@ -2,7 +2,9 @@
 
 namespace Isaac\Commands;
 
+use Isaac\Bus\Commands\GatherPaths;
 use Isaac\Services\Mods\ModsManager;
+use League\Tactician\CommandBus;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
@@ -26,6 +28,11 @@ abstract class AbstractCommand extends Command
     protected $output;
 
     /**
+     * @var CommandBus
+     */
+    private $bus;
+
+    /**
      * @var CacheInterface
      */
     protected $cache;
@@ -41,11 +48,13 @@ abstract class AbstractCommand extends Command
     protected $needsSetup = false;
 
     /**
+     * @param CommandBus     $bus
      * @param CacheInterface $cache
      * @param ModsManager    $mods
      */
-    public function __construct(CacheInterface $cache, ModsManager $mods)
+    public function __construct(CommandBus $bus, CacheInterface $cache, ModsManager $mods)
     {
+        $this->bus = $bus;
         $this->cache = $cache;
         $this->mods = $mods;
 
@@ -99,18 +108,7 @@ abstract class AbstractCommand extends Command
      */
     protected function setup()
     {
-        if (!$this->cache->has('source') || !$this->cache->has('destination')) {
-            // Gather paths to folders
-            $this->output->title('Before we begin I need some informations from you!');
-            $source = $this->output->ask('Where are your Afterbirth+ Workshop mods located?', 'C:/Users/YourName/Documents/My Games/Binding of Isaac Afterbirth+ Mods');
-            $destination = $this->output->ask('Where is Afterbirth+ installed?', 'C:/Program Files (x86)/Steam/steamapps/common/The Binding of Isaac Rebirth');
-
-            // Cache for later use
-            $this->cache->set('source', $source);
-            $this->cache->set('destination', $destination);
-
-            $this->output->success('Setup completed, all good!');
-        }
+        $this->bus->handle(new GatherPaths($this->output));
 
         // Ensure resources are extracted
         if (!$this->mods->areResourcesExtracted() && $this->getName() !== 'restore') {

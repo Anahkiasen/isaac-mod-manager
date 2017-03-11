@@ -29,28 +29,80 @@ class Pathfinder
         $this->cache = $cache;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////// PLATFORM ////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
     /**
      * @return string
      */
-    public function getModsPath(): string
+    public function getUsername(): string
     {
-        return $this->cache->get('source');
+        return $_SERVER['USER'] ?? dirname(getenv('HOMEPATH'));
     }
+
+    /**
+     * @return bool
+     */
+    public function isMac(): bool
+    {
+        return PHP_OS === 'Darwin';
+    }
+
+    /**
+     * Get the name of the game used for folders.
+     *
+     * @return string
+     */
+    public function getGameName(): string
+    {
+        return 'The Binding of Isaac Rebirth';
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// GAME //////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @return string
      */
     public function getGamePath(): string
     {
-        return $this->cache->get('destination');
+        if ($path = $this->cache->get('destination')) {
+            return $path;
+        }
+
+        switch (PHP_OS) {
+            case 'Darwin':
+                return sprintf('/Users/%s/Library/Application Support/Steam/steamapps/common/%s', $this->getUsername(), $this->getGameName());
+
+            // I know this is not correct, bear with me
+            case 'Linux':
+                return '/mnt/c/Program Files (x86)/Steam/steamapps/common/'.$this->getGameName();
+
+            default:
+                return 'C:/Program Files (x86)/Steam/steamapps/common/'.$this->getGameName();
+        }
     }
+
+    /**
+     * @return string
+     */
+    public function getSavedataPath(): string
+    {
+        return $this->getGamePath().DS.'savedata.txt';
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////// RESOURCES ///////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @return string
      */
     public function getResourcesPath(): string
     {
-        return $this->getGamePath().DS.'resources';
+        return $this->isMac() ? $this->getGamePath().'/'.$this->getGameName().'.app/Contents/Resources/resources' : $this->getGamePath().DS.'resources';
     }
 
     /**
@@ -85,12 +137,41 @@ class Pathfinder
         return $this->getPackedPath().static::BACKUP_PREFIX;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// TOOLS /////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
     /**
      * @return string
      */
     public function getResourceExtractorPath(): string
     {
         return $this->getGamePath().DS.'tools'.DS.'ResourceExtractor'.DS.'ResourceExtractor.exe';
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////// MODS //////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return string
+     */
+    public function getModsPath(): string
+    {
+        if ($path = $this->cache->get('source')) {
+            return $path;
+        }
+
+        switch (PHP_OS) {
+            case 'Darwin':
+                return sprintf('/Users/%s/Library/Application Support/Steam/steamapps/workshop/content/250900', $this->getUsername());
+
+            case 'Linux':
+                return sprintf('/mnt/c/Users/%s/Documents/My Games/Binding of Isaac Afterbirth+ Mods', $this->getUsername());
+
+            default:
+                return sprintf('C:/Users/%s/Documents/My Games/Binding of Isaac Afterbirth+ Mods', $this->getUsername());
+        }
     }
 
     /**
