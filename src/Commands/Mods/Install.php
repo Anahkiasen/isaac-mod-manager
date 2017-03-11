@@ -43,7 +43,7 @@ class Install extends AbstractModsCommand
             $resolutions = $conflict->getPossibleResolutions();
 
             // Ask user to select which mods to use
-            $question = new ChoiceQuestion('Which mod(s) would you like to use here?', $choices->all());
+            $question = new ChoiceQuestion('Which mod(s) would you like to use here? Can use multiple answers (eg. 1,2,4)', $choices->all());
             $question->setMultiselect(true);
             $question->setAutocompleterValues($choices->keys());
 
