@@ -33,16 +33,22 @@ class Install extends AbstractModsCommand
 
         // Resolve eventual conflicts in the mods
         $modsQueue = $this->conflicts->findAndResolve($modsQueue, function (Conflict $conflict) {
+            $isMultiple = $conflict->canHaveMultipleResolutions();
+
             $this->output->writeln('<fg=red>Found conflicts for:</fg=red> '.$conflict->getPath());
-            $this->output->caution('Note: Checking multiple can have unforeseen consequences');
+            if ($isMultiple) {
+                $this->output->caution('Note: Checking multiple can have unforeseen consequences');
+            }
 
             // Compute choices and resolutions
             $choices = $conflict->getPossibleChoices();
             $resolutions = $conflict->getPossibleResolutions();
 
             // Ask user to select which mods to use
-            $question = new ChoiceQuestion('Which mod(s) would you like to use here? Can use multiple answers (eg. 1,2,4)', $choices->all());
-            $question->setMultiselect(true);
+            $question = 'Which mod(s) would you like to use here?';
+            $question .= $isMultiple ? ' Can use multiple answers (eg. 1,2,4)' : '';
+            $question = new ChoiceQuestion($question, $choices->all());
+            $question->setMultiselect($isMultiple);
             $question->setAutocompleterValues($choices->keys());
 
             // Retrieve mod IDs from selection
