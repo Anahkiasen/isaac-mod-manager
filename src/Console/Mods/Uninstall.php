@@ -1,6 +1,6 @@
 <?php
 
-namespace Isaac\Commands\Mods;
+namespace Isaac\Console\Mods;
 
 /**
  * Removes all installed mods.

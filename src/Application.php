@@ -3,10 +3,10 @@
 namespace Isaac;
 
 use Isaac\Bus\CommandBusServiceProvider;
-use Isaac\Commands\ClearCache;
-use Isaac\Commands\Mods\Install;
-use Isaac\Commands\Mods\Uninstall;
-use Isaac\Commands\Restore;
+use Isaac\Console\ClearCache;
+use Isaac\Console\Mods\Install;
+use Isaac\Console\Mods\Uninstall;
+use Isaac\Console\Restore;
 use Isaac\Services\Cache\CacheServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
 use Isaac\Services\Filesystem\FilesystemServiceProvider;

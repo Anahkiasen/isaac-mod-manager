@@ -1,6 +1,6 @@
 <?php
 
-namespace Isaac\Commands\Mods;
+namespace Isaac\Console\Mods;
 
 use Isaac\Bus\Commands\Backup;
 use Isaac\Services\Conflicts\Conflict;

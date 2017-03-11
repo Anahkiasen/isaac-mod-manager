@@ -1,6 +1,6 @@
 <?php
 
-namespace Isaac\Commands;
+namespace Isaac\Console;
 
 use Isaac\Bus\Commands\ExtractResources;
 use Isaac\Bus\Commands\GatherPaths;
