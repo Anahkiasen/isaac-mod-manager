@@ -177,7 +177,7 @@ class Mod
         // exclude the paths we ignored
         if ($this->resolutions) {
             $files = $files->filter(function ($file) {
-                return !$this->resolutions->getExcludedForPath($file['relative'])->contains($this);
+                return !$this->resolutions->getExcludedModsForPath($file['relative'])->contains($this);
             });
         }
 

@@ -30,7 +30,7 @@ class Resolutions extends Collection
      *
      * @return self
      */
-    public function getExcludedForPath(string $path): self
+    public function getExcludedModsForPath(string $path): self
     {
         return $this->getForPath($path)->reduce(function (Collection $reduction, Conflict $conflict) {
             return $reduction->merge($conflict->getExcluded());

@@ -26,7 +26,7 @@ class CacheServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->container->share(CacheItemPoolInterface::class, function () {
-            $cachePath = sys_get_temp_dir().DS.'imm'.DS.md5(__DIR__);
+            $cachePath = sys_get_temp_dir().DS.'imm';
 
             return new FilesystemCachePool(
                 new Filesystem(new Local($cachePath, LOCK_SH))
