@@ -146,7 +146,9 @@ class Pathfinder
      */
     public function getResourceExtractorPath(): string
     {
-        return $this->getGamePath().DS.'tools'.DS.'ResourceExtractor'.DS.'ResourceExtractor.exe';
+        $extension = in_array(PHP_OS, ['Linux', 'Darwin']) ? '' : '.exe';
+
+        return $this->getGamePath().DS.'tools'.DS.'ResourceExtractor'.DS.'ResourceExtractor'.$extension;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
