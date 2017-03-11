@@ -11,7 +11,7 @@ use League\Flysystem\Adapter\Local;
 class AbsoluteLocal extends Local
 {
     /**
-     * LooseLocal constructor.
+     * AbsoluteLocal constructor.
      */
     public function __construct()
     {
