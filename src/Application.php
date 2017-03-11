@@ -54,7 +54,7 @@ class Application extends Console implements ContainerAwareInterface
     ];
 
     /**
-     * @param Container $container
+     * @param Container|null $container
      */
     public function __construct(Container $container = null)
     {
@@ -78,8 +78,9 @@ class Application extends Console implements ContainerAwareInterface
     {
         // Register commands with the CLI application
         foreach ($this->commands as $command) {
-            /** @var Command $command */
             $command = $this->container->get($command);
+
+            /** @var Command $command */
             if ($command instanceof ContainerAwareInterface) {
                 $command->setContainer($this->container);
             }
