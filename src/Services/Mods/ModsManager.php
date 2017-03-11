@@ -176,7 +176,7 @@ class ModsManager
     public function restoreMainLua()
     {
         $originalLua = str_replace($this->paths->getResourcesPath(), $this->paths->getResourcesBackupPath(), $this->paths->getMainLuaPath());
-        if (!$this->filesystem->has($originalLua)) {
+        if ($this->filesystem->has($originalLua)) {
             $this->filesystem->forceCopy($originalLua, $this->paths->getMainLuaPath());
         }
     }
