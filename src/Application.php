@@ -60,7 +60,9 @@ class Application extends Console implements ContainerAwareInterface
      */
     public function __construct(Container $container = null)
     {
-        parent::__construct('Isaac Mod Manager', static::VERSION);
+        $version = strpos(static::VERSION, 'commit') !== false ? '(dev version)' : static::VERSION;
+        
+        parent::__construct('Isaac Mod Manager', $version);
 
         // Setup container
         $container = $container ?: new Container();
@@ -91,15 +93,5 @@ class Application extends Console implements ContainerAwareInterface
         }
 
         return parent::run($input, $output);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
-    {
-        $version = parent::getVersion();
-
-        return $version === '@commit@' ? '(dev version)' : $version;
     }
 }
