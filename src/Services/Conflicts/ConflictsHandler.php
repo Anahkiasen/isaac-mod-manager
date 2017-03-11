@@ -50,13 +50,13 @@ class ConflictsHandler
             });
         }
 
-        // Get all mods excluded by the conflicts
-        $excluded = $conflicts->filter->isResolved()->reduce(function (Collection $reduction, Conflict $conflict) {
-            return $reduction->merge($conflict->getExcluded());
-        }, new Collection());
+        // Bind conflict resolutions to the mods
+        return $mods->map(function (Mod $mod) use ($conflicts) {
+            $mod->setResolutions(new Resolutions(
+                $conflicts->filter->contains($mod)
+            ));
 
-        return $mods->reject(function (Mod $mod) use ($excluded) {
-            return $excluded->contains($mod);
+            return $mod;
         });
     }
 
@@ -83,7 +83,7 @@ class ConflictsHandler
         $paths = [];
         foreach ($mods as $mod) {
             foreach ($mod->listFiles() as $file) {
-                $filepath = str_replace($mod->getPath(), null, $file['path']);
+                $filepath = $file['relative'];
 
                 // Append Mod to list of conflicts for this path
                 $paths[$filepath] = $paths[$filepath] ?? Conflict::forPath($filepath);

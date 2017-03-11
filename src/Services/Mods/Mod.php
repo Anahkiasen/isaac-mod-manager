@@ -4,6 +4,8 @@ namespace Isaac\Services\Mods;
 
 use Exception;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Isaac\Services\Conflicts\Resolutions;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 
@@ -23,6 +25,11 @@ class Mod
     protected $filesystem;
 
     /**
+     * @var Resolutions
+     */
+    protected $resolutions;
+
+    /**
      * @var array
      */
     protected $ignored = [
@@ -31,11 +38,11 @@ class Mod
     ];
 
     /**
-     * @param array $attributes
+     * @param string $path
      */
-    public function __construct(array $attributes = [])
+    public function __construct(string $path)
     {
-        $this->path = $attributes['path'];
+        $this->path = $path;
     }
 
     /**
@@ -44,6 +51,14 @@ class Mod
     public function setFilesystem(FilesystemInterface $filesystem)
     {
         $this->filesystem = $filesystem;
+    }
+
+    /**
+     * @param Resolutions $resolutions
+     */
+    public function setResolutions(Resolutions $resolutions)
+    {
+        $this->resolutions = $resolutions;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -69,6 +84,8 @@ class Mod
     }
 
     /**
+     * Check if this mod is the same as another mod.
+     *
      * @param int $modId
      *
      * @return bool
@@ -145,11 +162,26 @@ class Mod
     ////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @return array
+     * @return Collection
      */
-    public function listFiles(): array
+    public function listFiles(): Collection
     {
-        return array_filter($this->filesystem->listFiles($this->getPath(), true), function ($file) {
+        // Bind relative paths to files
+        $files = collect($this->filesystem->listFiles($this->getPath(), true))->map(function ($file) {
+            $file['relative'] = str_replace($this->getPath(), null, $file['path']);
+
+            return $file;
+        });
+
+        // If the mod has conflicts and we solved them,
+        // exclude the paths we ignored
+        if ($this->resolutions) {
+            $files = $files->filter(function ($file) {
+                return !$this->resolutions->getExcludedForPath($file['relative'])->contains($this);
+            });
+        }
+
+        return $files->filter(function ($file) {
             return !in_array($file['basename'], $this->ignored, true);
         });
     }

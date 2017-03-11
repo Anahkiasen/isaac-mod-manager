@@ -43,15 +43,6 @@ class ConflictsHandlerTest extends TestCase
         $this->assertEmpty($conflicts);
     }
 
-    public function testCanComputeModsQueue()
-    {
-        $mods = $this->mods->getMods();
-        $mods = $this->conflicts->findAndResolve($mods, 4);
-
-        $this->assertCount(3, $mods);
-        $this->assertEquals([1, 2, 4], $mods->map->getId()->values()->all());
-    }
-
     public function testCanIgnoreInvalidResolution()
     {
         $mods = $this->mods->getMods();

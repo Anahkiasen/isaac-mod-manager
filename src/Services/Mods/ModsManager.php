@@ -231,7 +231,7 @@ class ModsManager
     {
         $mods = $this->filesystem->listContents($this->paths->getModsPath());
         foreach ($mods as &$mod) {
-            $mod = new Mod($mod);
+            $mod = new Mod($mod['path']);
             $mod->setFilesystem($this->filesystem);
         }
 

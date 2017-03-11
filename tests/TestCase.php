@@ -37,6 +37,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $this->mockMod(2, 'barbaz');
         $this->mockMod(3, 'lua', 'lua');
         $this->mockMod(4, 'lua2', 'lua2');
+
         $this->files->put('/mods/3/resources/gfx/foo.png', '');
     }
 
