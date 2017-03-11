@@ -2,6 +2,7 @@
 
 namespace Isaac\Commands;
 
+use Isaac\Bus\Commands\ExtractResources;
 use Isaac\Bus\Commands\GatherPaths;
 use Isaac\Services\Mods\ModsManager;
 use League\Tactician\CommandBus;
@@ -109,10 +110,6 @@ abstract class AbstractCommand extends Command
     protected function setup()
     {
         $this->bus->handle(new GatherPaths($this->output));
-
-        // Ensure resources are extracted
-        if (!$this->mods->areResourcesExtracted() && $this->getName() !== 'restore') {
-            throw new RuntimeException('You must first run the ResourceExtractor in /tools/ResourceExtractor/ResourceExtractor.exe');
-        }
+        $this->bus->handle(new ExtractResources());
     }
 }
