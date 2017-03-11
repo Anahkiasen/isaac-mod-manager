@@ -42,7 +42,7 @@ class ModsManager
      */
     public function areResourcesBackup(): bool
     {
-        return $this->filesystem->has($this->paths->getResourcesBackupPath());
+        return $this->filesystem->has($this->paths->getResourcesBackupPath()) && $this->filesystem->has($this->paths->getPackedBackupPath());
     }
 
     /**
@@ -51,23 +51,6 @@ class ModsManager
     public function areResourcesExtracted(): bool
     {
         return $this->filesystem->has($this->paths->getResourcesPath().DS.'achievements.xml');
-    }
-
-    /**
-     * Unpack the game's resources.
-     */
-    public function backup()
-    {
-        $this->filesystem->copyDirectory(
-            $this->paths->getResourcesPath(),
-            $this->paths->getResourcesBackupPath()
-        );
-
-        // Rename "packed" folder
-        $this->filesystem->rename(
-            $this->paths->getPackedPath(),
-            $this->paths->getPackedBackupPath()
-        );
     }
 
     ////////////////////////////////////////////////////////////////////////////////

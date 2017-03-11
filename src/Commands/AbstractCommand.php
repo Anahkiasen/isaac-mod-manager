@@ -7,7 +7,6 @@ use Isaac\Bus\Commands\GatherPaths;
 use Isaac\Services\Mods\ModsManager;
 use League\Tactician\CommandBus;
 use Psr\SimpleCache\CacheInterface;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,7 +30,7 @@ abstract class AbstractCommand extends Command
     /**
      * @var CommandBus
      */
-    private $bus;
+    protected $bus;
 
     /**
      * @var CacheInterface
@@ -110,6 +109,9 @@ abstract class AbstractCommand extends Command
     protected function setup()
     {
         $this->bus->handle(new GatherPaths($this->output));
-        $this->bus->handle(new ExtractResources());
+        $this->bus->handle(new ExtractResources(
+            $this->output,
+            $this->getHelper('process')
+        ));
     }
 }

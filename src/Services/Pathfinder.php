@@ -50,6 +50,14 @@ class Pathfinder
     }
 
     /**
+     * @return bool
+     */
+    public function isUnix(): bool
+    {
+        return in_array(PHP_OS, ['Linux', 'Darwin'], true);
+    }
+
+    /**
      * Get the name of the game used for folders.
      *
      * @return string
@@ -146,7 +154,7 @@ class Pathfinder
      */
     public function getResourceExtractorPath(): string
     {
-        $extension = in_array(PHP_OS, ['Linux', 'Darwin']) ? '' : '.exe';
+        $extension = $this->isUnix() ? '' : '.exe';
 
         return $this->getGamePath().DS.'tools'.DS.'ResourceExtractor'.DS.'ResourceExtractor'.$extension;
     }

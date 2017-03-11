@@ -2,6 +2,7 @@
 
 namespace Isaac\Commands\Mods;
 
+use Isaac\Bus\Commands\Backup;
 use Isaac\Services\Conflicts\Conflict;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
@@ -28,10 +29,7 @@ class Install extends AbstractModsCommand
         $modsQueue = $this->getModsQueue();
 
         // Rename packed folder if necessary
-        if (!$this->mods->areResourcesBackup()) {
-            $this->output->writeln('<comment>Making a backup of resources folder, this only has to be done once</comment>');
-            $this->mods->backup();
-        }
+        $this->bus->handle(new Backup($this->output));
 
         // Resolve eventual conflicts in the mods
         $modsQueue = $this->conflicts->findAndResolve($modsQueue, function (Conflict $conflict) {

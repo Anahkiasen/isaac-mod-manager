@@ -1,4 +1,10 @@
+# Build process
 /bin/imm.phar
+
+# Dependencies
 /composer.lock
-/cache/*
 /vendor
+
+# Artefacts
+/cache/*
+/ResourceExtractor_log.txt

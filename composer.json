@@ -22,6 +22,7 @@
     "league/flysystem": "^1.0",
     "league/tactician": "^1.0",
     "symfony/console": "^3.2",
+    "symfony/process": "^3.2",
     "tightenco/collect": "^5.4"
   },
   "require-dev": {
