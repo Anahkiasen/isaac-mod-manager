@@ -170,13 +170,15 @@ class ModsManager
 
     /**
      * Restores the main.lua file for further modification.
+     *
+     * @TODO: Test for bug when main lua file not in backup
      */
     public function restoreMainLua()
     {
-        $this->filesystem->forceCopy(
-            str_replace($this->paths->getResourcesPath(), $this->paths->getResourcesBackupPath(), $this->paths->getMainLuaPath()),
-            $this->paths->getMainLuaPath()
-        );
+        $originalLua = str_replace($this->paths->getResourcesPath(), $this->paths->getResourcesBackupPath(), $this->paths->getMainLuaPath());
+        if (!$this->filesystem->has($originalLua)) {
+            $this->filesystem->forceCopy($originalLua, $this->paths->getMainLuaPath());
+        }
     }
 
     /**
