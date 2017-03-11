@@ -1,29 +1,23 @@
 <?php
 
-namespace Isaac\Commands;
+namespace Isaac\Commands\Mods;
 
 use Isaac\Services\Conflicts\Conflict;
-use Isaac\Services\Mods\Mod;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 /**
  * Copies non-LUA mods into your resource folder.
  */
-class Install extends AbstractCommand
+class Install extends AbstractModsCommand
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        return $this
+        return parent::configure()
             ->setName('mods:install')
-            ->setDescription('Copies non-LUA mods into your resource folder')
-            ->setNeedsSetup(true)
-            ->addArgument('mods', InputArgument::IS_ARRAY, 'The Steam ID of one or more mod(s) to install')
-            ->addOption('graphical', 'G', InputOption::VALUE_NONE, 'Only graphical mods');
+            ->setDescription('Copies non-LUA mods into your resource folder');
     }
 
     /**
@@ -44,19 +38,13 @@ class Install extends AbstractCommand
             $this->output->writeln('<fg=red>Found conflicts for:</fg=red> '.$conflict->getPath());
             $this->output->caution('Note: Checking multiple can have unforeseen consequences');
 
-            // Compute choices
-            $choices = $conflict->map(function (Mod $mod) {
-                return sprintf('%s (%s)', $mod->getName(), $mod->getId());
-            });
-
-            $resolutions = $conflict->mapWithKeys(function (Mod $mod) {
-                return [$mod->getName() => $mod->getId()];
-            });
+            // Compute choices and resolutions
+            $choices = $conflict->getPossibleChoices();
+            $resolutions = $conflict->getPossibleResolutions();
 
             // Ask user to select which mods to use
             $question = new ChoiceQuestion('Which mod(s) would you like to use here?', $choices->all());
             $question->setMultiselect(true);
-            $question->setValidator();
             $question->setAutocompleterValues($choices->keys());
 
             // Retrieve mod IDs from selection

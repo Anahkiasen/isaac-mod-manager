@@ -2,11 +2,6 @@
 
 namespace Isaac\Commands;
 
-use Illuminate\Support\Collection;
-use Isaac\Services\Conflicts\ConflictsHandler;
-use Isaac\Services\Mods\Mod;
-use Isaac\Services\Mods\ModCollection;
-use Isaac\Services\Mods\ModNotFoundException;
 use Isaac\Services\Mods\ModsManager;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
@@ -41,25 +36,18 @@ abstract class AbstractCommand extends Command
     protected $mods;
 
     /**
-     * @var ConflictsHandler
-     */
-    protected $conflicts;
-
-    /**
      * @var bool
      */
     protected $needsSetup = false;
 
     /**
-     * @param CacheInterface                   $cache
-     * @param \Isaac\Services\Mods\ModsManager $mods
-     * @param ConflictsHandler                 $conflicts
+     * @param CacheInterface $cache
+     * @param ModsManager    $mods
      */
-    public function __construct(CacheInterface $cache, ModsManager $mods, ConflictsHandler $conflicts)
+    public function __construct(CacheInterface $cache, ModsManager $mods)
     {
         $this->cache = $cache;
         $this->mods = $mods;
-        $this->conflicts = $conflicts;
 
         parent::__construct();
     }
@@ -128,34 +116,5 @@ abstract class AbstractCommand extends Command
         if (!$this->mods->areResourcesExtracted() && $this->getName() !== 'restore') {
             throw new RuntimeException('You must first run the ResourceExtractor in /tools/ResourceExtractor/ResourceExtractor.exe');
         }
-    }
-
-    /**
-     * @return Mod[]|ModCollection
-     */
-    protected function getModsQueue(): ModCollection
-    {
-        $mods = $this->input->getArgument('mods');
-        $fallback = $this->input->getOption('graphical') ? 'getGraphicalMods' : 'getMods';
-        $modsQueue = $mods ? $this->mods->findMods($mods) : $this->mods->$fallback();
-        if ($modsQueue->isEmpty()) {
-            throw new ModNotFoundException($mods);
-        }
-
-        return $modsQueue;
-    }
-
-    /**
-     * Presents a collection of mods as a listing.
-     *
-     * @param string     $action
-     * @param Collection $modsQueue
-     */
-    protected function presentMods(string $action, Collection $modsQueue): void
-    {
-        $this->output->title(sprintf('%s %d mod(s)', $action, $modsQueue->count()));
-        $this->output->listing(
-            $modsQueue->map->getName()->all()
-        );
     }
 }

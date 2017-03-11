@@ -3,9 +3,9 @@
 namespace Isaac;
 
 use Isaac\Commands\ClearCache;
-use Isaac\Commands\Install;
+use Isaac\Commands\Mods\Install;
+use Isaac\Commands\Mods\Uninstall;
 use Isaac\Commands\Restore;
-use Isaac\Commands\Uninstall;
 use Isaac\Services\Cache\CacheServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
 use Isaac\Services\Filesystem\FilesystemServiceProvider;

@@ -52,6 +52,10 @@ class Conflict extends Collection
         return $this->path;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////// SERIALIZATION /////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Get the representation of the conflict as a hash.
      *
@@ -60,6 +64,32 @@ class Conflict extends Collection
     public function getHash(): string
     {
         return md5($this->path.$this->map->getId()->implode('-'));
+    }
+
+    /**
+     * Get the possible choices this conflict can be solved with.
+     * eg. ["Mod 1 (12345)", "Mod B (12346)"].
+     *
+     * @return static
+     */
+    public function getPossibleChoices()
+    {
+        return $this->map(function (Mod $mod) {
+            return sprintf('%s (%s)', $mod->getName(), $mod->getId());
+        });
+    }
+
+    /**
+     * Get a mapping of choices to mods.
+     * eg. [0 => 12345, 1 => 12346].
+     *
+     * @return static
+     */
+    public function getPossibleResolutions()
+    {
+        return $this->mapWithKeys(function (Mod $mod) {
+            return [$mod->getName() => $mod->getId()];
+        });
     }
 
     ////////////////////////////////////////////////////////////////////////////////
