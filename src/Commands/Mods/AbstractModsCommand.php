@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Isaac\Commands\AbstractCommand;
 use Isaac\Services\Conflicts\ConflictsHandler;
 use Isaac\Services\Mods\Mod;
-use Isaac\Services\Mods\ModCollection;
 use Isaac\Services\Mods\ModNotFoundException;
 use Isaac\Services\Mods\ModsManager;
 use Psr\SimpleCache\CacheInterface;
@@ -42,9 +41,9 @@ abstract class AbstractModsCommand extends AbstractCommand
     }
 
     /**
-     * @return Mod[]|ModCollection
+     * @return Mod[]|Collection
      */
-    protected function getModsQueue(): ModCollection
+    protected function getModsQueue(): Collection
     {
         $mods = $this->input->getArgument('mods');
         $fallback = $this->input->getOption('graphical') ? 'getGraphicalMods' : 'getMods';

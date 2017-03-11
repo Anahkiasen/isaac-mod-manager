@@ -79,11 +79,11 @@ class ModsManager
      *
      * @param int[]|string[] $mods
      *
-     * @return Mod[]|ModCollection
+     * @return Mod[]|Collection
      */
-    public function findMods(array $mods): ModCollection
+    public function findMods(array $mods): Collection
     {
-        return ModCollection::make($mods)
+        return Collection::make($mods)
             ->unique()
             ->map(function ($modId) {
                 $isName = (int) $modId === 0;
@@ -225,9 +225,9 @@ class ModsManager
     /**
      * Get all workshop mods currently downloaded.
      *
-     * @return Mod[]|ModCollection
+     * @return Mod[]|Collection
      */
-    public function getMods(): ModCollection
+    public function getMods(): Collection
     {
         $mods = $this->filesystem->listContents($this->paths->getModsPath());
         foreach ($mods as &$mod) {
@@ -235,15 +235,15 @@ class ModsManager
             $mod->setFilesystem($this->filesystem);
         }
 
-        return new ModCollection($mods);
+        return new Collection($mods);
     }
 
     /**
      * Get all mods that are graphical only.
      *
-     * @return Mod[]|ModCollection
+     * @return Mod[]|Collection
      */
-    public function getGraphicalMods(): ModCollection
+    public function getGraphicalMods(): Collection
     {
         return $this->getMods()->filter->isGraphical();
     }
@@ -251,9 +251,9 @@ class ModsManager
     /**
      * Get all mods that have LUA coding.
      *
-     * @return Mod[]|ModCollection
+     * @return Mod[]|Collection
      */
-    public function getLuaMods(): ModCollection
+    public function getLuaMods(): Collection
     {
         return $this->getMods()->reject->isGraphical();
     }
