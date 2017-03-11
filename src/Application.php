@@ -2,6 +2,7 @@
 
 namespace Isaac;
 
+use Isaac\Bus\CommandBusServiceProvider;
 use Isaac\Commands\ClearCache;
 use Isaac\Commands\Mods\Install;
 use Isaac\Commands\Mods\Uninstall;
@@ -39,6 +40,7 @@ class Application extends Console implements ContainerAwareInterface
      * @var array
      */
     protected $providers = [
+        CommandBusServiceProvider::class,
         CacheServiceProvider::class,
         FilesystemServiceProvider::class,
     ];

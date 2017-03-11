@@ -26,19 +26,22 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected function setupVirtualFilesystem()
     {
-        $this->cache->set('destination', '/game');
-        $this->cache->set('source', '/mods');
+        $gamePath = $this->paths->getGamePath();
+        $modsPath = $this->paths->getModsPath();
 
-        $this->files->createDir('/game/resources/packed');
-        $this->files->put('/game/resources/achievements.xml', 'foobar');
-        $this->files->put('/game/resources/scripts/main.lua', 'main');
+        $this->cache->set('destination', $gamePath);
+        $this->cache->set('source', $modsPath);
+
+        $this->files->createDir($this->paths->getResourcesPath().'/packed');
+        $this->files->put($this->paths->getResourcesPath().'/achievements.xml', 'foobar');
+        $this->files->put($this->paths->getResourcesPath().'/scripts/main.lua', 'main');
 
         $this->mockMod(1, 'foobar');
         $this->mockMod(2, 'barbaz');
         $this->mockMod(3, 'lua', 'lua');
         $this->mockMod(4, 'lua2', 'lua2');
 
-        $this->files->put('/mods/3/resources/gfx/foo.png', '');
+        $this->files->put($modsPath.'/3/resources/gfx/foo.png', '');
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -80,11 +83,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 </metadata>
 XML;
 
-        $this->files->put('/mods/'.$id.'/metadata.xml', $metadata);
-        $this->files->createDir('/mods/'.$id.'/resources');
+        $this->files->put($this->paths->getModsPath().'/'.$id.'/metadata.xml', $metadata);
+        $this->files->createDir($this->paths->getModsPath().'/'.$id.'/resources');
 
         if ($lua) {
-            $this->files->put('/mods/'.$id.'/main.lua', $lua);
+            $this->files->put($this->paths->getModsPath().'/'.$id.'/main.lua', $lua);
         }
     }
 }

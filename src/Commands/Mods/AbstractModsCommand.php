@@ -8,6 +8,7 @@ use Isaac\Services\Conflicts\ConflictsHandler;
 use Isaac\Services\Mods\Mod;
 use Isaac\Services\Mods\ModNotFoundException;
 use Isaac\Services\Mods\ModsManager;
+use League\Tactician\CommandBus;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,11 +23,11 @@ abstract class AbstractModsCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    public function __construct(CacheInterface $cache, ModsManager $mods, ConflictsHandler $conflicts)
+    public function __construct(CommandBus $bus, CacheInterface $cache, ModsManager $mods, ConflictsHandler $conflicts)
     {
         $this->conflicts = $conflicts;
 
-        parent::__construct($cache, $mods);
+        parent::__construct($bus, $cache, $mods);
     }
 
     /**
