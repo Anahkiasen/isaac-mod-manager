@@ -10,7 +10,8 @@ class ModsManagerTest extends TestCase
     {
         $this->assertFalse($this->mods->areResourcesBackup());
 
-        $this->files->createDir('/game/resources.pristine');
+        $this->files->createDir($this->paths->getResourcesBackupPath());
+        $this->files->createDir($this->paths->getPackedBackupPath());
         $this->assertTrue($this->mods->areResourcesBackup());
     }
 
@@ -18,17 +19,8 @@ class ModsManagerTest extends TestCase
     {
         $this->assertTrue($this->mods->areResourcesExtracted());
 
-        $this->files->delete('/game/resources/achievements.xml');
+        $this->files->delete($this->paths->getResourcesPath().'/achievements.xml');
         $this->assertFalse($this->mods->areResourcesExtracted());
-    }
-
-    public function testCanBackupResources()
-    {
-        $this->mods->backup();
-
-        $this->assertVirtualFileExists($this->paths->getResourcesBackupPath());
-        $this->assertVirtualFileNotExists($this->paths->getPackedPath());
-        $this->assertVirtualFileExists($this->paths->getPackedBackupPath());
     }
 
     public function testCanFindModById()

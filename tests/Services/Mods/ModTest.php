@@ -10,7 +10,7 @@ class ModTest extends TestCase
 {
     public function testCanListFiles()
     {
-        $mod = new Mod('/mods/3');
+        $mod = new Mod($this->paths->getModsPath().'/3');
         $mod->setFilesystem($this->files);
         $files = $mod->listFiles();
 
