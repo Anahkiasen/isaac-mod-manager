@@ -60,8 +60,8 @@ class Application extends Console implements ContainerAwareInterface
      */
     public function __construct(Container $container = null)
     {
-        $version = strpos(static::VERSION, 'commit') !== false ? '(dev version)' : static::VERSION;
-        
+        $version = mb_strpos(static::VERSION, 'commit') !== false ? '(dev version)' : static::VERSION;
+
         parent::__construct('Isaac Mod Manager', $version);
 
         // Setup container

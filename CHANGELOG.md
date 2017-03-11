@@ -11,6 +11,9 @@
 - The `mods:install` command now tries to install all mods, pass `-g` to only install non-LUA mods
 - Better Mac support
 
+### Fixed
+- Fixed binary always showing "dev version" even on stable builds
+
 ## 0.2.3 - 2017-03-09
 ### Fixed
 - Fixed crash during mod uninstallation
