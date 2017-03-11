@@ -20,6 +20,7 @@
     "kherge/box": "^2.7",
     "league/container": "^2.4",
     "league/flysystem": "^1.0",
+    "league/tactician": "^1.0",
     "symfony/console": "^3.2",
     "tightenco/collect": "^5.4"
   },
@@ -32,6 +33,7 @@
     "symfony/var-dumper": "^3.2"
   },
   "autoload": {
+    "files": ["src/helpers.php"],
     "psr-4": {
       "Isaac\\": "src"
     }
