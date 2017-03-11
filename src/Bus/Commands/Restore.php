@@ -5,6 +5,9 @@ namespace Isaac\Bus\Commands;
 use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 
+/**
+ * Restore Isaac to its original state.
+ */
 class Restore
 {
     /**

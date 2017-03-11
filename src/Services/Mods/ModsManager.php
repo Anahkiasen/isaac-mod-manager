@@ -144,12 +144,14 @@ class ModsManager
     public function removeMod($mod)
     {
         $mod = $mod instanceof Mod ? $mod : $this->findModById($mod);
-        foreach ($this->filesystem->listFiles($mod->getPath('resources'), true) as $file) {
+        foreach ($mod->listFiles() as $file) {
             $original = $this->paths->getModeFileInResourcesBackup($mod, $file['path']);
             $destination = $this->paths->getModeFileInResources($mod, $file['path']);
 
             if ($this->filesystem->has($original)) {
                 $this->filesystem->forceCopy($original, $destination);
+            } elseif ($this->filesystem->has($destination)) {
+                $this->filesystem->delete($destination);
             }
         }
     }

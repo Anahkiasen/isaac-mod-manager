@@ -82,4 +82,18 @@ class ModsManagerTest extends TestCase
         $this->assertEquals('main'.PHP_EOL.'lua', $this->files->read($this->paths->getResourcesPath().'/scripts/main.lua'));
         $this->assertVirtualFileNotExists($this->paths->getResourcesPath().'/metadata.xml');
     }
+
+    public function testCanRemoveMod()
+    {
+        // Add root file to mod
+        $this->files->put($this->paths->getModsPath().'/3/foo.png', '');
+
+        $mod = $this->mods->findModById(3);
+
+        $this->mods->installMod($mod);
+        $this->assertVirtualFileExists($this->paths->getResourcesPath().'/foo.png');
+
+        $this->mods->removeMod($mod);
+        $this->assertVirtualFileNotExists($this->paths->getResourcesPath().'/foo.png');
+    }
 }
