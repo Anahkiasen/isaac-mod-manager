@@ -124,7 +124,10 @@ abstract class AbstractCommand extends Command
             return;
         }
 
-        $this->output->note('A new version is available: '.$this->updater->getNewVersion().PHP_EOL.'Run imm self-update to update');
+        $this->output->note(sprintf(
+            "A new version is available: %s, run \"self-update\" to update",
+            $this->updater->getNewVersion()
+        ));
     }
 
     /**
