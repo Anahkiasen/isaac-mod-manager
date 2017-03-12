@@ -6,6 +6,7 @@ use Isaac\Services\Mods\ModsManager;
 use Isaac\Services\Pathfinder;
 use RuntimeException;
 use Symfony\Component\Console\Helper\ProcessHelper;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -24,13 +25,13 @@ class ExtractResources
     protected $output;
 
     /**
-     * @param OutputInterface $output
      * @param ProcessHelper   $helper
+     * @param OutputInterface $output
      */
-    public function __construct(OutputInterface $output, ProcessHelper $helper)
+    public function __construct(ProcessHelper $helper, OutputInterface $output = null)
     {
         $this->processes = $helper;
-        $this->output = $output;
+        $this->output = $output = new NullOutput();
     }
 
     /**

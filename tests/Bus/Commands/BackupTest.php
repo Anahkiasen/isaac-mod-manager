@@ -9,7 +9,7 @@ class BackupTest extends TestCase
 {
     public function testCanBackupResources()
     {
-        $this->bus->handle(new Backup(new NullOutput()));
+        $this->bus->handle(new Backup());
 
         $this->assertVirtualFileExists($this->paths->getResourcesBackupPath());
         $this->assertVirtualFileNotExists($this->paths->getPackedPath());

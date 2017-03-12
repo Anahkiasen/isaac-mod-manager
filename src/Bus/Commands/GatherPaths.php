@@ -5,6 +5,9 @@ namespace Isaac\Bus\Commands;
 use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 use Psr\SimpleCache\CacheInterface;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
@@ -19,11 +22,11 @@ class GatherPaths
     protected $output;
 
     /**
-     * @param SymfonyStyle $output
+     * @param OutputInterface $output
      */
-    public function __construct(SymfonyStyle $output)
+    public function __construct(OutputInterface $output = null)
     {
-        $this->output = $output;
+        $this->output = new SymfonyStyle(new ArrayInput([]), $output ?: new NullOutput());
     }
 
     /**

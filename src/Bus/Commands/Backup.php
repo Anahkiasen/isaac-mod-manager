@@ -5,6 +5,7 @@ namespace Isaac\Bus\Commands;
 use Isaac\Services\Mods\ModsManager;
 use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -20,9 +21,9 @@ class Backup
     /**
      * @param OutputInterface $output
      */
-    public function __construct(OutputInterface $output)
+    public function __construct(OutputInterface $output = null)
     {
-        $this->output = $output;
+        $this->output = $output ?: new NullOutput();
     }
 
     /**
