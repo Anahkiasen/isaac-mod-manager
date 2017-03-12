@@ -2,29 +2,18 @@
 
 namespace Isaac\Bus\Commands;
 
+use Isaac\Bus\OutputAwareInterface;
+use Isaac\Bus\OutputAwareTrait;
 use Isaac\Services\Environment\Pathfinder;
 use Isaac\Services\Mods\ModsManager;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Backs up the resources/ and packed/ folders for later retrieval.
  */
-class Backup
+class Backup implements OutputAwareInterface
 {
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
-
-    /**
-     * @param OutputInterface $output
-     */
-    public function __construct(OutputInterface $output = null)
-    {
-        $this->output = $output ?: new NullOutput();
-    }
+    use OutputAwareTrait;
 
     /**
      * @param ModsManager                            $mods
@@ -37,8 +26,8 @@ class Backup
             return;
         }
 
-        $this->output->writeln('<comment>Making a backup of resources folder, this only has to be done once</comment>');
-        $this->output->writeln('It can take a few minutes so be patient');
+        $this->getOutput()->writeln('<comment>Making a backup of resources folder, this only has to be done once</comment>');
+        $this->getOutput()->writeln('It can take a few minutes so be patient');
 
         if (!$files->has($paths->getResourcesBackupPath())) {
             $files->copyDirectory($paths->getResourcesPath(), $paths->getResourcesBackupPath());

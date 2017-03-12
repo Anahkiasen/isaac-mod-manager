@@ -91,7 +91,7 @@ abstract class AbstractCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
-        $this->output = new SymfonyStyle($input, $output);
+        $this->output = $output;
 
         // Check for new version
         $this->checkUpdates();
@@ -149,10 +149,7 @@ abstract class AbstractCommand extends Command
      */
     protected function setup()
     {
-        $this->bus->handle(new GatherPaths($this->output));
-        $this->bus->handle(new ExtractResources(
-            $this->getHelper('process'),
-            $this->output
-        ));
+        $this->bus->handle(new GatherPaths());
+        $this->bus->handle(new ExtractResources($this->getHelper('process')));
     }
 }

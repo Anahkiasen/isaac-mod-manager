@@ -3,6 +3,7 @@
 namespace Isaac;
 
 use Isaac\Bus\CommandBusServiceProvider;
+use Isaac\Bus\Commands\CheckUpdates;
 use Isaac\Console\Commands\ClearCache;
 use Isaac\Console\Commands\Mods\Install;
 use Isaac\Console\Commands\Mods\Uninstall;
@@ -18,6 +19,7 @@ use League\Container\ReflectionContainer;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -89,13 +91,19 @@ class Application extends Console implements ContainerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function run(InputInterface $input = null, OutputInterface $output = null)
+    public function doRun(InputInterface $input, OutputInterface $output)
     {
+        // Decorate IO
+        $output = new SymfonyStyle($input, $output);
+
+        // Bind IO to container
+        $this->container->add(OutputInterface::class, $output);
+
         // Register commands with the CLI application
         foreach ($this->commands as $command) {
             $this->add($this->container->get($command));
         }
 
-        return parent::run($input, $output);
+        return parent::doRun($input, $output);
     }
 }

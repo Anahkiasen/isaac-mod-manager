@@ -5,6 +5,7 @@ namespace Isaac\Bus;
 use Isaac\Services\ContainerAwareTrait;
 use League\Container\ContainerInterface;
 use League\Tactician\Middleware;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * A command bus middleware that allows commands
@@ -32,6 +33,11 @@ class SelfHandlerMiddleware implements Middleware
     {
         if (!method_exists($command, 'handle')) {
             return $next($command);
+        }
+
+        // Set output on command if necessary
+        if ($command instanceof OutputAwareInterface) {
+            $command->setOutput($this->container->get(OutputInterface::class));
         }
 
         return $this->container->call([$command, 'handle']);

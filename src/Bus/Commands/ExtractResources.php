@@ -2,37 +2,32 @@
 
 namespace Isaac\Bus\Commands;
 
+use Isaac\Bus\OutputAwareInterface;
+use Isaac\Bus\OutputAwareTrait;
 use Isaac\Services\Environment\Environment;
 use Isaac\Services\Environment\Pathfinder;
 use Isaac\Services\Mods\ModsManager;
 use RuntimeException;
 use Symfony\Component\Console\Helper\ProcessHelper;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Extracts the packed resources into workable files.
  */
-class ExtractResources
+class ExtractResources implements OutputAwareInterface
 {
+    use OutputAwareTrait;
+
     /**
      * @var ProcessHelper
      */
     protected $processes;
 
     /**
-     * @var OutputInterface
+     * @param ProcessHelper $helper
      */
-    protected $output;
-
-    /**
-     * @param ProcessHelper   $helper
-     * @param OutputInterface $output
-     */
-    public function __construct(ProcessHelper $helper, OutputInterface $output = null)
+    public function __construct(ProcessHelper $helper)
     {
         $this->processes = $helper;
-        $this->output = $output = new NullOutput();
     }
 
     /**
@@ -48,10 +43,10 @@ class ExtractResources
         }
 
         if (Environment::isUnix()) {
-            $this->output->writeln('<comment>Extracting resources</comment>');
+            $this->getOutput()->writeln('<comment>Extracting resources</comment>');
             $target = $paths->getResourcesPath().DS.'..';
 
-            return $this->processes->run($this->output, [
+            return $this->processes->run($this->getOutput(), [
                 $paths->getResourceExtractorPath(),
                 $target,
                 $target,

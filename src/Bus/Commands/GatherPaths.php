@@ -2,32 +2,19 @@
 
 namespace Isaac\Bus\Commands;
 
+use Isaac\Bus\OutputAwareInterface;
+use Isaac\Bus\OutputAwareTrait;
 use Isaac\Services\Environment\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 use Psr\SimpleCache\CacheInterface;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Checks the existence of the required paths in cache,
  * and asks the user for them otherwise.
  */
-class GatherPaths
+class GatherPaths implements OutputAwareInterface
 {
-    /**
-     * @var SymfonyStyle
-     */
-    protected $output;
-
-    /**
-     * @param OutputInterface $output
-     */
-    public function __construct(OutputInterface $output = null)
-    {
-        $this->output = new SymfonyStyle(new ArrayInput([]), $output ?: new NullOutput());
-    }
+    use OutputAwareTrait;
 
     /**
      * @param CacheInterface      $cache
@@ -41,8 +28,8 @@ class GatherPaths
         }
 
         // Gather paths to folders
-        $this->output->title('Before we begin I need some informations from you!');
-        $destination = $this->output->ask('Where is Afterbirth+ installed?', $paths->getGamePath());
+        $this->getOutput()->title('Before we begin I need some informations from you!');
+        $destination = $this->getOutput()->ask('Where is Afterbirth+ installed?', $paths->getGamePath());
 
         // Try to infer path to mods
         $modsPath = $paths->getModsPath();
@@ -54,12 +41,12 @@ class GatherPaths
             }
         }
 
-        $source = $this->output->ask('Where are your Afterbirth+ Workshop mods located?', $modsPath);
+        $source = $this->getOutput()->ask('Where are your Afterbirth+ Workshop mods located?', $modsPath);
 
         // Cache for later use
         $cache->set('source', $source);
         $cache->set('destination', $destination);
 
-        $this->output->success('Setup completed, all good!');
+        $this->getOutput()->success('Setup completed, all good!');
     }
 }

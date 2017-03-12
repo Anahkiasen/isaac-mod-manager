@@ -30,7 +30,7 @@ class Install extends AbstractModsCommand
         $modsQueue = $this->getModsQueue();
 
         // Rename packed folder if necessary
-        $this->bus->handle(new Backup($this->output));
+        $this->bus->handle(new Backup());
 
         // Resolve eventual conflicts in the mods
         $modsQueue = $this->conflicts->findAndResolve($modsQueue, function (Conflict $conflict) {
