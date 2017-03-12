@@ -131,7 +131,8 @@ abstract class AbstractCommand extends Command
         $version = $this->updater->getNewVersion();
         $question = sprintf(
             "A new version is available: <comment>%s</comment>, view changes at <comment>https://github.com/anahkiasen/isaac-mod-manager/releases/tag/%s</comment>\n Update now?",
-            $version, $version
+            $version,
+            $version
         );
 
         // Remember user choice
