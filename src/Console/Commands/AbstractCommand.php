@@ -120,12 +120,7 @@ abstract class AbstractCommand extends Command
      */
     protected function checkUpdates(): void
     {
-        if (!$version = $this->cache->get('latest')) {
-            $version = $this->updater->hasUpdate();
-            $this->cache->set('latest', $this->updater->getNewVersion(), new DateInterval('P1D'));
-        }
-
-        if ($version) {
+        if ($version = $this->updater->hasUpdate()) {
             $this->output->note('A new version is available: '.$version.PHP_EOL.'Run imm self-update to update');
         }
     }
