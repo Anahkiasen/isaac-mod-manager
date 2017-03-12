@@ -120,14 +120,17 @@ abstract class AbstractCommand extends Command
      */
     protected function checkUpdates(): void
     {
-        if (Application::isDevelopmentVersion() || !$this->updater->hasUpdate() || !$this->cache->get('selfupdate') || $this->getName() === 'self-update') {
+        // Only try to update if a) we're running the PHAR, b) there is an update c) the user wants updates
+        $shouldUpdate = !Application::isDevelopmentVersion() && $this->getName() !== 'self-update';
+        $wantsUpdates = $this->updater->hasUpdate() && $this->cache->get('selfupdate');
+        if (!$shouldUpdate || !$wantsUpdates) {
             return;
         }
 
         // Print new version and changelog
         $version = $this->updater->getNewVersion();
         $question = sprintf(
-            "A new version is available: <comment>%s</comment>, view changes at <comment>https://github.com/Anahkiasen/isaac-mod-manager/releases/tag/%s</comment>\n Update now?",
+            "A new version is available: <comment>%s</comment>, view changes at <comment>https://github.com/anahkiasen/isaac-mod-manager/releases/tag/%s</comment>\n Update now?",
             $version, $version
         );
 
