@@ -2,6 +2,7 @@
 
 namespace Isaac\Console;
 
+use DateInterval;
 use Humbug\SelfUpdate\Updater;
 use Isaac\Bus\Commands\ExtractResources;
 use Isaac\Bus\Commands\GatherPaths;
@@ -93,9 +94,7 @@ abstract class AbstractCommand extends Command
         $this->output = new SymfonyStyle($input, $output);
 
         // Check for new version
-        if ($version = $this->updater->hasUpdate()) {
-            $this->output->note('A new version is available: '.$version.PHP_EOL.'Run imm self-update to update');
-        }
+        $this->checkUpdates();
 
         // Preliminary setup
         if ($this->needsSetup) {
@@ -115,6 +114,21 @@ abstract class AbstractCommand extends Command
     ////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////// MODS //////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Check for potential updates.
+     */
+    protected function checkUpdates(): void
+    {
+        if (!$version = $this->cache->get('latest')) {
+            $version = $this->updater->hasUpdate();
+            $this->cache->set('latest', $version, new DateInterval('P1D'));
+        }
+
+        if ($version) {
+            $this->output->note('A new version is available: '.$version.PHP_EOL.'Run imm self-update to update');
+        }
+    }
 
     /**
      * Setup the CLI application with the necessary informations.

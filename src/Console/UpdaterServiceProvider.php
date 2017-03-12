@@ -19,7 +19,7 @@ class UpdaterServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        $this->container->share(Updater::class, function() {
+        $this->container->share(Updater::class, function () {
             $version = explode('-', Application::VERSION)[0];
 
             // Create Github strategy for PHAR updates
