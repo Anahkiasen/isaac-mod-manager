@@ -1,9 +1,9 @@
 <?php
 
-namespace Isaac\Console\Mods;
+namespace Isaac\Console\Commands\Mods;
 
 use Illuminate\Support\Collection;
-use Isaac\Console\AbstractCommand;
+use Isaac\Console\Commands\AbstractCommand;
 use Isaac\Services\Conflicts\ConflictsHandler;
 use Isaac\Services\Mods\Mod;
 use Isaac\Services\Mods\ModNotFoundException;

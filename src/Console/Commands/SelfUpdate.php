@@ -1,6 +1,6 @@
 <?php
 
-namespace Isaac\Console;
+namespace Isaac\Console\Commands;
 
 use Exception;
 use Isaac\Application;

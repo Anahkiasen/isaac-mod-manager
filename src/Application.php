@@ -3,11 +3,11 @@
 namespace Isaac;
 
 use Isaac\Bus\CommandBusServiceProvider;
-use Isaac\Console\ClearCache;
-use Isaac\Console\Mods\Install;
-use Isaac\Console\Mods\Uninstall;
-use Isaac\Console\Restore;
-use Isaac\Console\SelfUpdate;
+use Isaac\Console\Commands\ClearCache;
+use Isaac\Console\Commands\Mods\Install;
+use Isaac\Console\Commands\Mods\Uninstall;
+use Isaac\Console\Commands\Restore;
+use Isaac\Console\Commands\SelfUpdate;
 use Isaac\Console\UpdaterServiceProvider;
 use Isaac\Services\Cache\CacheServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
