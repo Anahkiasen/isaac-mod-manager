@@ -8,7 +8,7 @@ use Isaac\Console\Commands\Mods\Install;
 use Isaac\Console\Commands\Mods\Uninstall;
 use Isaac\Console\Commands\Restore;
 use Isaac\Console\Commands\SelfUpdate;
-use Isaac\Console\UpdaterServiceProvider;
+use Isaac\Console\ConsoleServiceProvider;
 use Isaac\Services\Cache\CacheServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
 use Isaac\Services\Filesystem\FilesystemServiceProvider;
@@ -44,7 +44,7 @@ class Application extends Console implements ContainerAwareInterface
         CacheServiceProvider::class,
         CommandBusServiceProvider::class,
         FilesystemServiceProvider::class,
-        UpdaterServiceProvider::class,
+        ConsoleServiceProvider::class,
     ];
 
     /**
@@ -63,7 +63,7 @@ class Application extends Console implements ContainerAwareInterface
      */
     public function __construct(Container $container = null)
     {
-        $version = mb_strpos(static::VERSION, 'commit') !== false ? '(dev version)' : static::VERSION;
+        $version = self::isDevelopmentVersion() ? '(dev version)' : static::VERSION;
 
         parent::__construct('Isaac Mod Manager', $version);
 
@@ -76,6 +76,14 @@ class Application extends Console implements ContainerAwareInterface
 
         // Register CLI commands
         $this->setContainer($container);
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isDevelopmentVersion(): bool
+    {
+        return mb_strpos(static::VERSION, 'commit') !== false;
     }
 
     /**

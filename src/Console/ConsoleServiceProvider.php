@@ -7,7 +7,7 @@ use Humbug\SelfUpdate\Updater;
 use Isaac\Application;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class UpdaterServiceProvider extends AbstractServiceProvider
+class ConsoleServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array

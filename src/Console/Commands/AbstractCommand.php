@@ -120,14 +120,23 @@ abstract class AbstractCommand extends Command
      */
     protected function checkUpdates(): void
     {
-        if (Application::VERSION === '@commit@' || !$this->updater->hasUpdate()) {
+        if (Application::isDevelopmentVersion() || !$this->updater->hasUpdate() || !$this->cache->get('selfupdate') || $this->getName() === 'self-update') {
             return;
         }
 
-        $this->output->note(sprintf(
-            "A new version is available: %s, run \"self-update\" to update",
-            $this->updater->getNewVersion()
-        ));
+        // Print new version and changelog
+        $version = $this->updater->getNewVersion();
+        $question = sprintf(
+            "A new version is available: <comment>%s</comment>, view changes at <comment>https://github.com/Anahkiasen/isaac-mod-manager/releases/tag/%s</comment>\n Update now?",
+            $version, $version
+        );
+
+        // Remember user choice
+        $answer = $this->output->confirm($question, false);
+        $this->cache->set('selfupdate', $answer);
+        if ($answer) {
+            $this->getApplication()->find('self-update')->run($this->input, $this->output);
+        }
     }
 
     /**
