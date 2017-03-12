@@ -5,6 +5,7 @@ namespace Isaac;
 use Isaac\Assertions\FilesystemAssertions;
 use Isaac\Providers\TestingServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
+use Symfony\Component\Console\Tester\CommandTester;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
@@ -42,6 +43,39 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $this->mockMod(4, 'lua2', 'lua2');
 
         $this->files->put($modsPath.'/3/resources/gfx/foo.png', '');
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////// MOCKS //////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prophesize($classOrInterface = null, string $binding = null)
+    {
+        $prophecy = parent::prophesize($classOrInterface);
+        $binding = $binding ?: $classOrInterface;
+        if ($binding) {
+            $this->container->add($binding, $prophecy->reveal());
+        }
+
+        return $prophecy;
+    }
+
+    /**
+     * @param string $command
+     * @param array  $input
+     * @param array  $options
+     *
+     * @return CommandTester
+     */
+    protected function executeCommand(string $command, array $input = [], array $options = []): CommandTester
+    {
+        $tester = new CommandTester($this->container->get($command));
+        $tester->execute($input, $options);
+
+        return $tester;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
