@@ -8,6 +8,7 @@ use Isaac\Console\Mods\Install;
 use Isaac\Console\Mods\Uninstall;
 use Isaac\Console\Restore;
 use Isaac\Console\SelfUpdate;
+use Isaac\Console\UpdaterServiceProvider;
 use Isaac\Services\Cache\CacheServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
 use Isaac\Services\Filesystem\FilesystemServiceProvider;
@@ -40,9 +41,10 @@ class Application extends Console implements ContainerAwareInterface
      * @var array
      */
     protected $providers = [
-        CommandBusServiceProvider::class,
         CacheServiceProvider::class,
+        CommandBusServiceProvider::class,
         FilesystemServiceProvider::class,
+        UpdaterServiceProvider::class,
     ];
 
     /**

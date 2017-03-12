@@ -2,6 +2,7 @@
 
 namespace Isaac\Console;
 
+use Humbug\SelfUpdate\Updater;
 use Isaac\Bus\Commands\ExtractResources;
 use Isaac\Bus\Commands\GatherPaths;
 use Isaac\Services\Mods\ModsManager;
@@ -43,6 +44,11 @@ abstract class AbstractCommand extends Command
     protected $mods;
 
     /**
+     * @var Updater
+     */
+    protected $updater;
+
+    /**
      * @var bool
      */
     protected $needsSetup = false;
@@ -51,12 +57,14 @@ abstract class AbstractCommand extends Command
      * @param CommandBus     $bus
      * @param CacheInterface $cache
      * @param ModsManager    $mods
+     * @param Updater        $updater
      */
-    public function __construct(CommandBus $bus, CacheInterface $cache, ModsManager $mods)
+    public function __construct(CommandBus $bus, CacheInterface $cache, ModsManager $mods, Updater $updater)
     {
         $this->bus = $bus;
         $this->cache = $cache;
         $this->mods = $mods;
+        $this->updater = $updater;
 
         parent::__construct();
     }
@@ -83,6 +91,11 @@ abstract class AbstractCommand extends Command
     {
         $this->input = $input;
         $this->output = new SymfonyStyle($input, $output);
+
+        // Check for new version
+        if ($version = $this->updater->hasUpdate()) {
+            $this->output->note('A new version is available: '.$version.PHP_EOL.'Run imm self-update to update');
+        }
 
         // Preliminary setup
         if ($this->needsSetup) {

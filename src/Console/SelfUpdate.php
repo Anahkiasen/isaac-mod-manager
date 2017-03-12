@@ -3,8 +3,6 @@
 namespace Isaac\Console;
 
 use Exception;
-use Humbug\SelfUpdate\Strategy\GithubStrategy;
-use Humbug\SelfUpdate\Updater;
 use Isaac\Application;
 
 class SelfUpdate extends AbstractCommand
@@ -24,22 +22,11 @@ class SelfUpdate extends AbstractCommand
      */
     protected function fire()
     {
-        // Get the absolute version, without commit suffix
-        $version = explode('-', Application::VERSION)[0];
-
-        // Create Github strategy for PHAR updates
-        $strategy = new GithubStrategy();
-        $strategy->setPackageName('anahkiasen/isaac-mod-manager');
-        $strategy->setPharName('imm.phar');
-        $strategy->setCurrentLocalVersion($version);
-
-        $updater = new Updater(null, false, $strategy);
-
         try {
-            if ($updater->update()) {
+            if ($this->updater->update()) {
                 $this->output->success('PHAR successfully updated!');
             } else {
-                $this->output->comment('No update needed');
+                $this->output->success('No update needed! '.Application::VERSION.' is the latest version.');
             }
         } catch (Exception $exception) {
             $this->output->error('Error during update: '.$exception->getMessage());
