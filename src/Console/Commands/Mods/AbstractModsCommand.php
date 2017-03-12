@@ -1,9 +1,10 @@
 <?php
 
-namespace Isaac\Console\Mods;
+namespace Isaac\Console\Commands\Mods;
 
+use Humbug\SelfUpdate\Updater;
 use Illuminate\Support\Collection;
-use Isaac\Console\AbstractCommand;
+use Isaac\Console\Commands\AbstractCommand;
 use Isaac\Services\Conflicts\ConflictsHandler;
 use Isaac\Services\Mods\Mod;
 use Isaac\Services\Mods\ModNotFoundException;
@@ -23,11 +24,11 @@ abstract class AbstractModsCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    public function __construct(CommandBus $bus, CacheInterface $cache, ModsManager $mods, ConflictsHandler $conflicts)
+    public function __construct(CommandBus $bus, CacheInterface $cache, ModsManager $mods, ConflictsHandler $conflicts, Updater $updater)
     {
         $this->conflicts = $conflicts;
 
-        parent::__construct($bus, $cache, $mods);
+        parent::__construct($bus, $cache, $mods, $updater);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Isaac\Console;
+namespace Isaac\Console\Commands;
 
 class ClearCache extends AbstractCommand
 {

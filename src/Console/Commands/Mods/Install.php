@@ -1,6 +1,6 @@
 <?php
 
-namespace Isaac\Console\Mods;
+namespace Isaac\Console\Commands\Mods;
 
 use Isaac\Bus\Commands\Backup;
 use Isaac\Console\ChoiceValidator;

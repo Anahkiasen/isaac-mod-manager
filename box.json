@@ -22,5 +22,6 @@
   "git-version": "commit",
   "main": "bin/imm",
   "output": "bin/imm.phar",
+  "compression": "BZ2",
   "stub": true
 }

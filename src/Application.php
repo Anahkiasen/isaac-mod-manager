@@ -3,10 +3,12 @@
 namespace Isaac;
 
 use Isaac\Bus\CommandBusServiceProvider;
-use Isaac\Console\ClearCache;
-use Isaac\Console\Mods\Install;
-use Isaac\Console\Mods\Uninstall;
-use Isaac\Console\Restore;
+use Isaac\Console\Commands\ClearCache;
+use Isaac\Console\Commands\Mods\Install;
+use Isaac\Console\Commands\Mods\Uninstall;
+use Isaac\Console\Commands\Restore;
+use Isaac\Console\Commands\SelfUpdate;
+use Isaac\Console\ConsoleServiceProvider;
 use Isaac\Services\Cache\CacheServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
 use Isaac\Services\Filesystem\FilesystemServiceProvider;
@@ -14,7 +16,6 @@ use League\Container\Container;
 use League\Container\ContainerAwareInterface;
 use League\Container\ReflectionContainer;
 use Symfony\Component\Console\Application as Console;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -40,9 +41,10 @@ class Application extends Console implements ContainerAwareInterface
      * @var array
      */
     protected $providers = [
-        CommandBusServiceProvider::class,
         CacheServiceProvider::class,
+        CommandBusServiceProvider::class,
         FilesystemServiceProvider::class,
+        ConsoleServiceProvider::class,
     ];
 
     /**
@@ -53,6 +55,7 @@ class Application extends Console implements ContainerAwareInterface
         Uninstall::class,
         Restore::class,
         ClearCache::class,
+        SelfUpdate::class,
     ];
 
     /**
@@ -60,7 +63,7 @@ class Application extends Console implements ContainerAwareInterface
      */
     public function __construct(Container $container = null)
     {
-        $version = mb_strpos(static::VERSION, 'commit') !== false ? '(dev version)' : static::VERSION;
+        $version = self::isDevelopmentVersion() ? '(dev version)' : static::VERSION;
 
         parent::__construct('Isaac Mod Manager', $version);
 
@@ -76,20 +79,21 @@ class Application extends Console implements ContainerAwareInterface
     }
 
     /**
+     * @return bool
+     */
+    public static function isDevelopmentVersion(): bool
+    {
+        return mb_strpos(static::VERSION, 'commit') !== false;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         // Register commands with the CLI application
         foreach ($this->commands as $command) {
-            $command = $this->container->get($command);
-
-            /** @var Command $command */
-            if ($command instanceof ContainerAwareInterface) {
-                $command->setContainer($this->container);
-            }
-
-            $this->add($command);
+            $this->add($this->container->get($command));
         }
 
         return parent::run($input, $output);
