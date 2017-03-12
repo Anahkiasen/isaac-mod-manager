@@ -24,13 +24,16 @@ class SelfUpdate extends AbstractCommand
      */
     protected function fire()
     {
+        // Get the absolute version, without commit suffix
+        $version = explode('-', Application::VERSION)[0];
+
+        // Create Github strategy for PHAR updates
         $strategy = new GithubStrategy();
         $strategy->setPackageName('anahkiasen/isaac-mod-manager');
         $strategy->setPharName('imm.phar');
-        $strategy->setCurrentLocalVersion(Application::VERSION);
+        $strategy->setCurrentLocalVersion($version);
 
-        $updater = new Updater(null, false);
-        $updater->setStrategyObject($strategy);
+        $updater = new Updater(null, false, $strategy);
 
         try {
             if ($updater->update()) {
