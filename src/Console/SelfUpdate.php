@@ -10,9 +10,17 @@ use Isaac\Application;
 class SelfUpdate extends AbstractCommand
 {
     /**
-     * Fire the command.
-     *
-     * @return int|null|void
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        return $this
+            ->setName('self-update')
+            ->setDescription('Updates IMM to the latest stable version');
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function fire()
     {
@@ -25,9 +33,11 @@ class SelfUpdate extends AbstractCommand
         $updater->setStrategyObject($strategy);
 
         try {
-            $result = $updater->update();
-
-            return $result ? $this->output->success('PHAR successfully updated!') : $this->output->comment('No update needed');
+            if ($updater->update()) {
+                $this->output->success('PHAR successfully updated!');
+            } else {
+                $this->output->comment('No update needed');
+            }
         } catch (Exception $exception) {
             $this->output->error('Error during update: '.$exception->getMessage());
         }
