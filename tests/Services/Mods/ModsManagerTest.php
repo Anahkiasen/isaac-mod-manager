@@ -96,4 +96,16 @@ class ModsManagerTest extends TestCase
         $this->mods->removeMod($mod);
         $this->assertVirtualFileNotExists($this->paths->getResourcesPath().'/foo.png');
     }
+
+    public function testCanRestoreMainLuaFile()
+    {
+        $this->files->put($this->paths->getMainLuaBackupPath(), 'foo');
+        $this->files->put($this->paths->getMainLuaPath(), 'bar');
+
+        $this->mods->restoreMainLua();
+        $this->assertEquals('foo', $this->files->read($this->paths->getMainLuaPath()));
+
+        $this->files->delete($this->paths->getMainLuaBackupPath());
+        $this->mods->restoreMainLua();
+    }
 }

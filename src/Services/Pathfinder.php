@@ -132,6 +132,14 @@ class Pathfinder
     /**
      * @return string
      */
+    public function getPackedBackupPath(): string
+    {
+        return $this->getPackedPath().static::BACKUP_PREFIX;
+    }
+
+    /**
+     * @return string
+     */
     public function getMainLuaPath(): string
     {
         return $this->getResourcesPath().DS.'scripts'.DS.'main.lua';
@@ -140,9 +148,9 @@ class Pathfinder
     /**
      * @return string
      */
-    public function getPackedBackupPath(): string
+    public function getMainLuaBackupPath(): string
     {
-        return $this->getPackedPath().static::BACKUP_PREFIX;
+        return str_replace($this->getResourcesPath(), $this->getResourcesBackupPath(), $this->getMainLuaPath());
     }
 
     ////////////////////////////////////////////////////////////////////////////////
