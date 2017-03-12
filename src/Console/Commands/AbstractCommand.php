@@ -122,8 +122,9 @@ abstract class AbstractCommand extends Command
     {
         // Only try to update if a) we're running the PHAR, b) there is an update c) the user wants updates
         $shouldUpdate = !Application::isDevelopmentVersion() && $this->getName() !== 'self-update';
-        $wantsUpdates = $this->updater->hasUpdate() && $this->cache->get('selfupdate');
-        if (!$shouldUpdate || !$wantsUpdates) {
+        $updateExists = $this->updater->hasUpdate();
+        $wantsUpdates = !$this->cache->has('selfupdate') || $this->cache->get('selfupdate');
+        if (!$shouldUpdate || !$updateExists || !$wantsUpdates) {
             return;
         }
 
