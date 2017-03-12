@@ -29,7 +29,7 @@ class SelfUpdate extends AbstractCommand
         $strategy->setPharName('imm.phar');
         $strategy->setCurrentLocalVersion(Application::VERSION);
 
-        $updater = new Updater();
+        $updater = new Updater(null, false);
         $updater->setStrategyObject($strategy);
 
         try {
