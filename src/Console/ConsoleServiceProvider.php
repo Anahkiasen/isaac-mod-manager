@@ -31,7 +31,6 @@ class ConsoleServiceProvider extends AbstractServiceProvider
             // Create Updater without pubkey signing
             $updater = new Updater(null, false);
             $updater->setStrategyObject($strategy);
-            $updater->hasUpdate();
 
             return $updater;
         });
