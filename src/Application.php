@@ -10,11 +10,12 @@ use Isaac\Console\Restore;
 use Isaac\Services\Cache\CacheServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
 use Isaac\Services\Filesystem\FilesystemServiceProvider;
+use KevinGH\Amend\Command as SelfUpdate;
+use KevinGH\Amend\Helper;
 use League\Container\Container;
 use League\Container\ContainerAwareInterface;
 use League\Container\ReflectionContainer;
 use Symfony\Component\Console\Application as Console;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -80,16 +81,16 @@ class Application extends Console implements ContainerAwareInterface
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
+        $this->getHelperSet()->set(new Helper());
+
+        // Add self-update command
+        $selfUpdate = new SelfUpdate('self-update');
+        $selfUpdate->setManifestUri('https://raw.githubusercontent.com/Anahkiasen/isaac-mod-manager/feature/self-update/manifest.json');
+        $this->add($selfUpdate);
+
         // Register commands with the CLI application
         foreach ($this->commands as $command) {
-            $command = $this->container->get($command);
-
-            /** @var Command $command */
-            if ($command instanceof ContainerAwareInterface) {
-                $command->setContainer($this->container);
-            }
-
-            $this->add($command);
+            $this->add($this->container->get($command));
         }
 
         return parent::run($input, $output);
