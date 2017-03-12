@@ -71,7 +71,7 @@ class CheckUpdatesTest extends TestCase
     /**
      * @param callable|null $callback
      */
-    protected function checkForUpdates(callable $callback = null): void
+    protected function checkForUpdates(callable $callback = null)
     {
         $command = new CheckUpdates($callback);
         $command->setCheckVersion(false);

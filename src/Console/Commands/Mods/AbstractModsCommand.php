@@ -63,7 +63,7 @@ abstract class AbstractModsCommand extends AbstractCommand
      * @param string     $action
      * @param Collection $modsQueue
      */
-    protected function presentMods(string $action, Collection $modsQueue): void
+    protected function presentMods(string $action, Collection $modsQueue)
     {
         $this->output->title(sprintf('%s %d mod(s)', $action, $modsQueue->count()));
         $this->output->listing(
