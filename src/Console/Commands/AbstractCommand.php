@@ -92,12 +92,14 @@ abstract class AbstractCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
-        $this->output = $output;
+        $this->output = $output instanceof SymfonyStyle ? $output : new SymfonyStyle($input, $output);
 
         // Check for new version
-        $this->bus->handle(new CheckUpdates(function() {
-            return $this->getApplication()->find('self-update')->run($this->input, $this->output);
-        }));
+        if (!$this instanceof SelfUpdate) {
+            $this->bus->handle(new CheckUpdates(function () {
+                return $this->getApplication()->find('self-update')->run($this->input, $this->output);
+            }));
+        }
 
         // Preliminary setup
         if ($this->needsSetup) {

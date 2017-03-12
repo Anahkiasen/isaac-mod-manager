@@ -4,6 +4,9 @@ namespace Isaac\Bus;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Interface for an output-aware command.
+ */
 interface OutputAwareInterface
 {
     /**

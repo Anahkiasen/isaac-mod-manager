@@ -12,6 +12,9 @@ use League\Flysystem\Plugin\ForcedCopy;
 use League\Flysystem\Plugin\ListFiles;
 use League\Flysystem\Vfs\VfsAdapter;
 use Psr\SimpleCache\CacheInterface;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use VirtualFileSystem\FileSystem as VirtualFilesystem;
 
 class TestingServiceProvider extends AbstractServiceProvider
@@ -42,6 +45,10 @@ class TestingServiceProvider extends AbstractServiceProvider
 
         $this->container->share(CacheInterface::class, function () {
             return new SimpleCacheBridge(new ArrayCachePool());
+        });
+
+        $this->container->share(SymfonyStyle::class, function () {
+            return new SymfonyStyle(new ArrayInput([]), new NullOutput());
         });
     }
 }

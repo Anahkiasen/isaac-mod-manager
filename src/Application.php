@@ -3,7 +3,6 @@
 namespace Isaac;
 
 use Isaac\Bus\CommandBusServiceProvider;
-use Isaac\Bus\Commands\CheckUpdates;
 use Isaac\Console\Commands\ClearCache;
 use Isaac\Console\Commands\Mods\Install;
 use Isaac\Console\Commands\Mods\Uninstall;
@@ -97,7 +96,7 @@ class Application extends Console implements ContainerAwareInterface
         $output = new SymfonyStyle($input, $output);
 
         // Bind IO to container
-        $this->container->add(OutputInterface::class, $output);
+        $this->container->add(SymfonyStyle::class, $output);
 
         // Register commands with the CLI application
         foreach ($this->commands as $command) {

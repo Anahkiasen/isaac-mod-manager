@@ -8,21 +8,38 @@ use Isaac\Bus\OutputAwareInterface;
 use Isaac\Bus\OutputAwareTrait;
 use Psr\SimpleCache\CacheInterface;
 
+/**
+ * Checks for updates and triggers a callback
+ * if necessary.
+ */
 class CheckUpdates implements OutputAwareInterface
 {
     use OutputAwareTrait;
 
     /**
-     * @var callable
+     * @var callable|null
      */
     protected $callback;
 
     /**
-     * @param callable $callback
+     * @var bool
      */
-    public function __construct(callable $callback)
+    protected $checkVersion = true;
+
+    /**
+     * @param callable|null $callback
+     */
+    public function __construct(callable $callback = null)
     {
         $this->callback = $callback;
+    }
+
+    /**
+     * @param bool $checkVersion
+     */
+    public function setCheckVersion(bool $checkVersion)
+    {
+        $this->checkVersion = $checkVersion;
     }
 
     /**
@@ -34,10 +51,9 @@ class CheckUpdates implements OutputAwareInterface
         $callback = $this->callback;
 
         // Only try to update if a) we're running the PHAR, b) there is an update c) the user wants updates
-        $shouldUpdate = !Application::isDevelopmentVersion() && $this->getName() !== 'self-update';
-        $updateExists = $updater->hasUpdate();
+        $shouldUpdate = !$this->checkVersion || !Application::isDevelopmentVersion();
         $wantsUpdates = !$cache->has('selfupdate') || $cache->get('selfupdate');
-        if (!$shouldUpdate || !$updateExists || !$wantsUpdates) {
+        if (!$shouldUpdate || !$wantsUpdates || !$updater->hasUpdate()) {
             return;
         }
 
@@ -52,7 +68,7 @@ class CheckUpdates implements OutputAwareInterface
         // Remember user choice
         $answer = $this->getOutput()->confirm($question, false);
         $cache->set('selfupdate', $answer);
-        if ($answer) {
+        if ($answer && $callback) {
             $callback();
         }
     }
