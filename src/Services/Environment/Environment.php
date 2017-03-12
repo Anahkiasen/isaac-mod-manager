@@ -9,6 +9,8 @@ namespace Isaac\Services\Environment;
 class Environment
 {
     /**
+     * Get the OS username of the current user.
+     *
      * @return string
      */
     public static function getUsername(): string
@@ -17,6 +19,8 @@ class Environment
     }
 
     /**
+     * Whether the user is running Mac or not.
+     *
      * @return bool
      */
     public static function isMac(): bool
@@ -25,6 +29,8 @@ class Environment
     }
 
     /**
+     * Whether the user is running a unix compliant OS (Linux/Mac/etc.).
+     *
      * @return bool
      */
     public static function isUnix(): bool
