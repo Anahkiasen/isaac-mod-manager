@@ -17,4 +17,13 @@ class ConflictTest extends TestCase
 
         $this->assertEquals(md5('/main.lua1-2'), $conflict->getHash());
     }
+
+    public function testCanCheckIfCanHaveMultipleResolutions()
+    {
+        $conflict = Conflict::forPath('foo.png');
+        $this->assertFalse($conflict->canHaveMultipleResolutions());
+
+        $conflict = Conflict::forPath('main.lua');
+        $this->assertTrue($conflict->canHaveMultipleResolutions());
+    }
 }

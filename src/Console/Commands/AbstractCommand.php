@@ -151,7 +151,8 @@ abstract class AbstractCommand extends Command
     {
         $this->bus->handle(new GatherPaths($this->output));
         $this->bus->handle(new ExtractResources(
-            $this->getHelper('process'), $this->output
+            $this->getHelper('process'),
+            $this->output
         ));
     }
 }

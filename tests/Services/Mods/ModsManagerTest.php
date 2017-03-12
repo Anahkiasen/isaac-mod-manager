@@ -93,8 +93,9 @@ class ModsManagerTest extends TestCase
         $this->mods->installMod($mod);
         $this->assertVirtualFileExists($this->paths->getResourcesPath().'/foo.png');
 
+        $this->files->put($this->paths->getResourcesBackupPath().'/foo.png', 'foobar');
         $this->mods->removeMod($mod);
-        $this->assertVirtualFileNotExists($this->paths->getResourcesPath().'/foo.png');
+        $this->assertEquals('foobar', $this->files->read($this->paths->getResourcesPath().'/foo.png'));
     }
 
     public function testCanRestoreMainLuaFile()

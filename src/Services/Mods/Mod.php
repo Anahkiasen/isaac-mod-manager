@@ -150,7 +150,7 @@ class Mod
             // Parse to array
             $metadata = $this->filesystem->read($metadata);
             $metadata = str_replace("\x02", null, $metadata);
-            $metadata = @simplexml_load_string($metadata, 'SimpleXMLElement');
+            $metadata = simplexml_load_string($metadata, 'SimpleXMLElement');
             $metadata = json_decode(json_encode($metadata), true);
         } catch (Exception $exception) {
             $metadata = [];

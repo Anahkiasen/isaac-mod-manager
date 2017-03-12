@@ -10,9 +10,7 @@ class ModTest extends TestCase
 {
     public function testCanListFiles()
     {
-        $mod = new Mod($this->paths->getModsPath().'/3');
-        $mod->setFilesystem($this->files);
-        $files = $mod->listFiles();
+        $files = $this->getMockedMod(3)->listFiles();
 
         $this->assertContains('main.lua', $files->pluck('basename'));
     }
@@ -34,5 +32,29 @@ class ModTest extends TestCase
 
         $this->assertContains('foo.png', $mod->listFiles()->pluck('basename'));
         $this->assertNotContains('foo.png', $otherMod->listFiles()->pluck('basename'));
+    }
+
+    public function testCanGetMetadata()
+    {
+        $mod = $this->getMockedMod(3);
+
+        $this->assertEquals('lua', $mod->getMetadata('name'));
+        $this->assertEquals(['id' => '3', 'name' => 'lua'], $mod->getMetadata());
+    }
+
+    public function testDoesntCrashIfCantParseMetadata()
+    {
+        $mod = $this->getMockedMod(3);
+        $this->files->put($mod->getPath('metadata.xml'), 'sdfdgsdgdsfgsdf');
+
+        $this->assertEquals([], $mod->getMetadata());
+    }
+
+    public function testDoesntCrashIfNoMetadata()
+    {
+        $mod = $this->getMockedMod(3);
+        $this->files->delete($mod->getPath('metadata.xml'));
+
+        $this->assertEquals([], $mod->getMetadata());
     }
 }

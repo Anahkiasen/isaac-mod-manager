@@ -5,6 +5,7 @@ namespace Isaac;
 use Isaac\Assertions\FilesystemAssertions;
 use Isaac\Providers\TestingServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
+use Isaac\Services\Mods\Mod;
 use Symfony\Component\Console\Tester\CommandTester;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
@@ -96,6 +97,21 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     public function assertVirtualFileNotExists(string $file)
     {
         $this->assertFalse($this->files->has($file));
+    }
+
+    /**
+     * Get a Mod instance for a mocked mod.
+     *
+     * @param int $id
+     *
+     * @return Mod
+     */
+    protected function getMockedMod(int $id): Mod
+    {
+        $mod = new Mod($this->paths->getModsPath().'/'.$id);
+        $mod->setFilesystem($this->files);
+
+        return $mod;
     }
 
     /**
