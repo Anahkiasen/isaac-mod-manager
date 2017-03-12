@@ -122,7 +122,7 @@ abstract class AbstractCommand extends Command
     {
         if (!$version = $this->cache->get('latest')) {
             $version = $this->updater->hasUpdate();
-            $this->cache->set('latest', $version, new DateInterval('P1D'));
+            $this->cache->set('latest', $this->updater->getNewVersion(), new DateInterval('P1D'));
         }
 
         if ($version) {
