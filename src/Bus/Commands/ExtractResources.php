@@ -2,8 +2,9 @@
 
 namespace Isaac\Bus\Commands;
 
+use Isaac\Services\Environment\Environment;
+use Isaac\Services\Environment\Pathfinder;
 use Isaac\Services\Mods\ModsManager;
-use Isaac\Services\Pathfinder;
 use RuntimeException;
 use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Console\Output\NullOutput;
@@ -46,7 +47,7 @@ class ExtractResources
             return;
         }
 
-        if ($paths->isUnix()) {
+        if (Environment::isUnix()) {
             $this->output->writeln('<comment>Extracting resources</comment>');
             $target = $paths->getResourcesPath().DS.'..';
 

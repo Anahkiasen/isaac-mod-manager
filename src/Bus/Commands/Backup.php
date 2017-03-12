@@ -2,8 +2,8 @@
 
 namespace Isaac\Bus\Commands;
 
+use Isaac\Services\Environment\Pathfinder;
 use Isaac\Services\Mods\ModsManager;
-use Isaac\Services\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,9 +27,9 @@ class Backup
     }
 
     /**
-     * @param ModsManager         $mods
-     * @param FilesystemInterface $files
-     * @param Pathfinder          $paths
+     * @param ModsManager                            $mods
+     * @param FilesystemInterface                    $files
+     * @param \Isaac\Services\Environment\Pathfinder $paths
      */
     public function handle(ModsManager $mods, FilesystemInterface $files, Pathfinder $paths)
     {

@@ -2,7 +2,7 @@
 
 namespace Isaac\Bus\Commands;
 
-use Isaac\Services\Pathfinder;
+use Isaac\Services\Environment\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 
 /**

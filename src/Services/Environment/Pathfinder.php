@@ -1,6 +1,6 @@
 <?php
 
-namespace Isaac\Services;
+namespace Isaac\Services\Environment;
 
 use Isaac\Services\Mods\Mod;
 use League\Flysystem\Util;
@@ -29,34 +29,6 @@ class Pathfinder
         $this->cache = $cache;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////// PLATFORM ////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * @return string
-     */
-    public function getUsername(): string
-    {
-        return $_SERVER['USER'] ?? basename(getenv('HOMEPATH'));
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMac(): bool
-    {
-        return PHP_OS === 'Darwin';
-    }
-
-    /**
-     * @return bool
-     */
-    public function isUnix(): bool
-    {
-        return in_array(PHP_OS, ['Linux', 'Darwin'], true);
-    }
-
     /**
      * Get the name of the game used for folders.
      *
@@ -82,7 +54,7 @@ class Pathfinder
 
         switch (PHP_OS) {
             case 'Darwin':
-                return sprintf('/Users/%s/Library/Application Support/Steam/steamapps/common/%s', $this->getUsername(), $this->getGameName());
+                return sprintf('/Users/%s/Library/Application Support/Steam/steamapps/common/%s', Environment::getUsername(), $this->getGameName());
 
             // I know this is not correct, bear with me
             case 'Linux':
@@ -110,7 +82,7 @@ class Pathfinder
      */
     public function getResourcesPath(): string
     {
-        return $this->isMac() ? $this->getGamePath().'/'.$this->getGameName().'.app/Contents/Resources/resources' : $this->getGamePath().DS.'resources';
+        return Environment::isMac() ? $this->getGamePath().'/'.$this->getGameName().'.app/Contents/Resources/resources' : $this->getGamePath().DS.'resources';
     }
 
     /**
@@ -162,7 +134,7 @@ class Pathfinder
      */
     public function getResourceExtractorPath(): string
     {
-        $extension = $this->isUnix() ? '' : '.exe';
+        $extension = Environment::isUnix() ? '' : '.exe';
 
         return $this->getGamePath().DS.'tools'.DS.'ResourceExtractor'.DS.'ResourceExtractor'.$extension;
     }
@@ -182,13 +154,13 @@ class Pathfinder
 
         switch (PHP_OS) {
             case 'Darwin':
-                return sprintf('/Users/%s/Library/Application Support/Steam/steamapps/workshop/content/250900', $this->getUsername());
+                return sprintf('/Users/%s/Library/Application Support/Steam/steamapps/workshop/content/250900', Environment::getUsername());
 
             case 'Linux':
-                return sprintf('/mnt/c/Users/%s/Documents/My Games/Binding of Isaac Afterbirth+ Mods', $this->getUsername());
+                return sprintf('/mnt/c/Users/%s/Documents/My Games/Binding of Isaac Afterbirth+ Mods', Environment::getUsername());
 
             default:
-                return sprintf('C:/Users/%s/Documents/My Games/Binding of Isaac Afterbirth+ Mods', $this->getUsername());
+                return sprintf('C:/Users/%s/Documents/My Games/Binding of Isaac Afterbirth+ Mods', Environment::getUsername());
         }
     }
 

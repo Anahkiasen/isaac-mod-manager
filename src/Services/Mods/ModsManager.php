@@ -3,7 +3,7 @@
 namespace Isaac\Services\Mods;
 
 use Illuminate\Support\Collection;
-use Isaac\Services\Pathfinder;
+use Isaac\Services\Environment\Pathfinder;
 use League\Flysystem\FilesystemInterface;
 
 /**

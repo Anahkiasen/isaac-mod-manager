@@ -3,18 +3,19 @@
 namespace Isaac\Services;
 
 use Isaac\Services\Conflicts\ConflictsHandler;
+use Isaac\Services\Environment\Pathfinder;
 use Isaac\Services\Mods\ModsManager;
 use League\Flysystem\FilesystemInterface;
 use League\Tactician\CommandBus;
 use Psr\SimpleCache\CacheInterface;
 
 /**
- * @property CommandBus $bus
- * @property CacheInterface cache
- * @property ConflictsHandler conflicts
+ * @property CommandBus          $bus
+ * @property CacheInterface      cache
+ * @property ConflictsHandler    conflicts
  * @property FilesystemInterface files
- * @property ModsManager mods
- * @property Pathfinder paths
+ * @property ModsManager         mods
+ * @property Pathfinder          paths
  */
 trait ContainerAwareTrait
 {
