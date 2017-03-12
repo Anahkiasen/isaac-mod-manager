@@ -2,7 +2,6 @@
 
 namespace Isaac\Console\Commands;
 
-use DateInterval;
 use Humbug\SelfUpdate\Updater;
 use Isaac\Application;
 use Isaac\Bus\Commands\ExtractResources;
@@ -121,9 +120,11 @@ abstract class AbstractCommand extends Command
      */
     protected function checkUpdates(): void
     {
-        if (Application::VERSION !== '@commit@' && $this->updater->hasUpdate()) {
-            $this->output->note('A new version is available: '.$this->updater->getNewVersion().PHP_EOL.'Run imm self-update to update');
+        if (Application::VERSION === '@commit@' || !$this->updater->hasUpdate()) {
+            return;
         }
+
+        $this->output->note('A new version is available: '.$this->updater->getNewVersion().PHP_EOL.'Run imm self-update to update');
     }
 
     /**
