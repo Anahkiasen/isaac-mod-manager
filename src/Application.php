@@ -11,7 +11,6 @@ use Isaac\Services\Cache\CacheServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
 use Isaac\Services\Filesystem\FilesystemServiceProvider;
 use KevinGH\Amend\Command as SelfUpdate;
-use KevinGH\Amend\Helper;
 use League\Container\Container;
 use League\Container\ContainerAwareInterface;
 use League\Container\ReflectionContainer;
@@ -54,6 +53,7 @@ class Application extends Console implements ContainerAwareInterface
         Uninstall::class,
         Restore::class,
         ClearCache::class,
+        SelfUpdate::class,
     ];
 
     /**
@@ -81,13 +81,6 @@ class Application extends Console implements ContainerAwareInterface
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
-        $this->getHelperSet()->set(new Helper());
-
-        // Add self-update command
-        $selfUpdate = new SelfUpdate('self-update');
-        $selfUpdate->setManifestUri('https://raw.githubusercontent.com/Anahkiasen/isaac-mod-manager/feature/self-update/manifest.json');
-        $this->add($selfUpdate);
-
         // Register commands with the CLI application
         foreach ($this->commands as $command) {
             $this->add($this->container->get($command));
