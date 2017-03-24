@@ -3,9 +3,8 @@
 namespace Isaac\Console\Commands\Mods;
 
 use Isaac\Bus\Commands\Backup;
-use Isaac\Console\ChoiceValidator;
+use Isaac\Console\ModsChoice;
 use Isaac\Services\Conflicts\Conflict;
-use Symfony\Component\Console\Question\ChoiceQuestion;
 
 /**
  * Copies non-LUA mods into your resource folder.
@@ -42,25 +41,13 @@ class Install extends AbstractModsCommand
                 $this->output->caution('Note: Checking multiple can have unforeseen consequences');
             }
 
-            // Compute choices and resolutions
-            $choices = $conflict->getPossibleChoices();
-            $resolutions = $conflict->getPossibleResolutions();
-
             // Ask user to select which mods to use
-            $question = 'Which mod(s) would you like to use here?';
-            $question .= $isMultiple ? ' Can use multiple answers (eg. 1,2,4)' : '';
-            $question = new ChoiceQuestion($question, $choices->all());
-            $question->setMultiselect($isMultiple);
-            $question->setAutocompleterValues($choices->keys());
-            $question->setValidator(new ChoiceValidator($question));
+            $question = new ModsChoice('Which mod(s) would you like to use here?', $conflict, $isMultiple);
+            $modIds = $question->getModIdsFromAnswer(
+                $this->output->askQuestion($question)
+            );
 
-            // Retrieve mod IDs from selection
-            $resolution = (array) $this->output->askQuestion($question);
-            foreach ($resolution as &$choice) {
-                $choice = $resolutions->get($choice);
-            }
-
-            return $resolution;
+            return $modIds;
         });
 
         // Present mods to install
