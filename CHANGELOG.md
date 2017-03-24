@@ -7,7 +7,7 @@
 - Added automatic resources extraction on Unix platforms
 - Added autoupdates to the PHAR via the `imm.phar self-update` command
 - Added better logic to guess the paths to the game and mods
-- Added conflcits resolver system
+- Added conflicts resolver system
 - Added progress bar during initial `resources` backup
 
 ### Changed
