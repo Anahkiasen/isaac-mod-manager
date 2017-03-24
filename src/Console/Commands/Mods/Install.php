@@ -47,7 +47,7 @@ class Install extends AbstractModsCommand
                 $this->output->askQuestion($question)
             );
 
-            return $modIds;
+            return $modIds->all();
         });
 
         // Present mods to install
