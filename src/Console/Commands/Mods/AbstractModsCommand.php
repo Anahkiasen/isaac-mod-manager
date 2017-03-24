@@ -39,7 +39,7 @@ abstract class AbstractModsCommand extends AbstractCommand
     {
         return $this
             ->addArgument('mods', InputArgument::IS_ARRAY, 'The Steam ID of one or more mod(s) to uninstall')
-            ->addOption('graphical', 'g', InputOption::VALUE_NONE, 'Only graphical mods')
+            ->addOption('lua', 'l', InputOption::VALUE_NONE, 'Also install LUA mods')
             ->addOption('select', 's', InputOption::VALUE_NONE, 'Select which mods to install from a picklist')
             ->setNeedsSetup(true);
     }
@@ -51,7 +51,7 @@ abstract class AbstractModsCommand extends AbstractCommand
     {
         // Get the mods queue
         $mods = $this->input->getArgument('mods');
-        $fallback = $this->input->getOption('graphical') ? 'getGraphicalMods' : 'getMods';
+        $fallback = $this->input->getOption('lua') ? 'getMods' : 'getGraphicalMods';
         $modsQueue = $mods ? $this->mods->findMods($mods) : $this->mods->$fallback();
 
         // Check if the user wants a picklist

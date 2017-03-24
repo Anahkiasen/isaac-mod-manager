@@ -11,7 +11,7 @@
 - Added progress bar during initial `resources` backup
 
 ### Changed
-- The `mods:install` command now tries to install all mods, pass `-g` to only install graphical mods
+- The `mods:install` can now install LUA mod by passing the `--lua` flag, **this is very experimental**
 
 ### Fixed
 - Fixed binary always showing "dev version" even on stable builds
