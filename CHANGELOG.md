@@ -2,11 +2,13 @@
 
 ## 0.3.0 - Unreleased
 ### Added
-- Added conflcits resolver system
-- Added autoupdates to the PHAR via the `imm.phar self-update` command
-- Added better logic to guess the paths to the game and mods
+- Added `--select` flag to the `mods:*` commands which allows you to pick precisely which mods to install/uninstall
 - Added ability to install/uninstall mods by text in addition to Steam ID (eg. `chud` will match `Chud Lite+`)
 - Added automatic resources extraction on Unix platforms
+- Added autoupdates to the PHAR via the `imm.phar self-update` command
+- Added better logic to guess the paths to the game and mods
+- Added conflcits resolver system
+- Added progress bar during initial `resources` backup
 
 ### Changed
 - The `mods:install` command now tries to install all mods, pass `-g` to only install non-LUA mods
