@@ -187,17 +187,24 @@ class Pathfinder
     }
 
     /**
+     * Get the equivalent path of a mod file in another folder.
+     *
      * @param Mod    $mod
      * @param string $filepath
-     * @param        $in
+     * @param string $in
      *
      * @return string
      */
-    protected function getModFileIn(Mod $mod, string $filepath, $in): string
+    protected function getModFileIn(Mod $mod, string $filepath, string $in): string
     {
+        // Compute path to mod
         $filepath = Util::normalizePath($filepath);
-        $modResources = Util::normalizePath($mod->getPath());
-        $relativePath = str_replace($modResources, null, $filepath);
+        $modPath = Util::normalizePath($mod->getPath());
+        if (mb_strpos($filepath, 'resources') !== false) {
+            $modPath = $modPath.DS.'resources';
+        }
+
+        $relativePath = str_replace($modPath, null, $filepath);
 
         return Util::normalizePath($in.$relativePath);
     }

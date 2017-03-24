@@ -201,7 +201,7 @@ class ModsManager
      */
     public function getGraphicalMods(): Collection
     {
-        return $this->getMods()->filter->isGraphical();
+        return $this->getMods()->filter->isGraphical()->values();
     }
 
     /**
@@ -211,6 +211,6 @@ class ModsManager
      */
     public function getLuaMods(): Collection
     {
-        return $this->getMods()->reject->isGraphical();
+        return $this->getMods()->reject->isGraphical()->values();
     }
 }
