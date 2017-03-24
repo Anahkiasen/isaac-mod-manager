@@ -110,6 +110,10 @@ class Conflict extends Collection
      */
     public function getExcluded(): self
     {
+        if (!$this->isResolved()) {
+            return new static();
+        }
+
         return $this->filter(function (Mod $mod) {
             return !in_array($mod->getId(), $this->getResolution(), true);
         });

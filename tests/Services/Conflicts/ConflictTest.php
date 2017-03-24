@@ -26,4 +26,16 @@ class ConflictTest extends TestCase
         $conflict = Conflict::forPath('main.lua');
         $this->assertTrue($conflict->canHaveMultipleResolutions());
     }
+
+    public function testDoesntExcludeAnythingIfUnsolved()
+    {
+        $mods = $this->mods->getMods();
+
+        $conflict = Conflict::forPath('/main.lua', [
+            $mods[0],
+            $mods[1],
+        ]);
+
+        $this->assertEmpty($conflict->getExcluded());
+    }
 }
