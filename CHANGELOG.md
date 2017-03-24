@@ -11,11 +11,12 @@
 - Added progress bar during initial `resources` backup
 
 ### Changed
-- The `mods:install` command now tries to install all mods, pass `-g` to only install non-LUA mods
+- The `mods:install` command now tries to install all mods, pass `-g` to only install graphical mods
 
 ### Fixed
-- Better Mac support
 - Fixed binary always showing "dev version" even on stable builds
+- Fixed issue with some mods being ignored due to invalid characters in their `metadata.xml` file
+- Fixed Mac support
 
 ## 0.2.3 - 2017-03-09
 ### Fixed
