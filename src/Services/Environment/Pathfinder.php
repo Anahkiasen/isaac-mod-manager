@@ -170,7 +170,7 @@ class Pathfinder
      *
      * @return string
      */
-    public function getModeFileInResources(Mod $mod, string $filepath): string
+    public function getModFileInResources(Mod $mod, string $filepath): string
     {
         return $this->getModFileIn($mod, $filepath, $this->getResourcesPath());
     }
@@ -181,7 +181,7 @@ class Pathfinder
      *
      * @return string
      */
-    public function getModeFileInResourcesBackup(Mod $mod, string $filepath): string
+    public function getModFileInResourcesBackup(Mod $mod, string $filepath): string
     {
         return $this->getModFileIn($mod, $filepath, $this->getResourcesBackupPath());
     }
