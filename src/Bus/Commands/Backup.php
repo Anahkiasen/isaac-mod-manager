@@ -30,7 +30,7 @@ class Backup implements OutputAwareInterface
         $this->getOutput()->writeln('It can take a few minutes so be patient');
 
         if (!$files->has($paths->getResourcesBackupPath())) {
-            $files->copyDirectory($paths->getResourcesPath(), $paths->getResourcesBackupPath());
+            $files->copyDirectory($paths->getResourcesPath(), $paths->getResourcesBackupPath(), $this->getOutput());
         }
 
         if (!$files->has($paths->getPackedBackupPath())) {
