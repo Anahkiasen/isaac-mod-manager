@@ -38,6 +38,8 @@ You can also install the beta version like this:
 $ composer global require "anahkiasen/isaac-mod-manager:1.0.x@dev"
 ```
 
+To switch back to the stable version, simply run the "Stable version" install command right above.
+
 ### Via the PHAR archive
 
 Alternatively you can use the PHAR archive, which you can download in the [Releases](https://github.com/Anahkiasen/isaac-mod-manager/releases) page.
