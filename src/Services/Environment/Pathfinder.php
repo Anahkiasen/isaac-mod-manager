@@ -199,12 +199,8 @@ class Pathfinder
     {
         // Compute path to mod
         $filepath = Util::normalizePath($filepath);
-        $modPath = Util::normalizePath($mod->getPath());
-        if (mb_strpos($filepath, 'resources') !== false) {
-            $modPath = $modPath.DS.'resources';
-        }
-
-        $relativePath = str_replace($modPath, null, $filepath);
+        $modPath = mb_strpos($filepath, 'resources') !== false ? $mod->getPath('resources') : $mod->getPath();
+        $relativePath = str_replace(Util::normalizePath($modPath), null, $filepath);
 
         return Util::normalizePath($in.$relativePath);
     }
