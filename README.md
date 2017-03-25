@@ -2,7 +2,7 @@
 
 [![Build Status](http://img.shields.io/travis/Anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://travis-ci.org/Anahkiasen/isaac-mod-manager) [![Latest Stable Version](http://img.shields.io/packagist/v/anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://packagist.org/packages/anahkiasen/isaac-mod-manager) [![Total Downloads](http://img.shields.io/packagist/dt/anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://packagist.org/packages/anahkiasen/isaac-mod-manager) [![Scrutinizer Quality Score](http://img.shields.io/scrutinizer/g/anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://scrutinizer-ci.com/g/anahkiasen/isaac-mod-manager/) [![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/anahkiasen/isaac-mod-manager.svg?style=flat-square)](https://scrutinizer-ci.com/g/anahkiasen/isaac-mod-manager/)
 
-![](http://i.imgur.com/994Z9a1.png)
+![](http://i.imgur.com/KeMv6kc.png)
 
 IMM is a cross-plateform CLI-tool to manage your Workshop mods for Binding of Isaac.
 

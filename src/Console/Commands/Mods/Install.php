@@ -76,6 +76,7 @@ class Install extends AbstractModsCommand
         }
 
         $progress->finish();
+        $this->output->newLine(2);
         $this->output->success($modsQueue->count().' mod(s) installed successfully!');
     }
 }
