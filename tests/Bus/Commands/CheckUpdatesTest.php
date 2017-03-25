@@ -39,7 +39,7 @@ class CheckUpdatesTest extends TestCase
 
         /** @var Updater $updater */
         $updater = $this->prophesize(Updater::class);
-        $updater->hasUpdate()->shouldNotBeCalled();
+        $updater->hasUpdate()->shouldBeCalled();
         $updater->getNewVersion()->shouldNotBeCalled();
 
         $this->checkForUpdates();
