@@ -53,7 +53,7 @@ class CheckUpdates implements OutputAwareInterface
         // Only try to update if a) we're running the PHAR, b) there is an update c) the user wants updates
         $shouldUpdate = !$this->checkVersion || !Application::isDevelopmentVersion();
         $wantsUpdates = !$cache->has('selfupdate') || $cache->get('selfupdate');
-        if (!$shouldUpdate || !$wantsUpdates || !$updater->hasUpdate()) {
+        if (!$updater->hasUpdate() || !$shouldUpdate || !$wantsUpdates) {
             return;
         }
 
