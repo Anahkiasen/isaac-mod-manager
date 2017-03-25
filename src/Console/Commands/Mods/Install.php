@@ -4,6 +4,7 @@ namespace Isaac\Console\Commands\Mods;
 
 use Isaac\Bus\Commands\Backup;
 use Isaac\Console\ModsChoice;
+use Isaac\Services\Conflicts\BoostersHandler;
 use Isaac\Services\Conflicts\Conflict;
 
 /**
@@ -30,6 +31,11 @@ class Install extends AbstractModsCommand
 
         // Rename packed folder if necessary
         $this->bus->handle(new Backup());
+
+        // Check for mods in Booster packs
+        $boosters = new BoostersHandler();
+        $boosters->setOutput($this->output);
+        $modsQueue = $boosters->filterBoosted($modsQueue);
 
         // Resolve eventual conflicts in the mods
         $modsQueue = $this->conflicts->findAndResolve($modsQueue, function (Conflict $conflict) {

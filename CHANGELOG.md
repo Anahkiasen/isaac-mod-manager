@@ -9,6 +9,7 @@
 - Added better logic to guess the paths to the game and mods
 - Added conflicts resolver system
 - Added progress bar during initial `resources` backup
+- Added warning when installing mods that were in booster packs, and offer to filter them out
 
 ### Changed
 - The `mods:install` can now install LUA mod by passing the `--lua` flag, **this is very experimental**

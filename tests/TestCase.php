@@ -6,6 +6,7 @@ use Isaac\Assertions\FilesystemAssertions;
 use Isaac\Providers\TestingServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
 use Isaac\Services\Mods\Mod;
+use function rand;
 use Symfony\Component\Console\Tester\CommandTester;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
@@ -121,9 +122,9 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @param string $name
      * @param string $lua
      *
-     * @return string
+     * @return Mod
      */
-    protected function mockMod(int $id, string $name, string $lua = '')
+    protected function mockMod(int $id, string $name, string $lua = ''): Mod
     {
         $metadata = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -139,5 +140,10 @@ XML;
         if ($lua) {
             $this->files->put($this->paths->getModsPath().'/'.$id.'/main.lua', $lua);
         }
+
+        $mod = new Mod($this->paths->getModsPath().'/'.$id);
+        $mod->setFilesystem($this->files);
+
+        return $mod;
     }
 }
