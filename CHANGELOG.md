@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.3.0 - Unreleased
+## 0.3.0 - 2017-03-25
 ### Added
 - Added `--select` flag to the `mods:*` commands which allows you to pick precisely which mods to install/uninstall
 - Added ability to install/uninstall mods by text in addition to Steam ID (eg. `chud` will match `Chud Lite+`)
