@@ -2,6 +2,7 @@
 
 namespace Isaac\Services\Filesystem;
 
+use Isaac\Services\Environment\Environment;
 use League\Flysystem\Adapter\Local;
 
 /**
@@ -24,6 +25,6 @@ class AbsoluteLocal extends Local
      */
     public function applyPathPrefix($path)
     {
-        return mb_strpos(mb_strtolower(PHP_OS), 'win') === 0 ? $path : '/'.$path;
+        return Environment::isWindows() ? $path : '/'.$path;
     }
 }

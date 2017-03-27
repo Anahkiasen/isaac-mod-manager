@@ -19,6 +19,16 @@ class Environment
     }
 
     /**
+     * Whether the user is running Windows or not.
+     *
+     * @return bool
+     */
+    public static function isWindows(): bool
+    {
+        return mb_strpos(mb_strtolower(PHP_OS), 'win') === 0;
+    }
+
+    /**
      * Whether the user is running Mac or not.
      *
      * @return bool
