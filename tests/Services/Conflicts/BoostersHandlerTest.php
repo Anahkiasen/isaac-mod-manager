@@ -2,10 +2,8 @@
 
 namespace Isaac\Services\Conflicts;
 
-use Illuminate\Support\Collection;
 use Isaac\TestCase;
 use Prophecy\Argument;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class BoostersHandlerTest extends TestCase

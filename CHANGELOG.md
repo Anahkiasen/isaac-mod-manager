@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.4.0 - Unreleased
+### Added
+- Added ability to clear conflicts resolution cache only with `imm cache:clear --conflicts`
+
 ## 0.3.0 - 2017-03-25
 ### Added
 - Added `--select` flag to the `mods:*` commands which allows you to pick precisely which mods to install/uninstall

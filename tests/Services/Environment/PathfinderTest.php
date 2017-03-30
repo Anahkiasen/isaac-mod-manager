@@ -22,6 +22,7 @@ class PathfinderTest extends TestCase
 
         $this->assertEquals($this->paths->getResourcesPath().$expected, DS.$path);
     }
+
     /**
      * @dataProvider provideFiles
      *
@@ -42,7 +43,7 @@ class PathfinderTest extends TestCase
     {
         return [
             [2, 2, '/gfx/foo.png'],
-            [3, 0, '/main.lua']
+            [3, 0, '/main.lua'],
         ];
     }
 }

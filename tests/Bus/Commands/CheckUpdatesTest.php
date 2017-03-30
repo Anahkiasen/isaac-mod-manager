@@ -3,9 +3,9 @@
 namespace Isaac\Bus\Commands;
 
 use Humbug\SelfUpdate\Updater;
+use Isaac\Services\Cache\TaggableCacheInterface;
 use Isaac\TestCase;
 use Prophecy\Argument;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CheckUpdatesTest extends TestCase
@@ -19,8 +19,8 @@ class CheckUpdatesTest extends TestCase
         $updater->hasUpdate()->willReturn(true);
         $updater->getNewVersion()->shouldBeCalled()->willReturn('5.0.0');
 
-        /** @var CacheInterface $cache */
-        $cache = $this->prophesize(CacheInterface::class);
+        /** @var TaggableCacheInterface $cache */
+        $cache = $this->prophesize(TaggableCacheInterface::class);
         $cache->has('selfupdate')->willReturn(false);
         $cache->set('selfupdate', true)->shouldBeCalled();
 
@@ -54,8 +54,8 @@ class CheckUpdatesTest extends TestCase
         $updater->hasUpdate()->willReturn(true);
         $updater->getNewVersion()->shouldBeCalled()->willReturn('5.0.0');
 
-        /** @var CacheInterface $cache */
-        $cache = $this->prophesize(CacheInterface::class);
+        /** @var TaggableCacheInterface $cache */
+        $cache = $this->prophesize(TaggableCacheInterface::class);
         $cache->has('selfupdate')->willReturn(false);
         $cache->set('selfupdate', false)->shouldBeCalled();
 

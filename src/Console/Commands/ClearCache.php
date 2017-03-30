@@ -2,6 +2,9 @@
 
 namespace Isaac\Console\Commands;
 
+use Isaac\Services\Conflicts\ConflictsHandler;
+use Symfony\Component\Console\Input\InputOption;
+
 class ClearCache extends AbstractCommand
 {
     /**
@@ -11,7 +14,8 @@ class ClearCache extends AbstractCommand
     {
         return $this
             ->setName('cache:clear')
-            ->setDescription('Clear the paths cache to your game and mods');
+            ->setDescription('Clear the paths cache to your game and mods')
+            ->addOption('conflicts', 'c', InputOption::VALUE_NONE, 'Only clear the conflicts resolution cache');
     }
 
     /**
@@ -19,7 +23,12 @@ class ClearCache extends AbstractCommand
      */
     protected function fire()
     {
-        $this->cache->clear();
+        if ($this->input->getOption('conflicts')) {
+            $this->cache->invalidateTag(ConflictsHandler::CACHE_TAG);
+        } else {
+            $this->cache->clear();
+        }
+
         $this->output->success('Cache cleared successfully');
     }
 }

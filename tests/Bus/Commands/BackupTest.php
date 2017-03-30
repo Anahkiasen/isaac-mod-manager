@@ -3,8 +3,6 @@
 namespace Isaac\Bus\Commands;
 
 use Isaac\TestCase;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class BackupTest extends TestCase

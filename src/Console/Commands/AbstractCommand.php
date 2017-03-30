@@ -3,13 +3,12 @@
 namespace Isaac\Console\Commands;
 
 use Humbug\SelfUpdate\Updater;
-use Isaac\Application;
 use Isaac\Bus\Commands\CheckUpdates;
 use Isaac\Bus\Commands\ExtractResources;
 use Isaac\Bus\Commands\GatherPaths;
+use Isaac\Services\Cache\TaggableCacheInterface;
 use Isaac\Services\Mods\ModsManager;
 use League\Tactician\CommandBus;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,7 +35,7 @@ abstract class AbstractCommand extends Command
     protected $bus;
 
     /**
-     * @var CacheInterface
+     * @var TaggableCacheInterface
      */
     protected $cache;
 
@@ -56,12 +55,12 @@ abstract class AbstractCommand extends Command
     protected $needsSetup = false;
 
     /**
-     * @param CommandBus     $bus
-     * @param CacheInterface $cache
-     * @param ModsManager    $mods
-     * @param Updater        $updater
+     * @param CommandBus             $bus
+     * @param TaggableCacheInterface $cache
+     * @param ModsManager            $mods
+     * @param Updater                $updater
      */
-    public function __construct(CommandBus $bus, CacheInterface $cache, ModsManager $mods, Updater $updater)
+    public function __construct(CommandBus $bus, TaggableCacheInterface $cache, ModsManager $mods, Updater $updater)
     {
         $this->bus = $bus;
         $this->cache = $cache;
