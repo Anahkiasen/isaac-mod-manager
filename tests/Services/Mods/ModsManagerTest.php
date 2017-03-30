@@ -6,15 +6,6 @@ use Isaac\TestCase;
 
 class ModsManagerTest extends TestCase
 {
-    public function testCanCheckIfResourcesAreBackedUp()
-    {
-        $this->assertFalse($this->mods->areResourcesBackup());
-
-        $this->files->createDir($this->paths->getResourcesBackupPath());
-        $this->files->createDir($this->paths->getPackedBackupPath());
-        $this->assertTrue($this->mods->areResourcesBackup());
-    }
-
     public function testCanCheckIfResourcesAreExtracted()
     {
         $this->assertTrue($this->mods->areResourcesExtracted());

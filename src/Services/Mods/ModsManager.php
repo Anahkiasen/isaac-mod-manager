@@ -36,16 +36,6 @@ class ModsManager
     ////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Check whether the game is already unpacked or not.
-     *
-     * @return bool
-     */
-    public function areResourcesBackup(): bool
-    {
-        return $this->filesystem->has($this->paths->getResourcesBackupPath()) && $this->filesystem->has($this->paths->getPackedBackupPath());
-    }
-
-    /**
      * @return bool
      */
     public function areResourcesExtracted(): bool

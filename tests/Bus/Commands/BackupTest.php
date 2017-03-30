@@ -4,6 +4,8 @@ namespace Isaac\Bus\Commands;
 
 use Isaac\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class BackupTest extends TestCase
 {
@@ -14,5 +16,17 @@ class BackupTest extends TestCase
         $this->assertVirtualFileExists($this->paths->getResourcesBackupPath());
         $this->assertVirtualFileNotExists($this->paths->getPackedPath());
         $this->assertVirtualFileExists($this->paths->getPackedBackupPath());
+    }
+
+    public function testDoesntBackupTwice()
+    {
+        $this->files->createDir($this->paths->getResourcesBackupPath());
+
+        $output = $this->prophesize(SymfonyStyle::class);
+        $output->writeln()->shouldNotBeCalled();
+
+        $command = new Backup();
+        $command->setOutput($output->reveal());
+        $this->bus->handle($command);
     }
 }
