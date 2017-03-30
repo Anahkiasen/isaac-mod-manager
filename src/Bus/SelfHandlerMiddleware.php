@@ -31,10 +31,6 @@ class SelfHandlerMiddleware implements Middleware
      */
     public function execute($command, callable $next)
     {
-        if (!method_exists($command, 'handle')) {
-            return $next($command);
-        }
-
         // Set output on command if necessary
         if ($command instanceof OutputAwareInterface && $this->container->has(SymfonyStyle::class)) {
             $command->setOutput($this->container->get(SymfonyStyle::class));
