@@ -17,6 +17,7 @@
     "php": ">=7.0",
     "cache/filesystem-adapter": "^0.4.0",
     "cache/simple-cache-bridge": "^0.1.0",
+    "cache/taggable-cache": "^0.5.1",
     "kherge/box": "^2.7",
     "league/container": "^2.4",
     "league/flysystem": "^1.0",

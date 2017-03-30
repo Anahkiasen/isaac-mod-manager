@@ -3,7 +3,8 @@
 namespace Isaac\Providers;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
-use Cache\Bridge\SimpleCache\SimpleCacheBridge;
+use Isaac\Services\Cache\TaggableCacheInterface;
+use Isaac\Services\Cache\TaggableSimpleCacheBridge;
 use Isaac\Services\Filesystem\CopyDirectory;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Flysystem\Filesystem;
@@ -11,7 +12,6 @@ use League\Flysystem\FilesystemInterface;
 use League\Flysystem\Plugin\ForcedCopy;
 use League\Flysystem\Plugin\ListFiles;
 use League\Flysystem\Vfs\VfsAdapter;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -24,7 +24,7 @@ class TestingServiceProvider extends AbstractServiceProvider
      */
     protected $provides = [
         FilesystemInterface::class,
-        CacheInterface::class,
+        TaggableCacheInterface::class,
     ];
 
     /**
@@ -43,8 +43,8 @@ class TestingServiceProvider extends AbstractServiceProvider
             return $filesystem;
         });
 
-        $this->container->share(CacheInterface::class, function () {
-            return new SimpleCacheBridge(new ArrayCachePool());
+        $this->container->share(TaggableCacheInterface::class, function () {
+            return new TaggableSimpleCacheBridge(new ArrayCachePool());
         });
 
         $this->container->share(SymfonyStyle::class, function () {

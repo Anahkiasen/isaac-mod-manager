@@ -4,9 +4,9 @@ namespace Isaac\Bus\Commands;
 
 use Isaac\Bus\OutputAwareInterface;
 use Isaac\Bus\OutputAwareTrait;
+use Isaac\Services\Cache\TaggableCacheInterface;
 use Isaac\Services\Environment\Pathfinder;
 use League\Flysystem\FilesystemInterface;
-use Psr\SimpleCache\CacheInterface;
 
 /**
  * Checks the existence of the required paths in cache,
@@ -17,11 +17,11 @@ class GatherPaths implements OutputAwareInterface
     use OutputAwareTrait;
 
     /**
-     * @param CacheInterface      $cache
-     * @param FilesystemInterface $files
-     * @param Pathfinder          $paths
+     * @param TaggableCacheInterface $cache
+     * @param FilesystemInterface    $files
+     * @param Pathfinder             $paths
      */
-    public function handle(CacheInterface $cache, FilesystemInterface $files, Pathfinder $paths)
+    public function handle(TaggableCacheInterface $cache, FilesystemInterface $files, Pathfinder $paths)
     {
         if ($cache->has('source') && $cache->has('destination')) {
             return;

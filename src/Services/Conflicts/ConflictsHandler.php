@@ -3,9 +3,9 @@
 namespace Isaac\Services\Conflicts;
 
 use Illuminate\Support\Collection;
+use Isaac\Services\Cache\TaggableCacheInterface;
 use Isaac\Services\Mods\Mod;
 use League\Flysystem\FilesystemInterface;
-use Psr\SimpleCache\CacheInterface;
 
 /**
  * Finds conflicts, solves them, remembers the solution
@@ -14,7 +14,12 @@ use Psr\SimpleCache\CacheInterface;
 class ConflictsHandler
 {
     /**
-     * @var CacheInterface
+     * @var string
+     */
+    const CACHE_TAG = 'conflicts';
+
+    /**
+     * @var TaggableCacheInterface
      */
     protected $cache;
 
@@ -24,10 +29,10 @@ class ConflictsHandler
     protected $filesystem;
 
     /**
-     * @param CacheInterface      $cache
-     * @param FilesystemInterface $filesystem
+     * @param TaggableCacheInterface $cache
+     * @param FilesystemInterface    $filesystem
      */
-    public function __construct(CacheInterface $cache, FilesystemInterface $filesystem)
+    public function __construct(TaggableCacheInterface $cache, FilesystemInterface $filesystem)
     {
         $this->cache = $cache;
         $this->filesystem = $filesystem;
@@ -113,9 +118,10 @@ class ConflictsHandler
     {
         $conflict = $conflict->resolve(is_callable($resolver) ? $resolver($conflict) : $resolver);
         if ($resolution = $conflict->getResolution()) {
-            $this->cache->set(
+            $this->cache->setWithTags(
                 $conflict->getHash(),
-                $resolution
+                $resolution,
+                self::CACHE_TAG
             );
         }
 

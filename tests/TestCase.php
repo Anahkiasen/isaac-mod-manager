@@ -6,7 +6,6 @@ use Isaac\Assertions\FilesystemAssertions;
 use Isaac\Providers\TestingServiceProvider;
 use Isaac\Services\ContainerAwareTrait;
 use Isaac\Services\Mods\Mod;
-use function rand;
 use Symfony\Component\Console\Tester\CommandTester;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase

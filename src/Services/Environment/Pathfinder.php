@@ -2,9 +2,9 @@
 
 namespace Isaac\Services\Environment;
 
+use Isaac\Services\Cache\TaggableCacheInterface;
 use Isaac\Services\Mods\Mod;
 use League\Flysystem\Util;
-use Psr\SimpleCache\CacheInterface;
 
 /**
  * Returns various available paths.
@@ -17,14 +17,14 @@ class Pathfinder
     const BACKUP_PREFIX = '.pristine';
 
     /**
-     * @var CacheInterface
+     * @var TaggableCacheInterface
      */
     protected $cache;
 
     /**
-     * @param CacheInterface $cache
+     * @param TaggableCacheInterface $cache
      */
-    public function __construct(CacheInterface $cache)
+    public function __construct(TaggableCacheInterface $cache)
     {
         $this->cache = $cache;
     }

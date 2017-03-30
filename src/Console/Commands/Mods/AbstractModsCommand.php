@@ -6,12 +6,12 @@ use Humbug\SelfUpdate\Updater;
 use Illuminate\Support\Collection;
 use Isaac\Console\Commands\AbstractCommand;
 use Isaac\Console\ModsChoice;
+use Isaac\Services\Cache\TaggableCacheInterface;
 use Isaac\Services\Conflicts\ConflictsHandler;
 use Isaac\Services\Mods\Mod;
 use Isaac\Services\Mods\ModNotFoundException;
 use Isaac\Services\Mods\ModsManager;
 use League\Tactician\CommandBus;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -25,7 +25,7 @@ abstract class AbstractModsCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    public function __construct(CommandBus $bus, CacheInterface $cache, ModsManager $mods, ConflictsHandler $conflicts, Updater $updater)
+    public function __construct(CommandBus $bus, TaggableCacheInterface $cache, ModsManager $mods, ConflictsHandler $conflicts, Updater $updater)
     {
         $this->conflicts = $conflicts;
 

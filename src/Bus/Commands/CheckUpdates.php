@@ -6,7 +6,7 @@ use Humbug\SelfUpdate\Updater;
 use Isaac\Application;
 use Isaac\Bus\OutputAwareInterface;
 use Isaac\Bus\OutputAwareTrait;
-use Psr\SimpleCache\CacheInterface;
+use Isaac\Services\Cache\TaggableCacheInterface;
 
 /**
  * Checks for updates and triggers a callback
@@ -43,10 +43,10 @@ class CheckUpdates implements OutputAwareInterface
     }
 
     /**
-     * @param Updater        $updater
-     * @param CacheInterface $cache
+     * @param Updater                $updater
+     * @param TaggableCacheInterface $cache
      */
-    public function handle(Updater $updater, CacheInterface $cache)
+    public function handle(Updater $updater, TaggableCacheInterface $cache)
     {
         $callback = $this->callback;
 

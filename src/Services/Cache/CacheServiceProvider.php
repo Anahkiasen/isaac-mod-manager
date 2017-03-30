@@ -3,12 +3,10 @@
 namespace Isaac\Services\Cache;
 
 use Cache\Adapter\Filesystem\FilesystemCachePool;
-use Cache\Bridge\SimpleCache\SimpleCacheBridge;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Psr\Cache\CacheItemPoolInterface;
-use Psr\SimpleCache\CacheInterface;
 
 class CacheServiceProvider extends AbstractServiceProvider
 {
@@ -17,7 +15,7 @@ class CacheServiceProvider extends AbstractServiceProvider
      */
     protected $provides = [
         CacheItemPoolInterface::class,
-        CacheInterface::class,
+        TaggableCacheInterface::class,
     ];
 
     /**
@@ -27,14 +25,13 @@ class CacheServiceProvider extends AbstractServiceProvider
     {
         $this->container->share(CacheItemPoolInterface::class, function () {
             $cachePath = sys_get_temp_dir().DS.'isaac-mod-manager';
+            $filesystem = new Filesystem(new Local($cachePath, LOCK_SH));
 
-            return new FilesystemCachePool(
-                new Filesystem(new Local($cachePath, LOCK_SH))
-            );
+            return new FilesystemCachePool($filesystem);
         });
 
-        $this->container->share(CacheInterface::class, function () {
-            return $this->container->get(SimpleCacheBridge::class);
+        $this->container->share(TaggableCacheInterface::class, function () {
+            return $this->container->get(TaggableSimpleCacheBridge::class);
         });
     }
 }
