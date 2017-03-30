@@ -7,6 +7,9 @@ use Cache\Taggable\TaggablePSR6PoolAdapter;
 use Cache\TagInterop\TaggableCacheItemPoolInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
+/**
+ * Creates a bridge from PSR6 to PSR16 with added support for tags.
+ */
 class TaggableSimpleCacheBridge extends SimpleCacheBridge implements TaggableCacheInterface
 {
     /**

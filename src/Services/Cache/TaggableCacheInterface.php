@@ -4,6 +4,9 @@ namespace Isaac\Services\Cache;
 
 use Psr\SimpleCache\CacheInterface;
 
+/**
+ * Extension of the PSR CacheInterface with barebones support for tags.
+ */
 interface TaggableCacheInterface extends CacheInterface
 {
     /**
